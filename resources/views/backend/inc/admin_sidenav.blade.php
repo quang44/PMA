@@ -385,6 +385,13 @@
                     </li>
                 @endif
 
+{{--                <li class="aiz-side-nav-item">--}}
+{{--                    <a href="{{ route('questions.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['questions.index', 'questions.create', 'questions.edit'])}}">--}}
+{{--                        <i class="las la-brain aiz-side-nav-icon"></i>--}}
+{{--                        <span class="aiz-side-nav-text">{{ translate('Hãng sản xuất') }}</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+
                 <!--Accounting-->
                 @if(Auth::user()->user_type == 'admin' || in_array('26', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
@@ -409,6 +416,12 @@
                                     <span class="aiz-side-nav-text">{{ translate('Thanh toán đối tác') }}</span>
                                 </a>
                             </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('partner_bill.payment_guarantee')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Thanh toán bảo hành') }}</span>
+                                </a>
+                            </li>
+
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('partner_bill.index') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{ translate('Phiếu thanh toán đối tác') }}</span>
@@ -492,7 +505,7 @@
                 @endif
 
                 <!-- Reports -->
-                {{--@if(Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
+                @if(Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-file-alt aiz-side-nav-icon"></i>
@@ -502,42 +515,42 @@
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('in_house_sale_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['in_house_sale_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('In House Product Sale') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Báo cáo bán sản phẩm nội bộ') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('seller_sale_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_sale_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Seller Products Sale') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Bán hàng dựa trên người bán') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('stock_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['stock_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Products Stock') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Sản phẩm còn hàng') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wish_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wish_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Products wishlist') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Sản phẩm mong muốn') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('user_search_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_search_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('User Searches') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Tìm kiếm của Người dùng') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate(' Lịch sử nhận hoa hồng') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wallet-history.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Wallet Recharge History') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử nạp tiền vào ví') }}</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                @endif--}}
+                @endif
 
                 <!--Blog System-->
                 {{--@if(Auth::user()->user_type == 'admin' || in_array('23', json_decode(Auth::user()->staff->role->permissions)))
@@ -672,7 +685,6 @@
                                     <span class="aiz-side-nav-text">Lịch sử thanh toán</span>
                                 </a>
                             </li>
-
                         </ul>
                     </li>
                 @endif
@@ -1118,6 +1130,8 @@
                         <span class="aiz-side-nav-text">Câu hỏi hướng dẫn</span>
                     </a>
                 </li>
+
+
                 {{--@if(Auth::user()->user_type == 'admin' || in_array('24', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">

@@ -65,7 +65,7 @@ Route::controller(UpdateController::class)->group(function () {
     Route::get('/update/step2', 'step2')->name('update.step2');
 });
 
-Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
+Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin' ]);
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
 
     // category
@@ -192,6 +192,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('partner_bill/create', 'store')->name('partner_bill.create');
         Route::post('partner_bill/cancel/{id}', 'cancel')->name('partner_bill.cancel');
         Route::get('partner_bill/{id}', 'show')->name('partner_bill.show');
+
+//        bảo hành
+        Route::get('guarantee_bill', 'PaymentGuarantee')->name('partner_bill.payment_guarantee');
+        Route::post('guarantee_bill/{id}', 'updateGuarantee')->name('partner_bill.update_guarantee');
+        Route::post('cancel_bill/{id}', 'cancelGuarantee')->name('partner_bill.cancel_guarantee');
     });
 
     // Newsletter
@@ -395,6 +400,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/user_search_report', 'user_search_report')->name('user_search_report.index');
         Route::get('/wallet-history', 'wallet_transaction_history')->name('wallet-history.index');
         Route::get('/commission-log', 'commission_history')->name('commission-log.index');
+//        Route::get('/', 'commission_history')->name('commission-log.index');
+
     });
 
     //Blog Section

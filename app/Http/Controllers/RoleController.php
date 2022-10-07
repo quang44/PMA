@@ -75,6 +75,7 @@ class RoleController extends Controller
     public function edit(Request $request, $id)
     {
         $lang = $request->lang;
+
         $role = Role::findOrFail($id);
         return view('backend.staff.staff_roles.edit', compact('role','lang'));
     }
@@ -88,6 +89,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+
         $role = Role::findOrFail($id);
 
         if($request->has('permissions')){

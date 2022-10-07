@@ -42,6 +42,12 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
         Route::post('/affiliate/update_payment/{id}', 'updatePayment')->name('affiliate.update_payment');
         Route::post('/affiliate/cancel_payment/{id}', 'cancelPayment')->name('affiliate.cancel_payment');
 
+
+//        Route::get('/affiliate/request_payment_guarantee', 'requestPaymentGuarantee')->name('affiliate.request_payment_guarantee');
+//        Route::post('/affiliate/update_payment_guarantee/{id}', 'updatePaymentGuarantee')->name('affiliate.update_payment_guarantee');
+//        Route::post('/affiliate/cancel_payment_guarantee/{id}', 'cancelPaymentGuarantee')->name('affiliate.update_payment_guarantee');
+
+
         //Route::post('/affiliate/configs/store', 'config_store')->name('affiliate.configs.store');
 
         /*Route::get('/affiliate/users', 'users')->name('affiliate.users');

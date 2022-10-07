@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AffiliatePayment;
+use App\Models\QrCodeInformation;
 use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -168,6 +169,7 @@ class AffiliateController extends Controller
         }
         flash(translate('Tài khoản đã tồn tại'))->error();
         return back();
+
     }
 
     /**
@@ -303,4 +305,9 @@ class AffiliateController extends Controller
             'message' => 'Hủy thanh toán thành công'
         ]);
     }
+
+
+
+
+
 }

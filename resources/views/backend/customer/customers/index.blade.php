@@ -65,6 +65,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group mb-0">
+
                     <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Nhập tên hoặc số điện thoại') }}">
                 </div>
             </div>
