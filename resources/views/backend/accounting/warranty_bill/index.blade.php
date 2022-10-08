@@ -137,7 +137,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: '/admin/guarantee_bill/' + id,
+                url: '/admin/warranty_bill/' + id,
                 type: 'POST',
                 success: function (response) {
                     if(response.result === true) {
@@ -166,7 +166,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: '/admin/cancel_bill/' + id,
+                url: '/admin/cancel_warranty_bill/' + id,
                 type: 'POST',
                 data: {
                     reason:reason

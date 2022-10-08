@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AffiliatePayment;
-use App\Models\QrCodeInformation;
+use App\Models\WarrantyBill;
 use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Http\Request;

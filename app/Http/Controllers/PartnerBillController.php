@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OrderDelivery;
 use App\Models\PartnerBill;
-use App\Models\QrCodeInformation;
+use App\Models\WarrantyBill;
 use App\Utility\OrderDeliveryUtility;
 use Illuminate\Http\Request;
 
@@ -97,9 +97,9 @@ class PartnerBillController extends Controller
 
 
 //    show payment guarantee
-    function PaymentGuarantee(Request $request){
+    function PaymentWarranty(Request $request){
         $sort_search=null;
-        $payment_guarantees=QrCodeInformation::orderBy('created_at','desc');
+        $payment_guarantees=WarrantyBill::orderBy('created_at','desc');
 
         if ($request->search){
             $sort_search = $request->search;
@@ -113,13 +113,13 @@ class PartnerBillController extends Controller
         }
 
         $payment_guarantees= $payment_guarantees->paginate(15);
-        return view('backend.accounting.guarantee_bill.index',compact('payment_guarantees','sort_search'));
+        return view('backend.accounting.warranty_bill.index',compact('payment_guarantees','sort_search'));
     }
 
 
 //    update payment status bảo hành
-    function updateGuarantee(Request $request ,$id){
-        $payment = QrCodeInformation::where('id', $id)->where('status', 0)->first();
+    function updateWarranty(Request $request ,$id){
+        $payment = WarrantyBill::where('id', $id)->where('status', 0)->first();
         if(!$payment){
             return response([
                 'result' => false,
@@ -136,8 +136,8 @@ class PartnerBillController extends Controller
 
     //    cancel payment status bảo hành
 
-    public function cancelGuarantee($id, Request $request){
-        $payment = QrCodeInformation::where('id', $id)->where('status', 0)->first();
+    public function cancelWarranty($id, Request $request){
+        $payment = WarrantyBill::where('id', $id)->where('status', 0)->first();
         if(!$payment){
             return response([
                 'result' => false,

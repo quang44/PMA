@@ -417,7 +417,7 @@
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
-                                <a href="{{route('partner_bill.payment_guarantee')}}" class="aiz-side-nav-link">
+                                <a href="{{route('warranty_bill.index')}}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{ translate('Thanh toán bảo hành') }}</span>
                                 </a>
                             </li>

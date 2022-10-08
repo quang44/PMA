@@ -194,9 +194,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('partner_bill/{id}', 'show')->name('partner_bill.show');
 
 //        bảo hành
-        Route::get('guarantee_bill', 'PaymentGuarantee')->name('partner_bill.payment_guarantee');
-        Route::post('guarantee_bill/{id}', 'updateGuarantee')->name('partner_bill.update_guarantee');
-        Route::post('cancel_bill/{id}', 'cancelGuarantee')->name('partner_bill.cancel_guarantee');
+        Route::get('warranty_bill', 'PaymentWarranty')->name('warranty_bill.index');
+        Route::post('warranty_bill/{id}', 'updateWarranty')->name('warranty_bill.update');
+        Route::post('cancel_warranty_bill/{id}', 'cancelWarranty')->name('warranty_bill.cancel');
     });
 
     // Newsletter

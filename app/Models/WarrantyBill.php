@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QrCodeInformation extends Model
+class WarrantyBill extends Model
 {
-    protected $table='qr_code_informations';
+    protected $table='warranty_bill';
 
     function  user(){
         return $this->belongsTo(User::class);

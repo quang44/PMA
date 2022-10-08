@@ -40,7 +40,8 @@ class RoleController extends Controller
         if($request->has('permissions')){
             $role = new Role;
             $role->name = $request->name;
-            $role->permissions = json_encode($request->permissions);
+          $permission=  $role->permissions = json_encode($request->permissions);
+
             $role->save();
 
             $role_translation = RoleTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'role_id' => $role->id]);
