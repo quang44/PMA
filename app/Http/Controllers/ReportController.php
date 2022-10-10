@@ -126,7 +126,7 @@ class ReportController extends Controller
             $wallet_history = $wallet_history->where('user_id', '=', $user_id);
         }
 
-        $wallets = $wallet_history->paginate(10);
+        $wallets = $wallet_history->paginate(15);
 
         return view('backend.reports.wallet_history_report', compact('wallets', 'users_with_wallet', 'user_id', 'date_range'));
     }

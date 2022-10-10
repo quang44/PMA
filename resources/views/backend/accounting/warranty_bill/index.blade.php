@@ -5,7 +5,7 @@
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class="h3">{{translate('Danh sách yêu cầu thanh toán bảo hành')}}</h1>
+                <h1 class="h3">{{translate('Danh sách thanh toán bảo hành')}}</h1>
             </div>
         </div>
     </div>
@@ -65,12 +65,17 @@
                                     @endif
                                 </td>
                                 <td class="text-right">
-                                    <button type="button" class="btn btn-soft-info btn-icon btn-circle btn-sm " onclick="confirmUpdate(`{{ $payment_guarantee->id }}`)" title="{{ translate('Update payment bill') }}">
-                                        <i class="las la-money-bill"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-soft-danger btn-icon btn-circle btn-sm " onclick="openCancelPayment(`{{ $payment_guarantee->id }}`)" title="{{ translate('Hủy yêu cầu') }}">
-                                        <i class="las la-trash"></i>
-                                    </button>
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="" title="View">
+                                        <i class="las la-eye"></i>
+                                    </a>
+                                  @if($payment_guarantee->status!=1)
+                                        <button type="button" class="btn btn-soft-info btn-icon btn-circle btn-sm " onclick="confirmUpdate(`{{ $payment_guarantee->id }}`)" title="{{ translate('Update payment bill') }}">
+                                            <i class="las la-money-bill"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-soft-danger btn-icon btn-circle btn-sm " onclick="openCancelPayment(`{{ $payment_guarantee->id }}`)" title="{{ translate('Hủy yêu cầu') }}">
+                                            <i class="las la-trash"></i>
+                                        </button>
+                                      @endif
                                 </td>
                             </tr>
                         @endif

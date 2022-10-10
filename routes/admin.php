@@ -47,6 +47,7 @@ use App\Http\Controllers\OrderDeliveryController;
 use App\Http\Controllers\CustomerBillController;
 use App\Http\Controllers\PartnerBillController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\WarrantyBillController;
 
 /*
   |--------------------------------------------------------------------------
@@ -193,7 +194,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('partner_bill/cancel/{id}', 'cancel')->name('partner_bill.cancel');
         Route::get('partner_bill/{id}', 'show')->name('partner_bill.show');
 
-//        bảo hành
+
+    });
+
+    //       Warranty
+    Route::controller(WarrantyBillController::class)->group(function () {
         Route::get('warranty_bill', 'PaymentWarranty')->name('warranty_bill.index');
         Route::post('warranty_bill/{id}', 'updateWarranty')->name('warranty_bill.update');
         Route::post('cancel_warranty_bill/{id}', 'cancelWarranty')->name('warranty_bill.cancel');

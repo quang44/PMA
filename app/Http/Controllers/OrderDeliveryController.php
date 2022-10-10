@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\OrderDelivery;
 use App\Models\OrderDeliveryLog;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 class OrderDeliveryController extends Controller
 {
     public function index(Request $request){
+
         $status_payment = OrderDeliveryUtility::$aryStatusPayment;
         $status_delivery = OrderDeliveryUtility::$aryStatusDelivery;
         $partner_status_payment = OrderDeliveryUtility::$aryPartnerStatusPayment;
