@@ -14,7 +14,6 @@
 	<form class="p-4" action="{{ route('banks.update', $bank->id) }}" method="POST" enctype="multipart/form-data">
 		@csrf
 		<input type="hidden" name="_method" value="PATCH">
-
 		<div class="card-header px-0">
 			<h6 class="fw-600 mb-0">{{ translate('Page Content') }}</h6>
 		</div>

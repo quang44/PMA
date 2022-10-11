@@ -369,6 +369,11 @@
                                     <span class="aiz-side-nav-text">{{ translate('Gói') }}</span>
                                 </a>
                             </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('customer_groups.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_groups.index', 'customer_groups.create', 'customer_groups.edit'])}}">
+                                    <span class="aiz-side-nav-text">{{ translate('Nhóm người dùng') }}</span>
+                                </a>
+                            </li>
                             {{--@if(get_setting('classified_product') == 1)
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('classified_products')}}" class="aiz-side-nav-link">
@@ -383,6 +388,8 @@
                             @endif--}}
                         </ul>
                     </li>
+
+
                 @endif
 
                 <!--Accounting-->
