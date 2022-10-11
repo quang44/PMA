@@ -233,6 +233,7 @@ class AffiliateController extends Controller
             $payment = $payment->where('status', $request->status);
         }*/
         $payments->with(['user.customer_bank']);
+
         $payments = $payments->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
         return view('backend.affiliate.request_payment', compact('payments'));
     }
@@ -272,6 +273,7 @@ class AffiliateController extends Controller
                 'message' => 'Không tìm thấy yêu cầu cần thanh toán'
             ]);
         }
+
         $payment->status = 2;
         $payment->payment_time = time();
         $payment->payment_user_id = auth()->id();
@@ -280,6 +282,7 @@ class AffiliateController extends Controller
             'result' => true,
             'message' => 'Cập nhật thanh toán thành công'
         ]);
+
     }
     public function cancelPayment($id, Request $request){
         $payment = AffiliatePayment::where('id', $id)->where('status', 1)->first();

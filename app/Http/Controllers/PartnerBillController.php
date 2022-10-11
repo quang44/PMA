@@ -33,25 +33,30 @@ class PartnerBillController extends Controller
 
     public function create(Request $request){
         $sort_search = null;
-        $orders = [];
+        $orders=[];
+
         if ($request->search != '') {
             $sort_search = $request->search;
             $orders_ids = explode(',', $sort_search);
+
             $orders = OrderDelivery::where('partner_status_payment', OrderDeliveryUtility::PARTNER_STATUS_PAYMENT_NEW)->whereIn('id', $orders_ids)->get();
         }
+
         return view('backend.accounting.partner_bill.create', compact('orders', 'sort_search'));
     }
 
     public function store(Request $request){
-
         $ids = $request->ids;
         $orders_ids = explode(',', $ids);
         $orders = OrderDelivery::where('partner_status_payment', OrderDeliveryUtility::PARTNER_STATUS_PAYMENT_NEW)->whereIn('id', $orders_ids)->get();
+
         if(count($orders) == 0){
             flash(translate('Order not found'))->error();
             return back();
         }
+//        dd($orders);
         $partner_bill_id = $request->partner_bill_id;
+
         \DB::transaction(function () use ($orders, $partner_bill_id) {
             $total_cod = $total_fee = 0;
             $order_ids = [];
@@ -73,6 +78,7 @@ class PartnerBillController extends Controller
         flash(translate('Bill created success'))->success();
         return redirect(route('partner_bill.index')) ;
     }
+
 
     public function cancel($id){
         $partner_bill = PartnerBill::where('id', $id)->first();

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\WarrantyBill;
+use App\Utility\WarrantyBillUtility;
 use Illuminate\Http\Request;
 
 class WarrantyBillController extends Controller
 {
 
 //    show payment guarantee
-    function PaymentWarranty(Request $request){
+    function paymentWarranty(Request $request){
         $sort_search=null;
+        $status=WarrantyBillUtility::$aryStatus;
         $payment_guarantees=WarrantyBill::orderBy('created_at','desc');
 
         if ($request->search){
@@ -25,9 +27,16 @@ class WarrantyBillController extends Controller
         }
 
         $payment_guarantees= $payment_guarantees->paginate(15);
-        return view('backend.accounting.warranty_bill.index',compact('payment_guarantees','sort_search'));
+        return view('backend.accounting.warranty_bill.index',compact('payment_guarantees','sort_search','status'));
     }
 
+//  show
+
+function show($id ,Request $request){
+        $status=WarrantyBillUtility::$aryStatus;
+        $warranty_bill=WarrantyBill::with('user')->find($id);
+        return view('backend.accounting.warranty_bill.show',compact('warranty_bill','status'));
+}
 
 //    update payment status bảo hành
     function updateWarranty(Request $request ,$id){
@@ -57,7 +66,7 @@ class WarrantyBillController extends Controller
             ]);
         }else{
             $payment->reason = $request->reason;
-            $payment->status = -1;
+            $payment->status = 2;
             $payment->save();
         }
 

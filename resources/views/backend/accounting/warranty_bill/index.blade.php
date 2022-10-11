@@ -56,19 +56,19 @@
                                 <td>{{$payment_guarantee->email}}</td>
                                 <td><a href="{{ route('customers.index', ['referred_by' => $payment_guarantee->user_id])}}">{{$payment_guarantee->phone}}</a></td>
                                 <td class="text-center">
-                                    @if($payment_guarantee->status ==1)
-                                        <span class="badge badge-inline badge-success">{{ translate('Đã duyệt') }}</span>
-                                    @elseif($payment_guarantee->status ==0)
-                                        <span class="badge badge-inline badge-warning">{{ translate(' Chờ duyệt') }}</span>
+                                    @if($payment_guarantee->status ==\App\Utility\WarrantyBillUtility::STATUS_NEW)
+                                        <span class="badge badge-inline badge-warning ">  {{$status[$payment_guarantee->status]}}</span>
+                                    @elseif($payment_guarantee->status ==\App\Utility\WarrantyBillUtility::STATUS_SUCCESS)
+                                        <span class="badge badge-inline badge-success">  {{$status[$payment_guarantee->status]}}</span>
                                     @else
-                                        <span class="badge badge-inline badge-danger">{{ translate('đã hủy') }}</span>
+                                        <span class="badge badge-inline badge-danger">  {{$status[$payment_guarantee->status]}}</span>
                                     @endif
                                 </td>
                                 <td class="text-right">
-                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="" title="View">
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('warranty_bill.show',$payment_guarantee->id)}}" title="View">
                                         <i class="las la-eye"></i>
                                     </a>
-                                  @if($payment_guarantee->status!=1)
+                                  @if($payment_guarantee->status==\App\Utility\WarrantyBillUtility::STATUS_NEW)
                                         <button type="button" class="btn btn-soft-info btn-icon btn-circle btn-sm " onclick="confirmUpdate(`{{ $payment_guarantee->id }}`)" title="{{ translate('Update payment bill') }}">
                                             <i class="las la-money-bill"></i>
                                         </button>
@@ -177,7 +177,8 @@
                     reason:reason
                 },
                 success: function (response) {
-                    if(response.result === true) {
+                    if(response.result == true) {
+                        $('#cancel-payment-modal').modal('hide')
                         Swal.fire(response.message)
                         location.reload();
                     }else {

@@ -48,7 +48,7 @@ use App\Http\Controllers\CustomerBillController;
 use App\Http\Controllers\PartnerBillController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\WarrantyBillController;
-
+use \App\Http\Controllers\WarrantyCardController;
 /*
   |--------------------------------------------------------------------------
   | Admin Routes
@@ -82,6 +82,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::controller(BrandController::class)->group(function () {
         Route::get('/brands/edit/{id}', 'edit')->name('brands.edit');
         Route::get('/brands/destroy/{id}', 'destroy')->name('brands.destroy');
+        Route::post('/brands/update_status', 'updateStatus')->name('brands.update_status');
     });
 
     // Products
@@ -199,9 +200,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
 
     //       Warranty
     Route::controller(WarrantyBillController::class)->group(function () {
-        Route::get('warranty_bill', 'PaymentWarranty')->name('warranty_bill.index');
+        Route::get('warranty_bill', 'paymentWarranty')->name('warranty_bill.index');
+        Route::get('warranty_bill/{id}', 'show')->name('warranty_bill.show');
         Route::post('warranty_bill/{id}', 'updateWarranty')->name('warranty_bill.update');
         Route::post('cancel_warranty_bill/{id}', 'cancelWarranty')->name('warranty_bill.cancel');
+    });
+
+    //       Warranty card
+    Route::controller(WarrantyCardController::class)->group(function () {
+        Route::get('warranty_card', 'index')->name('warranty_card.index');
+        Route::get('warranty_card/{id}', 'show')->name('warranty_card.show');
     });
 
     // Newsletter

@@ -124,6 +124,22 @@ class BrandController extends Controller
 
     }
 
+
+    function updateStatus(Request $request){
+        $brand=Brand::find($request->id);
+        if($brand!=null){
+            $brand->status= $request->status;
+            $brand->save();
+            return response([
+                'result'=>1,
+            ]);
+        }else{
+            return response([
+                'result'=>0,
+            ]);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *

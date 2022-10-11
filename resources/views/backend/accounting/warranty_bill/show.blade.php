@@ -10,30 +10,31 @@
         <div class="gutters-5">
             <div><h6>Thông tin cơ bản</h6></div>
             <div class="mt-1">
-                <span><b>{{ translate('Mã đối soát') }}</b>: {{ $bill->id }}</span>
+                <span><b>{{ translate('Mã đơn hàng') }}</b>: {{$warranty_bill->id}}</span>
             </div>
             <div class="mt-1">
-                <span><b>{{ translate('Thời gian tạo') }}</b>: {{ date('d-m-Y H:i:s', $bill->created_time) }}</span>
+
+                <span><b>{{ translate('Thời gian tạo') }}</b>:   {{ date('d-m-Y H:i:s',strtotime($warranty_bill->created_at))  }} </span>
             </div>
             <div class="mt-1">
-                <span><b>{{ translate('Trạng thái') }}</b>: {{ $status[$bill->status] ?? '' }}</span>
+                <span><b>{{ translate('Trạng thái') }}</b>: {{$status[$warranty_bill->status]}}</span>
             </div>
-            @if($bill->status == \App\Utility\CustomerBillUtility::STATUS_SUCCESS)
-            <div class="mt-1">
-                <span><b>{{ translate('Thời gian thanh toán') }}</b>: {{ date('d-m-Y H:i:s', $bill->payment_time) }}</span>
-            </div>
-            @endif
+{{--            @if($bill->status == \App\Utility\CustomerBillUtility::STATUS_SUCCESS)--}}
+{{--            <div class="mt-1">--}}
+{{--                <span><b>{{ translate('Thời gian thanh toán') }}</b>: {{ date('d-m-Y H:i:s', $bill->payment_time) }}</span>--}}
+{{--            </div>--}}
+{{--            @endif--}}
         </div>
         <div class="gutters-5 mt-3">
             <div><h6>Thông tin khách hàng</h6></div>
             <div class="mt-1">
-                <span><b>{{ translate('Tên') }}</b>: {{ $bill->user->name }}</span>
+                <span><b>{{ translate('Tên') }}</b>:  {{ $warranty_bill->name }} </span>
             </div>
             <div class="mt-1">
-                <span><b>{{ translate('Email') }}</b>: {{ $bill->user->email }}</span>
+                <span><b>{{ translate('Email') }}</b>: {{ $warranty_bill->email }} </span>
             </div>
             <div class="mt-1">
-                <span><b>{{ translate('Số điện thoại') }}</b>: {{ $bill->user->phone }}</span>
+                <span><b>{{ translate('Số điện thoại') }}</b>: {{ $warranty_bill->phone }}  </span>
             </div>
         </div>
         <div class="row gutters-5 mt-3">
@@ -48,13 +49,13 @@
                 <tbody>
                 <tr>
                     <td class="text-right">
-                        {{ single_price($bill->total_cod) }}
+{{--                        {{ single_price($bill->total_cod) }}--}}  ?
                     </td>
                     <td class="text-right">
-                        {{ single_price($bill->total_fee) }}
+{{--                        {{ single_price($bill->total_fee) }}--}}?
                     </td>
                     <td class="text-right">
-                        {{ single_price($bill->total_cod - $bill->total_fee) }}
+{{--                        {{ single_price($bill->total_cod - $bill->total_fee) }}--}}?
                     </td>
                 </tr>
                 </tbody>
@@ -72,14 +73,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($orders as $value)
-                <tr>
-                    <td>{{ $value->id }}</td>
-                    <td>{{ $value->parner_code }}</td>
-                    <td class="text-right">{{ single_price($value->customer_total_fee) }}</td>
-                    <td class="text-right">{{ single_price($value->collect_amount) }}</td>
-                </tr>
-                @endforeach
+{{--                @foreach($orders as $value)--}}
+{{--                <tr>--}}
+{{--                    <td>{{ $value->id }}</td>--}}
+{{--                    <td>{{ $value->parner_code }}</td>--}}
+{{--                    <td class="text-right">{{ single_price($value->customer_total_fee) }}</td>--}}
+{{--                    <td class="text-right">{{ single_price($value->collect_amount) }}</td>--}}
+{{--                </tr>--}}
+{{--                @endforeach--}}
                 </tbody>
             </table>
         </div>

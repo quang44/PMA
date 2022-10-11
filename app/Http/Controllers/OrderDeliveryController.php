@@ -55,6 +55,7 @@ class OrderDeliveryController extends Controller
                 $q->where('id', $sort_search)->orWhere('partner_code', $sort_search)/*->orWhere('source_phone', $sort_search)->orWhere('dest_phone', $sort_search)*/;
             });
         }
+
         $sum_fee = $orders->sum('total_fee');
         $sum_customer_fee = $orders->sum('customer_total_fee');
         $sum_cod = $orders->sum('collect_amount');
@@ -72,6 +73,7 @@ class OrderDeliveryController extends Controller
     }
 
     public function show($id){
+
         $order = OrderDelivery::findOrFail(decrypt($id));
         $status_payment = OrderDeliveryUtility::$aryStatusPayment;
         $status_delivery = OrderDeliveryUtility::$aryStatusDelivery;

@@ -30,6 +30,7 @@
 		                    <th>#</th>
 		                    <th>{{translate('Name')}}</th>
 		                    <th>{{translate('Logo')}}</th>
+                            <th>{{translate('Status')}}</th>
 		                    <th class="text-right">{{translate('Options')}}</th>
 		                </tr>
 		            </thead>
@@ -41,6 +42,12 @@
 								<td>
 		                            <img src="{{ uploaded_asset($brand->logo) }}" alt="{{translate('Brand')}}" class="h-50px">
 		                        </td>
+                                <td>
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                        <input value="4" type="checkbox" @if($brand->status==1) checked @endif onclick="ChangeStatus( {{$brand->id}},{{$brand->status}})" >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
 		                        <td class="text-right">
 		                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('brands.edit', ['id'=>$brand->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
 		                                <i class="las la-edit"></i>
@@ -111,5 +118,24 @@
     function sort_brands(el){
         $('#sort_brands').submit();
     }
+    function  ChangeStatus(id,status) {
+        if(status==0){
+            status=1;
+        }else{
+            status=0;
+        }
+        $.post('{{ route('brands.update_status') }}', {_token:'{{ csrf_token() }}',
+            id:id, status:status}, function(data){
+            if(data.result == 1){
+                location.reload()
+                AIZ.plugins.notify('success', '{{ translate('update status successfully') }}');
+            } else{
+                location.reload()
+                AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+            }
+        });
+
+    }
+
 </script>
 @endsection

@@ -13,7 +13,7 @@ class WalletController extends Controller
         $wallets = Wallet::where('user_id', Auth::user()->id)->latest()->paginate(9);
         return view('frontend.user.wallet.index', compact('wallets'));
     }
-
+// nạp tiền
     public function recharge(Request $request)
     {
         $data['amount'] = $request->amount;
@@ -31,6 +31,7 @@ class WalletController extends Controller
         }
     }
 
+//    thanh toán hoàn thành
     public function wallet_payment_done($payment_data, $payment_details)
     {
         $user = Auth::user();
@@ -51,6 +52,7 @@ class WalletController extends Controller
         return redirect()->route('wallet.index');
     }
 
+//    nạp tiền offline
     public function offline_recharge(Request $request)
     {
         $wallet = new Wallet;
@@ -66,12 +68,14 @@ class WalletController extends Controller
         return redirect()->route('wallet.index');
     }
 
+// yêu cầu nạp tiền offline
     public function offline_recharge_request()
     {
         $wallets = Wallet::where('offline_payment', 1)->paginate(10);
         return view('manual_payment_methods.wallet_request', compact('wallets'));
     }
 
+//cập nhật ví
     public function updateApproved(Request $request)
     {
         $wallet = Wallet::findOrFail($request->id);
