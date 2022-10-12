@@ -209,7 +209,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     //       Warranty card
     Route::controller(WarrantyCardController::class)->group(function () {
         Route::get('warranty_card', 'index')->name('warranty_card.index');
-        Route::get('warranty_card/{id}', 'show')->name('warranty_card.show');
+        Route::get('warranty_card/create', 'create')->name('warranty_card.create');
+        Route::post('warranty_card/store', 'store')->name('warranty_card.store');
+        Route::get('warranty_card/show/{id}', 'show')->name('warranty_card.show');
+        Route::get('warranty_card/{id}', 'edit')->name('warranty_card.edit');
+        Route::put('warranty_card/{id}', 'update')->name('warranty_card.update');
+
+        Route::get('warranty_card/ban/{id}', 'ban')->name('warranty_card.ban');
+        Route::get('warranty_card/destroy/{id}', 'destroy')->name('warranty_card.destroy');
     });
 
     // Newsletter

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WarrantyCard;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\BrandTranslation;
@@ -150,11 +151,12 @@ class BrandController extends Controller
     {
         $brand = Brand::findOrFail($id);
         Product::where('brand_id', $brand->id)->delete();
+        WarrantyCard::where('brand_id', $brand->id)->delete();
         foreach ($brand->brand_translations as $key => $brand_translation) {
             $brand_translation->delete();
         }
-        Brand::destroy($id);
 
+        Brand::destroy($id);
         flash(translate('Brand has been deleted successfully'))->success();
         return redirect()->route('brands.index');
 

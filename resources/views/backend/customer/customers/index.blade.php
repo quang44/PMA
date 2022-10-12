@@ -132,7 +132,7 @@
                                             Ngân hàng : {{ $user->customer_bank->name }}
                                         </span>
                                     @else
-                                        <span style="color: red">Chưa có tài khoản</span>
+                                        <span style="color: #ff0000">Chưa có tài khoản</span>
                                     @endif
                                 </td>
                                 <td>

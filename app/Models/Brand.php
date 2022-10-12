@@ -19,5 +19,8 @@ class Brand extends Model
   public function brand_translations(){
     return $this->hasMany(BrandTranslation::class);
   }
+  public  function warranty_cards(){
+      return $this->hasMany(WarrantyCard::class);
+  }
 
 }
