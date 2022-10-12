@@ -14,14 +14,14 @@
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="card-body">
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Họ và tên')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Tên nhóm')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" value="{{ $customer_group->full_name }}"  name="full_name" required>
+                                <input type="text" class="form-control" value="{{$customer_group->name}}"  name="name" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="signinSrEmail">
-                            {{translate('Avatar')}}
+                            {{translate('Ảnh đại diện')}}
                             <!--                            <small>(1300x650)</small>-->
                             </label>
                             <div class="col-sm-10">
@@ -32,20 +32,27 @@
                                         </div>
                                     </div>
                                     <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                    <input type="hidden" name="avatar" class="selected-files" value="{{ $customer_group->avatar }}">
+                                    <input type="hidden" value="{{$customer_group ->avatar}}" name="avatar" class="selected-files">
                                 </div>
                                 <div class="file-preview box sm">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Bonus')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Tiền thưởng')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" value="{{ $customer_group->bonus }}"  name="bonus" required>
+                                <input type="number" class="form-control" value="{{$customer_group->bonus}}" name="bonus" required>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Mô tả')}}</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="{{$customer_group->description}}" name="description" >
+                            </div>
+                        </div>
+
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Update')}}</button>
+                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
                         </div>
                     </div>
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CommonConfig;
+use App\Models\CustomerGroup;
 use Illuminate\Http\Request;
 use App\Models\BusinessSetting;
 use Artisan;
@@ -50,13 +52,13 @@ class BusinessSettingsController extends Controller
         CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.google_configuration.google_recaptcha');
     }
-    
+
     public function google_map(Request $request) {
         CoreComponentRepository::instantiateShopRepository();
         CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.google_configuration.google_map');
     }
-    
+
     public function google_firebase(Request $request) {
         CoreComponentRepository::instantiateShopRepository();
         CoreComponentRepository::initializeCache();
@@ -361,7 +363,7 @@ class BusinessSettingsController extends Controller
         $business_settings->value = json_encode($form);
         if($business_settings->save()){
             Artisan::call('cache:clear');
-            
+
             flash(translate("Verification form updated successfully"))->success();
             return back();
         }
@@ -520,6 +522,10 @@ class BusinessSettingsController extends Controller
 
     public function order_configuration(){
         return view('backend.setup_configurations.order_configuration.index');
+    }
+
+    public function common_configuration(){
+
     }
 
 }

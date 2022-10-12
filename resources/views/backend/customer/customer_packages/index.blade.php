@@ -65,6 +65,7 @@
 
         $('.status').on('change', function () {
                 update_default($(this));
+
         });
     </script>
 @endsection

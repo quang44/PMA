@@ -48,6 +48,7 @@ use App\Http\Controllers\CustomerBillController;
 use App\Http\Controllers\PartnerBillController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CustomerGroupController;
+use App\Http\Controllers\CommonConfigController;
 
 /*
   |--------------------------------------------------------------------------
@@ -246,6 +247,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/order-configuration', 'order_configuration')->name('order_configuration.index');
     });
 
+
+    Route::resource('common_configs', CommonConfigController::class);
+    Route::controller(CommonConfigController::class)->group(function () {
+        Route::get('/common_configs/edit/{id}', 'edit')->name('common-configs.edit');
+    });
 
     //Currency
     Route::controller(CurrencyController::class)->group(function () {
@@ -494,7 +500,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::controller(CustomerGroupController::class)->group(function () {
         Route::get('/customer_groups/edit/{id}', 'edit')->name('customer_groups.edit');
         Route::get('/customer_groups/destroy/{id}', 'destroy')->name('customer_groups.destroy');
-        Route::post('/customer_groups/update_default', 'update_default')->name('customer_groups.update_default');
+        Route::post('/customer_groups/setup_hidden', 'setup_hidden')->name('customer_groups.setup_hidden');
+        Route::post('/customer_groups/setup_default', 'setup_default')->name('customer_groups.setup_default');
     });
 
     //Classified Products

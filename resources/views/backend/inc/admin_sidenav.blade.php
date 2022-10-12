@@ -369,11 +369,6 @@
                                     <span class="aiz-side-nav-text">{{ translate('Gói') }}</span>
                                 </a>
                             </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('customer_groups.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_groups.index', 'customer_groups.create', 'customer_groups.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Nhóm người dùng') }}</span>
-                                </a>
-                            </li>
                             {{--@if(get_setting('classified_product') == 1)
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('classified_products')}}" class="aiz-side-nav-link">
@@ -655,6 +650,11 @@
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
+                                <a href="{{route('customer_groups.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">Nhóm người dùng</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
                                 <a href="{{route('affiliate.configs')}}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">Cấu hình</span>
                                 </a>
@@ -684,7 +684,7 @@
                     </li>
                 @endif
                 <!-- Affiliate Addon -->
-                {{--@if (addon_is_activated('affiliate_system'))
+               <!--- @if (addon_is_activated('affiliate_system'))
                     @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
                         <li class="aiz-side-nav-item">
                             <a href="#" class="aiz-side-nav-link">
@@ -729,7 +729,7 @@
                             </ul>
                         </li>
                     @endif
-                @endif--}}
+                @endif --->
 
                 <!-- Offline Payment Addon-->
                 {{--@if (addon_is_activated('offline_payment'))
@@ -893,7 +893,7 @@
                 @endif--}}
 
                 <!-- Website Setup -->
-                {{--@if(Auth::user()->user_type == 'admin' || in_array('13', json_decode(Auth::user()->staff->role->permissions)))
+                @if(Auth::user()->user_type == 'admin' || in_array('13', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link {{ areActiveRoutes(['website.footer', 'website.header'])}}" >
                             <i class="las la-desktop aiz-side-nav-icon"></i>
@@ -902,6 +902,11 @@
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
+                                <a href="{{ route('common_configs.index') }}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('Cấu hình chung')}}</span>
+                                </a>
+                            </li>
+                            <!--- <li class="aiz-side-nav-item">
                                 <a href="{{ route('website.header') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{translate('Header')}}</span>
                                 </a>
@@ -920,10 +925,10 @@
                                 <a href="{{ route('website.appearance') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{translate('Appearance')}}</span>
                                 </a>
-                            </li>
+                            </li> --->
                         </ul>
                     </li>
-                @endif--}}
+                @endif
 
                 <!-- Setup & Configurations -->
                 @if(Auth::user()->user_type == 'admin' || in_array('14', json_decode(Auth::user()->staff->role->permissions)))

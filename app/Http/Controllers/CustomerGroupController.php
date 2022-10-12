@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomerGroup;
 use App\Models\CustomerPackage;
-use App\Models\CustomerPackageTranslation;
 use Illuminate\Http\Request;
 
 class CustomerGroupController extends Controller
@@ -27,7 +26,6 @@ class CustomerGroupController extends Controller
      */
     public function create()
     {
-        //
         return view('backend.customer.customer_groups.create');
     }
 
@@ -41,11 +39,14 @@ class CustomerGroupController extends Controller
     {
         //
         $customer_group = new CustomerGroup();
-        $customer_group->full_name = $request->full_name;
+        $customer_group->name = $request->name;
         $customer_group->avatar = $request->avatar;
         $customer_group->bonus = $request->bonus;
+        $customer_group->description = $request->description;
+        $customer_group->default = 0;
+        $customer_group->status = 0;
         $customer_group->save();
-        flash(translate('Customer group has been inserted successfully'))->success();
+        flash(translate('Nhóm người dùng đã thêm thành công !'))->success();
         return redirect()->route('customer_groups.index');
     }
 
@@ -82,13 +83,13 @@ class CustomerGroupController extends Controller
     public function update(Request $request, $id)
     {
         $customer_group = CustomerGroup::findOrFail($id);
-
-        $customer_group->full_name = $request->full_name;
+        $customer_group->name = $request->name;
         $customer_group->avatar = $request->avatar;
         $customer_group->bonus = $request->bonus;
+        $customer_group->description = $request->description;
         $customer_group->save();
 
-        flash(translate('Customer group has been updated successfully'))->success();
+        flash(translate('Nhóm người dùng đã được cập nhật'))->success();
         return back();
     }
 
@@ -102,9 +103,42 @@ class CustomerGroupController extends Controller
     {
         $customer_group = CustomerGroup::findOrFail($id);
         $customer_group->delete();
-        CustomerPackage::destroy($id);
-
-        flash(translate('Customer group has been deleted successfully'))->success();
+        flash(translate('Nhóm người dùng đã được xóa !'))->success();
         return redirect()->route('customer_groups.index');
+    }
+
+    public function setup_hidden(Request $request){
+        $customer_group = CustomerGroup::findOrFail($request->id);
+        if($customer_group->default !=0){
+            return 0;
+        }
+        $customer_group->status = (int) $request->status;
+        if($customer_group->save()){
+            flash(translate('Trạng thái nhóm người dùng đã cập nhật !'))->success();
+            return 1;
+        }
+        return 0;
+    }
+
+    public function setup_default(Request $request){
+
+        $customer_group = CustomerGroup::findOrFail($request->id);
+        if($customer_group->status != 0){
+            return 0;
+        }else{
+            if($request->status == 1){
+                CustomerGroup::where('id', '>', 0)->update(['default' => 0]);
+            }
+        }
+        $customer_group->default = (int) $request->status;
+        if($customer_group->save()){
+            flash(translate('Nhóm người dùng đã được cài mặc định !'))->success();
+            return 1;
+        }
+        return 0;
+    }
+
+    public function config(){
+        return view('backend.customer.affiliate.con', compact('customer_group'));
     }
 }
