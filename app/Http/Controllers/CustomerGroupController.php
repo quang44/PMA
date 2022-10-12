@@ -37,16 +37,18 @@ class CustomerGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $customer_group = new CustomerGroup();
+        if ($request->default) {
+            CustomerGroup::where('id', '>', 0)->update(['default' => 0]);
+            $customer_group->default = 1;
+        }
         $customer_group->name = $request->name;
         $customer_group->avatar = $request->avatar;
         $customer_group->bonus = $request->bonus;
         $customer_group->description = $request->description;
-        $customer_group->default = 0;
         $customer_group->status = 0;
         $customer_group->save();
-        flash(translate('Nhóm người dùng đã thêm thành công !'))->success();
+        flash(translate('Nhóm người dùng đã được thêm mới thành công !'))->success();
         return redirect()->route('customer_groups.index');
     }
 
@@ -89,7 +91,7 @@ class CustomerGroupController extends Controller
         $customer_group->description = $request->description;
         $customer_group->save();
 
-        flash(translate('Nhóm người dùng đã được cập nhật'))->success();
+        flash(translate('Nhóm người dùng đã được cập nhật thành công !'))->success();
         return back();
     }
 
@@ -102,43 +104,55 @@ class CustomerGroupController extends Controller
     public function destroy($id)
     {
         $customer_group = CustomerGroup::findOrFail($id);
-        $customer_group->delete();
-        flash(translate('Nhóm người dùng đã được xóa !'))->success();
-        return redirect()->route('customer_groups.index');
+        if ($customer_group->default != 0) {
+            flash(translate('Nhóm người dùng mặc định không được xóa !'))->error();
+        } else {
+            $customer_group->delete();
+            flash(translate('Nhóm người dùng đã được xóa thành công !'))->success();
+        }
+        return redirect()->route('customer_groups.index')->with('error', 'xóa thành công');
     }
 
-    public function setup_hidden(Request $request){
+    public function setup_hidden(Request $request)
+    {
         $customer_group = CustomerGroup::findOrFail($request->id);
-        if($customer_group->default !=0){
+        if ($customer_group->default != 0) {
+            flash(translate('Nhóm người dùng mặc định không được ở trạng thái ẩn !'))->error();
             return 0;
         }
-        $customer_group->status = (int) $request->status;
-        if($customer_group->save()){
-            flash(translate('Trạng thái nhóm người dùng đã cập nhật !'))->success();
+        $customer_group->status = (int)$request->status;
+        if ($customer_group->save()) {
+            flash(translate('Nhóm người dùng đã ở trạng thái ẩn !'))->success();
             return 1;
         }
         return 0;
     }
 
-    public function setup_default(Request $request){
+    public function setup_default(Request $request)
+    {
 
         $customer_group = CustomerGroup::findOrFail($request->id);
-        if($customer_group->status != 0){
+        if ($customer_group->status != 0) {
+            flash(translate('Nhóm người dùng mặc định không được ở trạng thái ẩn !'))->error();
             return 0;
-        }else{
-            if($request->status == 1){
+        } elseif ($customer_group->default != 0) {
+            flash(translate('Nhóm người dùng đang ở chế độ mặc định !'))->error();
+            return 0;
+        } else {
+            if ($request->status == 1) {
                 CustomerGroup::where('id', '>', 0)->update(['default' => 0]);
             }
         }
-        $customer_group->default = (int) $request->status;
-        if($customer_group->save()){
-            flash(translate('Nhóm người dùng đã được cài mặc định !'))->success();
+        $customer_group->default = (int)$request->status;
+        if ($customer_group->save()) {
+            flash(translate('Nhóm người dùng đã được cài làm mặc định !'))->success();
             return 1;
         }
         return 0;
     }
 
-    public function config(){
+    public function config()
+    {
         return view('backend.customer.affiliate.con', compact('customer_group'));
     }
 }

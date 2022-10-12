@@ -13,6 +13,21 @@
             </div>
         </div>
     </div>
+    <div id="status_return">
+        @if(session()->has('success'))
+            <div class="success_return" style="background-color: green; padding: 12px;">
+            <span
+                style="color: white">{{session()->has('success') ? session()->get('success') : ''}}</span>
+            </div>
+        @elseif(session()->has('error'))
+            <div style="background-color: #c71414; padding: 12px">
+            <span
+                style="color: white">{{session()->get('error')}}</span>
+            </div>
+        @else
+            <div></div>
+        @endif
+    </div>
 
     <div class="card">
         <div class="card-header">
@@ -47,12 +62,14 @@
                             <td>{{$customer_group->description != null ? $customer_group->description : 'Chưa có mô tả !'}}</td>
                             <td>
                                 <label class="aiz-switch aiz-switch-success mb-0">
-                                    <input class="default" value="{{ $customer_group->id }}" type="checkbox" @if($customer_group->default == 1) checked @endif >
+                                    <input class="default" value="{{ $customer_group->id }}" type="checkbox"
+                                           @if($customer_group->default == 1) checked @endif >
                                     <span class="slider round"></span>
                                 </label>
                             </td>
-                            <td> <label class="aiz-switch aiz-switch-success mb-0">
-                                    <input class="hidden" value="{{ $customer_group->id }}" type="checkbox" @if($customer_group->status == 1) checked @endif>
+                            <td><label class="aiz-switch aiz-switch-success mb-0">
+                                    <input class="hidden" value="{{ $customer_group->id }}" type="checkbox"
+                                           @if($customer_group->status == 1) checked @endif>
                                     <span class="slider round"></span>
                                 </label></td>
                             <td>{{$customer_group->created_at}}</td>
@@ -94,12 +111,7 @@
                 id: el.val(),
                 status: status
             }, function (data) {
-                if (data == 1) {
-                    location.reload();
-                } else {
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                    location.reload();
-                }
+                location.reload();
             });
         }
 
@@ -112,7 +124,6 @@
             const route = '{{ route('customer_groups.setup_default') }}';
             setup_hidden($(this), route);
         });
-
 
     </script>
 @endsection

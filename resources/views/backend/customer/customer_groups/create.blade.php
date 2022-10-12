@@ -49,7 +49,15 @@
                                 <input type="text" class="form-control"  name="description" >
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Mặc định')}}</label>
+                            <div class="col-sm-10">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input class="hidden" name="default" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
                         <div class="form-group mb-0 text-right">
                             <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
                         </div>
