@@ -13,6 +13,7 @@ class BrandCollection extends ResourceCollection
                 return [
                     'id' => $data->id,
                     'name' => $data->getTranslation('name'),
+                    'slug' => $data->slug,
                     'logo' => uploaded_asset($data->logo),
                     'links' => [
                         'products' => route('api.products.brand', $data->id)
