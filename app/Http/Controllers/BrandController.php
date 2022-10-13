@@ -55,7 +55,7 @@ class BrandController extends Controller
         else {
             $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
         }
-
+        $brand->code= preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $request->name)).Str::random(5);
         $brand->logo = $request->logo;
         $brand->save();
 
@@ -109,10 +109,10 @@ class BrandController extends Controller
         $brand->meta_description = $request->meta_description;
         if ($request->slug != null) {
             $brand->slug = strtolower($request->slug);
-        }
-        else {
+        } else {
             $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
         }
+        $brand->code= preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $request->name)).Str::random(5);
         $brand->logo = $request->logo;
         $brand->save();
 

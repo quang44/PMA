@@ -29,6 +29,7 @@
 		                <tr>
 		                    <th>#</th>
 		                    <th>{{translate('Name')}}</th>
+                            <th>{{translate('Code')}}</th>
 		                    <th>{{translate('Logo')}}</th>
                             <th>{{translate('Status')}}</th>
 		                    <th class="text-right">{{translate('Options')}}</th>
@@ -39,6 +40,7 @@
 		                    <tr>
 		                        <td>{{ ($key+1) + ($brands->currentPage() - 1)*$brands->perPage() }}</td>
 		                        <td>{{ $brand->getTranslation('name') }}</td>
+                                <td>{{ $brand->code }}</td>
 								<td>
 		                            <img src="{{ uploaded_asset($brand->logo) }}" alt="{{translate('Brand')}}" class="h-50px">
 		                        </td>
@@ -75,7 +77,7 @@
 				<form action="{{ route('brands.store') }}" method="POST">
 					@csrf
 					<div class="form-group mb-3">
-						<label for="name">{{translate('Name')}}</label>
+						<label for="name">{{translate('Name')}} <small class="text-danger">*</small>  </label>
 						<input type="text" placeholder="{{translate('Name')}}" name="name" class="form-control" required>
 					</div>
 					<div class="form-group mb-3">

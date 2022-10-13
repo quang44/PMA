@@ -1,12 +1,16 @@
 @extends('backend.layouts.app')
 
 @section('content')
-
+    <style>
+        .remove-attachment{
+            display: none;
+        }
+    </style>
     <div class="row">
         <div class="col-lg-6 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{translate('Thông tin Thẻ Bảo hành ')}}</h5>
+                    <h5 class="mb-0 h6">{{translate('Thông tin Thẻ Bảo hành ')}} </h5>
                 </div>
                     <div class="card-body align-content-center">
                         <div class="form-group row">
@@ -42,13 +46,20 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-3 col-from-label" for="Seri">{{translate('Thời gian Tạo')}} :</label>
+                            <div class="col-sm-9">
+                                <span >{{date('d-m-Y H:i:s',strtotime($warranty_card->created_at))}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-3 col-from-label" for="Seri">{{translate('Thời gian kích hoạt thẻ')}} :</label>
                             <div class="col-sm-9">
                                 <span class="text-danger">@if($warranty_card->active_time>0)
                                         {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                     @else
-                                        <span class="badge badge-inline badge-secondary">{{ trans('Chưa kích hoạt') }}</span>
-                                    @endif</span>
+                                   {{ trans('Chưa kích hoạt') }}
+                                    @endif
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -67,12 +78,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="package_id">{{translate('ghi chú khách hàng')}} :</label>
-                            <div class="col-sm-9">
-                                <span>{{$warranty_card->note}}</span>
-                            </div>
-                        </div>
+
                         <div class="form-group mb-3 row">
                             <label for="name" class=" col-sm-3">{{translate('Qr Code image ')}} :</label>
                             <div class="col-sm-9">
@@ -91,6 +97,13 @@
                             </div>
                             <div class=" file-preview box sm">
                             </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-from-label" for="package_id">{{translate('ghi chú khách hàng')}} :</label>
+                            <div class="col-sm-9">
+                                <span>{{$warranty_card->note}}</span>
                             </div>
                         </div>
                     </div>

@@ -13,13 +13,14 @@
         </div>
     </div>
 
-
     <div class="card">
         <form class="" id="sort_Card" action="" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col">
                     <h5 class="mb-0 h6">{{translate('Thẻ bảo hành')}}</h5>
                 </div>
+
+
                 <div class="col-md-3">
                     <div class="form-group mb-0">
                         <select name="sort_status" id="sort_selectCart" class="form-control">
@@ -53,8 +54,8 @@
                             <th data-breakpoints="lg">{{translate('Ảnh QR Code')}}</th>
                             <th data-breakpoints="lg">{{translate('Ảnh Seri')}}</th>
                             <th data-breakpoints="lg">{{translate('Điểm nhận được')}}</th>
-                            <th data-breakpoints="lg">{{translate('Ghi chú khách hàng')}}</th>
                             <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
+                            <th data-breakpoints="lg">{{translate('Ghi chú ')}}</th>
                             <th class="text-right">{{translate('Options')}}</th>
                         </tr>
                         </thead>
@@ -62,7 +63,7 @@
                         @foreach($warranty_cards as $key => $warranty_card)
                             @if ($warranty_card != null)
                                 <tr>
-                                    <td>{{$warranty_card->brand->name}} </td>
+                                    <td><h7 class="text-danger">{{$warranty_card->brand->name}} </h7> </td>
                                     <td>{{$warranty_card->user_name}}</td>
                                     <td>{{$warranty_card->address}}</td>
                                     <td>{{$warranty_card->seri}}</td>
@@ -75,35 +76,36 @@
                                     <td><img class="h-50px" src="{{ uploaded_asset($warranty_card->qr_code_image) }}" alt="Qr Code "></td>
                                     <td> <img class="h-50px" src=" {{uploaded_asset($warranty_card->seri_image)}}" alt="Seri"></td>
                                     <td>{{$warranty_card->point}}</td>
-                                    <td>{{$warranty_card->note}}</td>
                                     <td>
                                         @if($warranty_card->status == 0)
                                             <span class="badge badge-inline badge-secondary">{{ trans('Chờ duyệt') }}</span>
                                         @else
                                             @if($warranty_card->status == 1)
-                                                <span class="badge badge-inline badge-success">{{ trans('Duyệt') }}</span>
+                                                <span class="badge badge-inline badge-success">{{ trans('Đã Duyệt') }}</span>
                                             @else
                                                 <span class="badge badge-inline badge-danger">{{ trans('Hủy') }}</span>
                                             @endif
                                         @endif
                                     </td>
+                                    <td>{{$warranty_card->note}}</td>
+
 
                                     <td class="text-right">
                                         <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('warranty_card.show',[encrypt($warranty_card->id)]) }}" title="View">
                                             <i class="las la-eye"></i>
                                         </a>
-                                     @if($warranty_card->status==0 || $warranty_card->status !=1)
+                                     @if($warranty_card->status==0 )
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-info btn-icon btn-circle btn-sm"
                                                onclick="updateCard('{{route('warranty_card.ban', encrypt($warranty_card->id))}}');"
                                                title="{{ translate('Kích hoạt Thẻ') }}">
                                                 <i class="las la-credit-card"></i>
                                             </a>
-                                         @endif
-                                    @if($warranty_card->status==1 )
+
+
                                              <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm"
                                                 onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}');"
-                                                title="{{ translate('Khóa thẻ') }}">
+                                                title="{{ translate('Hủy thẻ') }}">
                                                  <i class="las la-user-alt-slash"></i>
                                              </a>
                                         @endif
@@ -137,7 +139,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title h6">{{translate('Confirmation')}}</h5>
+                    <h5 class="modal-title h6">{{translate('Xác nhận kích hoạt thẻ')}}</h5>
                     <button type="button" class="close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -180,6 +182,27 @@
 
 @section('script')
     <script type="text/javascript">
+
+        {{--$('#form-api').on('submit',function (e) {--}}
+        {{--    e.preventDefault()--}}
+        {{--    let formData = new FormData(this);--}}
+        {{--    $.ajax({--}}
+        {{--        headers: {--}}
+        {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
+        {{--        },--}}
+        {{--        url: "{{route('warrantyCard.store')}}",--}}
+        {{--        type: 'POST',--}}
+        {{--        data: formData,--}}
+        {{--        cache: false,--}}
+        {{--        contentType: false,--}}
+        {{--        processData: false,--}}
+        {{--        success: function (response) {--}}
+        {{--            console.log(response)--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--})--}}
+
+
 
         $('#sort_selectCart').on('change',function () {
           $('#sort_Card').submit();

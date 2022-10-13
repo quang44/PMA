@@ -909,6 +909,30 @@ if (!function_exists('getFileBaseURL')) {
     }
 }
 
+ if (!function_exists('uploadImageURL')) {
+        function uploadImageURL($imageName)
+        {
+            $image=$imageName->getClientOriginalName();
+            $name= substr($image, 0, strpos($image,'.'));
+            $realImage = $imageName->hashName();
+            $extension =$imageName->getClientOriginalExtension();
+            $size =  $imageName->getSize();
+            $newPath = "uploads/all/$realImage";
+            if (env('FILESYSTEM_DRIVER') == 's3') {
+                Storage::disk('s3')->put($newPath,base_path('public/') . $newPath);
+                unlink(base_path('public/') . $newPath);
+            }
+            $upload = new Upload;
+            $upload->file_original_name=$name;
+            $upload->extension = $extension;
+            $upload->file_name = $newPath;
+            $upload->type = 'image';
+            $upload->file_size = $size;
+            $upload->save();
+            return $upload->id;
+        }
+    }
+
 
 if (!function_exists('isUnique')) {
     /**
