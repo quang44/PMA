@@ -50,6 +50,18 @@
                                 <input type="text" class="form-control" value="{{$customer_group->description}}" name="description" >
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số tiền rút')}} <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="number" placeholder="0" class="form-control" value="{{$customer_group->can_withdraw}}" name="can_withdraw" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số point')}} <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="number" placeholder="0" class="form-control" value="{{$customer_group->point_number}}" name="point_number" >
+                            </div>
+                        </div>
 
                         <div class="form-group mb-0 text-right">
                             <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>

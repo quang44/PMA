@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AffiliatePayment;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
@@ -17,7 +18,7 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function admin_dashboard(Request $request)
-    {   
+    {
         CoreComponentRepository::initializeCache();
         $root_categories = Category::where('level', 0)->get();
 
@@ -46,7 +47,13 @@ class AdminController extends Controller
             return $item;
         });
 
-        return view('backend.dashboard', compact('root_categories', 'cached_graph_data'));
+        $withdrawed = AffiliatePayment::where('status', 2)->get();
+        $total_withdraw = 0;
+        foreach ($withdrawed as $key => $withdraw){
+            $total_withdraw += $withdraw->amount;
+        }
+
+        return view('backend.dashboard', compact('root_categories', 'cached_graph_data', 'total_withdraw'));
     }
 
     function clearCache(Request $request)

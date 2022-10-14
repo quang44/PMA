@@ -38,6 +38,12 @@ class CustomerGroupController extends Controller
     public function store(Request $request)
     {
         $customer_group = new CustomerGroup();
+        $request->validate([
+            'name'=>'required'
+        ],[
+            'name.required'=>'Không để trống '
+        ]);
+
         if ($request->default) {
             CustomerGroup::where('id', '>', 0)->update(['default' => 0]);
             $customer_group->default = 1;
@@ -46,6 +52,8 @@ class CustomerGroupController extends Controller
         $customer_group->avatar = $request->avatar;
         $customer_group->bonus = $request->bonus;
         $customer_group->description = $request->description;
+        $customer_group->can_withdraw = $request->can_withdraw;
+        $customer_group->point_number = $request->point_number;
         $customer_group->status = 0;
         $customer_group->save();
         flash(translate('Nhóm người dùng đã được thêm mới thành công !'))->success();
@@ -89,8 +97,9 @@ class CustomerGroupController extends Controller
         $customer_group->avatar = $request->avatar;
         $customer_group->bonus = $request->bonus;
         $customer_group->description = $request->description;
+        $customer_group->can_withdraw = $request->can_withdraw;
+        $customer_group->point_number = $request->point_number;
         $customer_group->save();
-
         flash(translate('Nhóm người dùng đã được cập nhật thành công !'))->success();
         return back();
     }
@@ -110,7 +119,7 @@ class CustomerGroupController extends Controller
             $customer_group->delete();
             flash(translate('Nhóm người dùng đã được xóa thành công !'))->success();
         }
-        return redirect()->route('customer_groups.index')->with('error', 'xóa thành công');
+        return redirect()->route('customer_groups.index');
     }
 
     public function setup_hidden(Request $request)
@@ -122,7 +131,7 @@ class CustomerGroupController extends Controller
         }
         $customer_group->status = (int)$request->status;
         if ($customer_group->save()) {
-            flash(translate('Nhóm người dùng đã ở trạng thái ẩn !'))->success();
+            flash(translate('Trạng thái ẩn nhóm người dùng được thay đổi !'))->success();
             return 1;
         }
         return 0;
@@ -151,8 +160,63 @@ class CustomerGroupController extends Controller
         return 0;
     }
 
-    public function config()
+    public function withdraw()
     {
-        return view('backend.customer.affiliate.con', compact('customer_group'));
+        $work = 1;
+        $customer_groups = CustomerGroup::all();
+        return view('backend.customer.customer_groups.config', compact(['customer_groups', 'work']));
     }
+
+    public function update_withdraw(Request $request)
+    {
+        $count_customer_group = CustomerGroup::where('id', '>', 0)->count();
+        $count_request = 0;
+        foreach ($request->val as $key => $value) {
+            if ($value != null) {
+                $count_request += 1;
+            }
+        }
+        $customer_groups = CustomerGroup::all();
+        if ($count_customer_group == $count_request) {
+            foreach ($customer_groups as $key => $customer_group) {
+                $customer_group->bonus = $request->val[$customer_group->id];
+                $customer_group->save();
+            }
+            flash(translate('Số tiền rút đã được cập nhật !'))->success();
+            return back();
+        }
+        flash(translate('Vui lòng không để trống !'))->error();
+        return back();
+    }
+
+    public function config_point()
+    {
+        $work = 2;
+        $customer_groups = CustomerGroup::all();
+        return view('backend.customer.customer_groups.config', compact(['customer_groups', 'work']));
+    }
+
+    public function update_point(Request $request)
+    {
+        $count_customer_group = CustomerGroup::where('id', '>', 0)->count();
+        $count_request = 0;
+        foreach ($request->val as $key => $value) {
+            if ($value != null) {
+                $count_request += 1;
+            }
+        }
+        $customer_groups = CustomerGroup::all();
+        if ($count_customer_group == $count_request) {
+            foreach ($customer_groups as $key => $customer_group) {
+
+                $customer_group->point_number = $request->val[$customer_group->id];
+                $customer_group->save();
+            }
+            flash(translate('Số point đã được cập nhật !'))->success();
+            return back();
+        }
+        flash(translate('Vui lòng không để trống !'))->error();
+        return back();
+    }
+
 }

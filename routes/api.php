@@ -362,4 +362,3 @@ Route::get('notification-order', 'App\Http\Controllers\Api\V2\CronJobsController
 Route::post('telegram-bot', 'App\Http\Controllers\Api\V2\CronJobsController@webhookTelegram');
 Route::get('convert_status', 'App\Http\Controllers\Api\V2\CronJobsController@convertStatus');
 
-

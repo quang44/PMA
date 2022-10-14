@@ -250,7 +250,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
     Route::resource('common_configs', CommonConfigController::class);
     Route::controller(CommonConfigController::class)->group(function () {
-        Route::get('/common_configs/edit/{id}', 'edit')->name('common-configs.edit');
+        Route::get('/common_configs/edit/{id}', 'edit')->name('common_configs.edit');
+        Route::get('/common_configs/create', 'create')->name('common_configs.create');
     });
 
     //Currency
@@ -502,6 +503,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/customer_groups/destroy/{id}', 'destroy')->name('customer_groups.destroy');
         Route::post('/customer_groups/setup_hidden', 'setup_hidden')->name('customer_groups.setup_hidden');
         Route::post('/customer_groups/setup_default', 'setup_default')->name('customer_groups.setup_default');
+        Route::get('/customer_groups/config/withdraw', 'withdraw')->name('customer_groups.withdraw');
+        Route::post('/customer_groups/config/withdraw', 'update_withdraw')->name('customer_groups.update_withdraw');
+        Route::get('/customer_groups/config/point', 'config_point')->name('customer_groups.config_point');
+        Route::post('/customer_groups/config/point', 'update_point')->name('customer_groups.update_point');
     });
 
     //Classified Products

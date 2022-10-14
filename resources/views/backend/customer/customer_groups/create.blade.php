@@ -8,14 +8,22 @@
                 <div class="card-header">
                     <h5 class="mb-0 h6">{{translate('Thêm nhóm người dùng')}}</h5>
                 </div>
-
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form class="form-horizontal" action="{{ route('customer_groups.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Tên nhóm')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="name" required>
+                                <input type="text" class="form-control"  name="name" >
                             </div>
                         </div>
                         <div class="form-group row">
@@ -40,13 +48,25 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Tiền thưởng')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control"  name="bonus" required>
+                                <input type="number" class="form-control"  name="bonus" >
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Mô tả')}}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"  name="description" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số point')}} <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="number" placeholder="0" class="form-control"  name="point_number" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số tiền rút')}} <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="number" placeholder="0" class="form-control"  name="can_withdraw" >
                             </div>
                         </div>
                         <div class="form-group row">

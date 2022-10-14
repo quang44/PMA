@@ -641,6 +641,51 @@
                         </a>
                     </li>
                 @endif
+                @if(Auth::user()->user_type == 'admin')
+                    @php
+                        $count_customer_groups = \App\Models\CustomerGroup::where('id','>', 0)->count();
+                    @endphp
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-user-friends aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Nhóm người dùng') }}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('customer_groups.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Danh sách nhóm') }}</span>
+                                </a>
+                            </li>
+                            @if($count_customer_groups > 0)
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('customer_groups.withdraw') }}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Số tiền rút') }}</span>
+                                </a>
+                            </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('customer_groups.config_point') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{ translate('Số point') }}</span>
+                                    </a>
+                                </li>
+                            @endif
+                            {{--@if(get_setting('classified_product') == 1)
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('classified_products')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Classified Products')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('customer_packages.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_packages.index', 'customer_packages.create', 'customer_packages.edit'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('Classified Packages') }}</span>
+                                    </a>
+                                </li>
+                            @endif--}}
+                        </ul>
+                    </li>
+
+
+                @endif
                 @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
@@ -649,11 +694,6 @@
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('customer_groups.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Nhóm người dùng</span>
-                                </a>
-                            </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('affiliate.configs')}}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">Cấu hình</span>
