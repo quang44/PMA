@@ -52,7 +52,8 @@
             if (el.checked) {
                 status = 1;
             }
-            $.post('{{ route('customer_packages.update_default') }}', {_token:'{{ csrf_token() }}', id:el.value, status:status}, function(data){
+            $.post('{{ route('customer_packages.update_default') }}', {_token:'{{ csrf_token() }}',
+                id:el.value, status:status}, function(data){
                 if(data == 1){
                     location.reload();
                 }

@@ -1,7 +1,6 @@
 @extends('backend.layouts.layout')
 
 @section('content')
-
 <div class="h-100 bg-cover bg-center py-5 d-flex align-items-center" style="background-image: url({{ uploaded_asset(get_setting('admin_login_background')) }})">
     <div class="container">
         <div class="row">
@@ -40,7 +39,7 @@
                                     <div class="text-left">
                                         <label class="aiz-checkbox">
                                             <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                            <span>{{ translate('Remember Me') }}</span>
+                                            <span>{{ translate('Remember Me') }} </span>
                                             <span class="aiz-square-check"></span>
                                         </label>
                                     </div>

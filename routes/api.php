@@ -345,6 +345,12 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::post('business-settings', 'App\Http\Controllers\Api\V2\ConfigController@business_settings');
     //Pickup Point list
     Route::get('pickup-list', 'App\Http\Controllers\Api\V2\ShippingController@pickup_list');
+
+    // warranty bill
+    Route::apiResource('warranty_bill', 'App\Http\Controllers\Api\V2\WarrantyBillController')->only('index','store');
+    // warranty Card
+    Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store');
+
 });
 
 Route::fallback(function() {

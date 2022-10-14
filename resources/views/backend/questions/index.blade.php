@@ -31,7 +31,7 @@
                     @foreach ($questions as $key => $question)
 
                         <tr>
-                            <td>{{ $key+1 }}</td>
+                            <td>{{ $question->id }}</td>
                             <td>{{ $question->type == 'customer' ?  'Khách hàng' : 'Cộng tác viên'}}</td>
 
                             <td>{{ $question->question }}</td>
@@ -59,8 +59,13 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="aiz-pagination">
+                {{ $questions->appends(request()->input())->links() }}
+            </div>
         </div>
+
+
+
     </div>
 @endsection
 

@@ -52,7 +52,7 @@
                 @endif--}}
 
                 <!-- Product -->
-                {{--@if(Auth::user()->user_type == 'admin' || in_array('2', json_decode(Auth::user()->staff->role->permissions)))
+                @if(Auth::user()->user_type == 'admin' || in_array('2', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-shopping-cart aiz-side-nav-icon"></i>
@@ -61,72 +61,74 @@
                         </a>
                         <!--Submenu-->
                         <ul class="aiz-side-nav-list level-2">
-                            <li class="aiz-side-nav-item">
-                                <a class="aiz-side-nav-link" href="{{route('products.create')}}">
-                                    <span class="aiz-side-nav-text">{{translate('Add New product')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('products.all')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('All Products') }}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('products.admin')}}" class="aiz-side-nav-link {{ areActiveRoutes(['products.admin', 'products.create', 'products.admin.edit']) }}" >
-                                    <span class="aiz-side-nav-text">{{ translate('In House Products') }}</span>
-                                </a>
-                            </li>
-                            @if(get_setting('vendor_system_activation') == 1)
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('products.seller')}}" class="aiz-side-nav-link {{ areActiveRoutes(['products.seller', 'products.seller.edit']) }}">
-                                        <span class="aiz-side-nav-text">{{ translate('Seller Products') }}</span>
-                                    </a>
-                                </li>
-                            @endif
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('digitalproducts.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['digitalproducts.index', 'digitalproducts.create', 'digitalproducts.edit']) }}">
-                                    <span class="aiz-side-nav-text">{{ translate('Digital Products') }}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('product_bulk_upload.index') }}" class="aiz-side-nav-link" >
-                                    <span class="aiz-side-nav-text">{{ translate('Bulk Import') }}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('product_bulk_export.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Bulk Export')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('categories.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['categories.index', 'categories.create', 'categories.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Category')}}</span>
-                                </a>
-                            </li>
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a class="aiz-side-nav-link" href="{{route('products.create')}}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Add New product')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('products.all')}}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate('All Products') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('products.admin')}}" class="aiz-side-nav-link {{ areActiveRoutes(['products.admin', 'products.create', 'products.admin.edit']) }}" >--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate('In House Products') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            @if(get_setting('vendor_system_activation') == 1)--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('products.seller')}}" class="aiz-side-nav-link {{ areActiveRoutes(['products.seller', 'products.seller.edit']) }}">--}}
+{{--                                        <span class="aiz-side-nav-text">{{ translate('Seller Products') }}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                            @endif--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('digitalproducts.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['digitalproducts.index', 'digitalproducts.create', 'digitalproducts.edit']) }}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate('Digital Products') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('product_bulk_upload.index') }}" class="aiz-side-nav-link" >--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate('Bulk Import') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('product_bulk_export.index')}}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Bulk Export')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('categories.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['categories.index', 'categories.create', 'categories.edit'])}}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Category')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('brands.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['brands.index', 'brands.create', 'brands.edit'])}}" >
                                     <span class="aiz-side-nav-text">{{translate('Brand')}}</span>
                                 </a>
                             </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('attributes.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['attributes.index','attributes.create','attributes.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Attribute')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('colors')}}" class="aiz-side-nav-link {{ areActiveRoutes(['attributes.index','attributes.create','attributes.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Colors')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('reviews.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Product Reviews')}}</span>
-                                </a>
-                            </li>
+
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('attributes.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['attributes.index','attributes.create','attributes.edit'])}}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Attribute')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('colors')}}" class="aiz-side-nav-link {{ areActiveRoutes(['attributes.index','attributes.create','attributes.edit'])}}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Colors')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('reviews.index')}}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Product Reviews')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                         </ul>
                     </li>
                 @endif
---}}
+
                 <!-- Auction Product -->
                 {{--@if(addon_is_activated('auction'))
                     <li class="aiz-side-nav-item">
@@ -169,6 +171,7 @@
                     </li>
                 @endif--}}
 
+                <!-- Wholesale Product -->
                 <!-- Wholesale Product -->
                 {{--@if(addon_is_activated('wholesale'))
                     <li class="aiz-side-nav-item">
@@ -369,6 +372,11 @@
                                     <span class="aiz-side-nav-text">{{ translate('Gói') }}</span>
                                 </a>
                             </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('warranty_card.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['warranty_card.index', 'warranty_card.show'])}}">
+                                    <span class="aiz-side-nav-text">{{ translate('Thẻ bảo hành') }}</span>
+                                </a>
+                            </li>
                             {{--@if(get_setting('classified_product') == 1)
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('classified_products')}}" class="aiz-side-nav-link">
@@ -384,6 +392,13 @@
                         </ul>
                     </li>
                 @endif
+
+{{--                <li class="aiz-side-nav-item">--}}
+{{--                    <a href="{{ route('questions.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['questions.index', 'questions.create', 'questions.edit'])}}">--}}
+{{--                        <i class="las la-brain aiz-side-nav-icon"></i>--}}
+{{--                        <span class="aiz-side-nav-text">{{ translate('Hãng sản xuất') }}</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
 
                 <!--Accounting-->
                 @if(Auth::user()->user_type == 'admin' || in_array('26', json_decode(Auth::user()->staff->role->permissions)))
@@ -414,6 +429,18 @@
                                     <span class="aiz-side-nav-text">{{ translate('Phiếu thanh toán đối tác') }}</span>
                                 </a>
                             </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('warranty_bill.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Thanh toán bảo hành') }}</span>
+                                </a>
+                            </li>
+
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('warranty_bill.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Phiếu Thanh toán bảo hành') }}</span>
+                                </a>
+                            </li>
+
                             {{--@if(get_setting('classified_product') == 1)
                                 <li class="aiz-side-nav-item">
                                     <a href="{{route('classified_products')}}" class="aiz-side-nav-link">
@@ -492,7 +519,7 @@
                 @endif
 
                 <!-- Reports -->
-                {{--@if(Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
+                @if(Auth::user()->user_type == 'admin' || in_array('10', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-file-alt aiz-side-nav-icon"></i>
@@ -502,42 +529,42 @@
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('in_house_sale_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['in_house_sale_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('In House Product Sale') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Báo cáo bán sản phẩm nội bộ') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('seller_sale_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_sale_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Seller Products Sale') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Bán hàng dựa trên người bán') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('stock_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['stock_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Products Stock') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Sản phẩm còn hàng') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wish_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wish_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Products wishlist') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Sản phẩm mong muốn') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('user_search_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_search_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('User Searches') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Tìm kiếm của Người dùng') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Commission History') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate(' Lịch sử nhận hoa hồng') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wallet-history.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Wallet Recharge History') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử nạp tiền vào ví') }}</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                @endif--}}
+                @endif
 
                 <!--Blog System-->
                 {{--@if(Auth::user()->user_type == 'admin' || in_array('23', json_decode(Auth::user()->staff->role->permissions)))
@@ -672,57 +699,56 @@
                                     <span class="aiz-side-nav-text">Lịch sử thanh toán</span>
                                 </a>
                             </li>
-
                         </ul>
                     </li>
                 @endif
                 <!-- Affiliate Addon -->
-                {{--@if (addon_is_activated('affiliate_system'))
-                    @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="las la-link aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">{{translate('Affiliate System')}}</span>
-                                @if (env("DEMO_MODE") == "On")
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('affiliate.configs')}}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{translate('Affiliate Registration Form')}}</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('affiliate.index')}}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{translate('Affiliate Configurations')}}</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('affiliate.users')}}" class="aiz-side-nav-link {{ areActiveRoutes(['affiliate.users', 'affiliate_users.show_verification_request', 'affiliate_user.payment_history'])}}">
-                                        <span class="aiz-side-nav-text">{{translate('Affiliate Users')}}</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('refferals.users')}}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{translate('Referral Users')}}</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('affiliate.withdraw_requests')}}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{translate('Affiliate Withdraw Requests')}}</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('affiliate.logs.admin')}}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{translate('Affiliate Logs')}}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif--}}
+{{--                --}}{{--@if (addon_is_activated('affiliate_system'))--}}
+{{--                    @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))--}}
+{{--                        <li class="aiz-side-nav-item">--}}
+{{--                            <a href="#" class="aiz-side-nav-link">--}}
+{{--                                <i class="las la-link aiz-side-nav-icon"></i>--}}
+{{--                                <span class="aiz-side-nav-text">{{translate('Affiliate System')}}</span>--}}
+{{--                                @if (env("DEMO_MODE") == "On")--}}
+{{--                                    <span class="badge badge-inline badge-danger">Addon</span>--}}
+{{--                                @endif--}}
+{{--                                <span class="aiz-side-nav-arrow"></span>--}}
+{{--                            </a>--}}
+{{--                            <ul class="aiz-side-nav-list level-2">--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('affiliate.configs')}}" class="aiz-side-nav-link">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Affiliate Registration Form')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('affiliate.index')}}" class="aiz-side-nav-link">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Affiliate Configurations')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('affiliate.users')}}" class="aiz-side-nav-link {{ areActiveRoutes(['affiliate.users', 'affiliate_users.show_verification_request', 'affiliate_user.payment_history'])}}">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Affiliate Users')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('refferals.users')}}" class="aiz-side-nav-link">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Referral Users')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('affiliate.withdraw_requests')}}" class="aiz-side-nav-link">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Affiliate Withdraw Requests')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('affiliate.logs.admin')}}" class="aiz-side-nav-link">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Affiliate Logs')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
+{{--                    @endif--}}
+{{--                @endif--}}
 
                 <!-- Offline Payment Addon-->
                 {{--@if (addon_is_activated('offline_payment'))
@@ -1118,6 +1144,8 @@
                         <span class="aiz-side-nav-text">Câu hỏi hướng dẫn</span>
                     </a>
                 </li>
+
+
                 {{--@if(Auth::user()->user_type == 'admin' || in_array('24', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">

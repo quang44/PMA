@@ -65,6 +65,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group mb-0">
+
                     <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Nhập tên hoặc số điện thoại') }}">
                 </div>
             </div>
@@ -131,7 +132,7 @@
                                             Ngân hàng : {{ $user->customer_bank->name }}
                                         </span>
                                     @else
-                                        <span style="color: red">Chưa có tài khoản</span>
+                                        <span style="color: #ff0000">Chưa có tài khoản</span>
                                     @endif
                                 </td>
                                 <td>
