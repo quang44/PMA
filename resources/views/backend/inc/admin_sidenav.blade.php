@@ -391,6 +391,8 @@
                             @endif--}}
                         </ul>
                     </li>
+
+
                 @endif
 
 {{--                <li class="aiz-side-nav-item">--}}
@@ -666,6 +668,54 @@
                         </a>
                     </li>
                 @endif
+                @if(Auth::user()->user_type == 'admin')
+                    @php
+                        $count_customer_groups = \App\Models\CustomerGroup::where('id','>', 0)->count();
+                    @endphp
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-user-friends aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Nhóm người dùng') }}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
+                                <a href="{{route('customer_groups.index')}}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Danh sách nhóm') }}</span>
+                                </a>
+                            </li>
+                            @if($count_customer_groups > 0)
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('customer_groups.withdraw') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{ translate('Số tiền rút') }}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('customer_groups.config_point') }}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{ translate('Số point') }}</span>
+                                    </a>
+                                </li>
+                            @endif
+                            {{--@if(get_setting('classified_product') == 1)
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('classified_products')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Classified Products')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{ route('customer_packages.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_packages.index', 'customer_packages.create', 'customer_packages.edit'])}}">
+                                        <span class="aiz-side-nav-text">{{ translate('Classified Packages') }}</span>
+                                    </a>
+                                </li>
+                            @endif--}}
+                        </ul>
+                    </li>
+
+
+                @endif
+
+
+
                 @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
@@ -703,6 +753,7 @@
                     </li>
                 @endif
                 <!-- Affiliate Addon -->
+
 {{--                --}}{{--@if (addon_is_activated('affiliate_system'))--}}
 {{--                    @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))--}}
 {{--                        <li class="aiz-side-nav-item">--}}
@@ -749,6 +800,53 @@
 {{--                        </li>--}}
 {{--                    @endif--}}
 {{--                @endif--}}
+
+               <!--- @if (addon_is_activated('affiliate_system'))
+                    @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
+                        <li class="aiz-side-nav-item">
+                            <a href="#" class="aiz-side-nav-link">
+                                <i class="las la-link aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">{{translate('Affiliate System')}}</span>
+                                @if (env("DEMO_MODE") == "On")
+                                    <span class="badge badge-inline badge-danger">Addon</span>
+                                @endif
+                                <span class="aiz-side-nav-arrow"></span>
+                            </a>
+                            <ul class="aiz-side-nav-list level-2">
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('affiliate.configs')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Affiliate Registration Form')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('affiliate.index')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Affiliate Configurations')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('affiliate.users')}}" class="aiz-side-nav-link {{ areActiveRoutes(['affiliate.users', 'affiliate_users.show_verification_request', 'affiliate_user.payment_history'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Affiliate Users')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('refferals.users')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Referral Users')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('affiliate.withdraw_requests')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Affiliate Withdraw Requests')}}</span>
+                                    </a>
+                                </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('affiliate.logs.admin')}}" class="aiz-side-nav-link">
+                                        <span class="aiz-side-nav-text">{{translate('Affiliate Logs')}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                @endif --->
 
                 <!-- Offline Payment Addon-->
                 {{--@if (addon_is_activated('offline_payment'))
@@ -912,7 +1010,7 @@
                 @endif--}}
 
                 <!-- Website Setup -->
-                {{--@if(Auth::user()->user_type == 'admin' || in_array('13', json_decode(Auth::user()->staff->role->permissions)))
+                @if(Auth::user()->user_type == 'admin' || in_array('13', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link {{ areActiveRoutes(['website.footer', 'website.header'])}}" >
                             <i class="las la-desktop aiz-side-nav-icon"></i>
@@ -921,6 +1019,11 @@
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
+                                <a href="{{ route('common_configs.index') }}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{translate('Cấu hình chung')}}</span>
+                                </a>
+                            </li>
+                            <!--- <li class="aiz-side-nav-item">
                                 <a href="{{ route('website.header') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{translate('Header')}}</span>
                                 </a>
@@ -939,10 +1042,10 @@
                                 <a href="{{ route('website.appearance') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{translate('Appearance')}}</span>
                                 </a>
-                            </li>
+                            </li> --->
                         </ul>
                     </li>
-                @endif--}}
+                @endif
 
                 <!-- Setup & Configurations -->
                 @if(Auth::user()->user_type == 'admin' || in_array('14', json_decode(Auth::user()->staff->role->permissions)))

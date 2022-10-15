@@ -25,7 +25,7 @@
                         <span class="text-bold">{{$customer_package->product_upload}}</span>
                     </p>-->
                     <label class="aiz-switch aiz-switch-success mb-0">
-                        <input value="{{ $customer_package->id }}" type="checkbox" @if($customer_package->default == 1) checked @endif disabled >
+                        <input class="status" value="{{ $customer_package->id }}" type="checkbox" @if($customer_package->default == 1) checked @endif disabled>
                         <span class="slider round"></span>
                     </label>
                     <div class="mar-top mt-3">
@@ -49,18 +49,28 @@
     <script type="text/javascript">
         function update_default(el){
             let status = 0;
-            if (el.checked) {
+            if (el.prop("checked")) {
                 status = 1;
             }
+<<<<<<< HEAD
             $.post('{{ route('customer_packages.update_default') }}', {_token:'{{ csrf_token() }}',
                 id:el.value, status:status}, function(data){
+=======
+            $.post('{{ route('customer_packages.update_default') }}', {_token:'{{ csrf_token() }}', id:el.val(), status:status}, function(data){
+>>>>>>> 299bbe29422b0408eba09a5f65c9ae5846686622
                 if(data == 1){
                     location.reload();
                 }
                 else{
                     AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    location.reload();
                 }
             });
         }
+
+        $('.status').on('change', function () {
+                update_default($(this));
+
+        });
     </script>
 @endsection

@@ -98,6 +98,7 @@
                                         </div>
                                     </div>
                                 </td>-->
+
                                 <td>@if($user->banned == 1) <i class="fa fa-ban text-danger" aria-hidden="true"></i> @endif {{$user->name}}</td>
                                 <td>{{$user->email}}</td>
                                 <td><a href="{{ route('customers.index', ['referred_by' => $user->id])}}">{{$user->phone}}</a></td>

@@ -47,8 +47,14 @@ use App\Http\Controllers\OrderDeliveryController;
 use App\Http\Controllers\CustomerBillController;
 use App\Http\Controllers\PartnerBillController;
 use App\Http\Controllers\BankController;
+
 use App\Http\Controllers\WarrantyBillController;
 use \App\Http\Controllers\WarrantyCardController;
+
+use App\Http\Controllers\CustomerGroupController;
+use App\Http\Controllers\CommonConfigController;
+
+
 /*
   |--------------------------------------------------------------------------
   | Admin Routes
@@ -66,8 +72,11 @@ Route::controller(UpdateController::class)->group(function () {
     Route::get('/update/step2', 'step2')->name('update.step2');
 });
 
+
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin' ]);
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
+
+
 
     // category
     Route::resource('categories', CategoryController::class);
@@ -126,7 +135,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/bulk-product-upload', 'bulk_upload')->name('bulk_product_upload');
         Route::get('/product-csv-download/{type}', 'import_product')->name('product_csv.download');
         Route::get('/vendor-product-csv-download/{id}', 'import_vendor_product')->name('import_vendor_product.download');
-        Route::group(['prefix' => 'bulk-upload/download'], function() {
+        Route::group(['prefix' => 'bulk-upload/download'], function () {
             Route::get('/category', 'pdf_download_category')->name('pdf.download_category');
             Route::get('/brand', 'pdf_download_brand')->name('pdf.download_brand');
             Route::get('/seller', 'pdf_download_seller')->name('pdf.download_seller');
@@ -271,6 +280,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
 
+    Route::resource('common_configs', CommonConfigController::class);
+    Route::controller(CommonConfigController::class)->group(function () {
+        Route::get('/common_configs/edit/{id}', 'edit')->name('common-configs.edit');
+    });
+
     //Currency
     Route::controller(CurrencyController::class)->group(function () {
         Route::get('/currency', 'currency')->name('currency.index');
@@ -308,7 +322,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
 
 
     // website setting
-    Route::group(['prefix' => 'website'], function() {
+    Route::group(['prefix' => 'website'], function () {
         Route::controller(WebsiteController::class)->group(function () {
             Route::get('/footer', 'footer')->name('website.footer');
             Route::get('/header', 'header')->name('website.header');
@@ -348,7 +362,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/roles/edit/{id}', 'edit')->name('roles.edit');
         Route::get('/roles/destroy/{id}', 'destroy')->name('roles.destroy');
     });
-
     // Staff
     Route::resource('staffs', StaffController::class);
     Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
@@ -486,7 +499,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
     // Product Attribute
-    Route::resource('attributes', AttributeController::class );
+    Route::resource('attributes', AttributeController::class);
     Route::controller(AttributeController::class)->group(function () {
         Route::get('/attributes/edit/{id}', 'edit')->name('attributes.edit');
         Route::get('/attributes/destroy/{id}', 'destroy')->name('attributes.destroy');
@@ -516,6 +529,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/customer_packages/destroy/{id}', 'destroy')->name('customer_packages.destroy');
         Route::post('/customer_packages/update_default', 'update_default')->name('customer_packages.update_default');
     });
+    //Customer Group
+    Route::resource('customer_groups', CustomerGroupController::class);
+    Route::controller(CustomerGroupController::class)->group(function () {
+        Route::get('/customer_groups/edit/{id}', 'edit')->name('customer_groups.edit');
+        Route::get('/customer_groups/destroy/{id}', 'destroy')->name('customer_groups.destroy');
+        Route::post('/customer_groups/setup_hidden', 'setup_hidden')->name('customer_groups.setup_hidden');
+        Route::post('/customer_groups/setup_default', 'setup_default')->name('customer_groups.setup_default');
+        Route::get('/customer_groups/config/withdraw', 'withdraw')->name('customer_groups.withdraw');
+        Route::post('/customer_groups/config/withdraw', 'update_withdraw')->name('customer_groups.update_withdraw');
+        Route::get('/customer_groups/config/point', 'config_point')->name('customer_groups.config_point');
+        Route::post('/customer_groups/config/point', 'update_point')->name('customer_groups.update_point');
+    });
 
     //Classified Products
     Route::controller(CustomerProductController::class)->group(function () {
@@ -529,7 +554,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
 
     // States
     Route::resource('states', StateController::class);
-	Route::post('/states/status', [StateController::class, 'updateStatus'])->name('states.status');
+    Route::post('/states/status', [StateController::class, 'updateStatus'])->name('states.status');
 
     Route::resource('cities', CityController::class);
     Route::controller(CityController::class)->group(function () {

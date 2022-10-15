@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CommonConfig;
+use App\Models\CustomerGroup;
 use Illuminate\Http\Request;
 use App\Models\BusinessSetting;
 use Artisan;
@@ -520,6 +522,10 @@ class BusinessSettingsController extends Controller
 
     public function order_configuration(){
         return view('backend.setup_configurations.order_configuration.index');
+    }
+
+    public function common_configuration(){
+
     }
 
 }
