@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="aiz-titlebar text-left mt-2 mb-3 row" >
+    <div class="aiz-titlebar text-left mt-2 mb-3 row">
         <div class=" col-md-6 align-items-center">
             <h1 class="h3">{{translate('Danh sách thẻ bảo hành')}}</h1>
         </div>
@@ -25,9 +25,12 @@
                     <div class="form-group mb-0">
                         <select name="sort_status" id="sort_selectCart" class="form-control">
                             <option value="-1">Trạng thái của thẻ</option>
-                            <option value="0" @if(request('sort_status',-1)==0) selected @endif>{{translate('Chờ duyệt')}}</option>
-                            <option value="1" @if(request('sort_status',-1)==1) selected @endif>{{translate('Đã duyệt')}}</option>
-                            <option value="2" @if(request('sort_status',-1)==2) selected @endif>{{translate('Hủy thẻ')}}</option>
+                            <option value="0"
+                                    @if(request('sort_status',-1)==0) selected @endif>{{translate('Chờ duyệt')}}</option>
+                            <option value="1"
+                                    @if(request('sort_status',-1)==1) selected @endif>{{translate('Đã duyệt')}}</option>
+                            <option value="2"
+                                    @if(request('sort_status',-1)==2) selected @endif>{{translate('Hủy thẻ')}}</option>
                         </select>
                     </div>
                 </div>
@@ -63,25 +66,32 @@
                         @foreach($warranty_cards as $key => $warranty_card)
                             @if ($warranty_card != null)
                                 <tr>
-                                    <td><h7 class="text-danger">{{$warranty_card->brand->name}} </h7> </td>
+                                    <td>
+                                        <h7 class="text-danger">{{$warranty_card->brand->name}} </h7>
+                                    </td>
                                     <td>{{$warranty_card->user_name}}</td>
                                     <td>{{$warranty_card->address}}</td>
                                     <td>{{$warranty_card->seri}}</td>
                                     <td> @if($warranty_card->active_time>0)
                                             {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Chưa kích hoạt') }}</span>
+                                            <span
+                                                class="badge badge-inline badge-secondary">{{ trans('Chưa kích hoạt') }}</span>
                                         @endif
                                     </td>
-                                    <td><img class="h-50px" src="{{ uploaded_asset($warranty_card->qr_code_image) }}" alt="Qr Code "></td>
-                                    <td> <img class="h-50px" src=" {{uploaded_asset($warranty_card->seri_image)}}" alt="Seri"></td>
+                                    <td><img class="h-50px" src="{{ uploaded_asset($warranty_card->qr_code_image) }}"
+                                             alt="Qr Code "></td>
+                                    <td><img class="h-50px" src=" {{uploaded_asset($warranty_card->seri_image)}}"
+                                             alt="Seri"></td>
                                     <td>{{$warranty_card->point}}</td>
                                     <td>
                                         @if($warranty_card->status == 0)
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Chờ duyệt') }}</span>
+                                            <span
+                                                class="badge badge-inline badge-secondary">{{ trans('Chờ duyệt') }}</span>
                                         @else
                                             @if($warranty_card->status == 1)
-                                                <span class="badge badge-inline badge-success">{{ trans('Đã Duyệt') }}</span>
+                                                <span
+                                                    class="badge badge-inline badge-success">{{ trans('Đã Duyệt') }}</span>
                                             @else
                                                 <span class="badge badge-inline badge-danger">{{ trans('Hủy') }}</span>
                                             @endif
@@ -91,10 +101,12 @@
 
 
                                     <td class="text-right">
-                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('warranty_card.show',[encrypt($warranty_card->id)]) }}" title="View">
+                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
+                                           href="{{ route('warranty_card.show',[encrypt($warranty_card->id)]) }}"
+                                           title="View">
                                             <i class="las la-eye"></i>
                                         </a>
-                                     @if($warranty_card->status==0 )
+                                        @if($warranty_card->status==0 )
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-info btn-icon btn-circle btn-sm"
                                                onclick="updateCard('{{route('warranty_card.ban', encrypt($warranty_card->id))}}');"
@@ -103,11 +115,12 @@
                                             </a>
 
 
-                                             <a href="javascript:void(0)" class="btn btn-soft-danger btn-icon btn-circle btn-sm"
-                                                onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}');"
-                                                title="{{ translate('Hủy thẻ') }}">
-                                                 <i class="las la-user-alt-slash"></i>
-                                             </a>
+                                            <a href="javascript:void(0)"
+                                               class="btn btn-soft-danger btn-icon btn-circle btn-sm"
+                                               onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}');"
+                                               title="{{ translate('Hủy thẻ') }}">
+                                                <i class="las la-user-alt-slash"></i>
+                                            </a>
                                         @endif
                                         <a href="{{ route('warranty_card.edit', [ encrypt($warranty_card->id) ]) }}"
                                            class="btn btn-soft-warning btn-icon btn-circle btn-sm"
@@ -166,8 +179,9 @@
                         <input type="text" class="form-control" name="reason" placeholder="Lý do hủy">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-dismiss="modal">{{translate('Cancel')}}</button>
-                        <button type="submit"  class="btn btn-primary">{{translate('Proceed!')}}</button>
+                        <button type="button" class="btn btn-light"
+                                data-dismiss="modal">{{translate('Cancel')}}</button>
+                        <button type="submit" class="btn btn-primary">{{translate('Proceed!')}}</button>
                     </div>
                 </div>
             </div>
@@ -204,19 +218,18 @@
 
 
 
-        $('#sort_selectCart').on('change',function () {
-          $('#sort_Card').submit();
+        $('#sort_selectCart').on('change', function () {
+            $('#sort_Card').submit();
         })
 
-        function confirm_ban(url)
-        {
+        function confirm_ban(url) {
             $('#confirm-ban').modal('show', {backdrop: 'static'});
-            document.getElementById('confirmation').setAttribute('action' , url);
+            document.getElementById('confirmation').setAttribute('action', url);
         }
 
-        function updateCard(url){
+        function updateCard(url) {
             $('#confirm-update-bank').modal('show', {backdrop: 'static'});
-            document.getElementById('updateCard').setAttribute('href' , url);
+            document.getElementById('updateCard').setAttribute('href', url);
         }
 
 

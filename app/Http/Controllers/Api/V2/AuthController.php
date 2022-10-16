@@ -11,13 +11,14 @@ use App\Models\CustomerPackage;
 use App\Services\Extend\TelegramService;
 use App\Utility\NotificationUtility;
 use Illuminate\Http\Request;
+use App\Models\CustomerGroup;
+use App\Models\CommonConfig;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Notifications\AppEmailVerificationNotification;
 use Hash;
 use Illuminate\Support\Str;
 use Socialite;
-
 
 
 class AuthController extends Controller
@@ -33,13 +34,17 @@ class AuthController extends Controller
             ], 200);
         }
         $package = CustomerPackage::where('default', 1)->first();
+        $group = CustomerGroup::where('default', 1)->first();
+
+
         $user_type = $request->user_type ?? 'customer';
         $referral_code = $request->referral_code;
         $referred_by = 0;
-        if($user_type == 'kol'){
-            if(!empty($referral_code)){
+
+        if ($user_type == 'kol') {
+            if (!empty($referral_code)) {
                 $employee = User::where('user_type', 'employee')->where('referral_code', $referral_code)->first();
-                if(!$employee){
+                if (!$employee) {
                     return response()->json([
                         'result' => false,
                         'message' => 'Không tìm thấy thông tin người giới thiệu',
@@ -49,17 +54,22 @@ class AuthController extends Controller
                 $referred_by = $employee->id;
             }
         }
-        if($user_type == 'customer'){
-            if(!empty($referral_code)){
-                $kol = User::where('user_type', 'kol')->where('referral_code', $referral_code)->first();
-                if(!$kol){
+
+        if ($user_type == 'customer') {
+            if (!empty($referral_code)) {
+                $kol = User::where('referral_code', $referral_code)->first();
+
+                if (!$kol) {
                     return response()->json([
                         'result' => false,
                         'message' => 'Không tìm thấy thông tin người giới thiệu',
                         'data' => null
                     ], 200);
                 }
-                $referred_by = $kol->id;
+
+                    $referred_by = $kol->id;
+
+
             }
         }
 
@@ -76,7 +86,9 @@ class AuthController extends Controller
             'device_token' => $request->device_token,
             'email_verified_at' => date('Y-m-d H:i:s'),
             'verification_code' => null,//rand(1000, 9999),
-            'customer_package_id' => $package->id
+            'customer_package_id' => $package->id,
+            'customer_group_id' => $group->id
+
         ]);
 
         /*if ($request->register_by == 'email') {
@@ -113,8 +125,8 @@ class AuthController extends Controller
         $user->save();
         $text = '
             <b>[Nguồn] : </b><code>GomDon</code>
-            <b>[Tiêu đề] : </b><code>Khách đăng ký mới</code>
-            <b>[Mô tả] : </b><a href="' . route('customers.index', ['search' => $user->name]) . '">Xem chi tiết</a>';
+            <b>[Tiêu đề] : </b><code>Khách hàng mới</code>
+            <b>[Mô tả] : </b><a href="' . route('customers.index', ['search' => $user->name]) . '">Xem chi tiểt</a>';
         TelegramService::sendMessageGomdon($text);
         return response()->json([
             'result' => true,
@@ -198,31 +210,34 @@ class AuthController extends Controller
         if ($user != null) {
             if (Hash::check($request->password, $user->password)) {
 
-               /* if ($user->email_verified_at == null) {
-                    return response()->json(['result' => false, 'message' => translate('Please verify your account'), 'data' => null], 401);
-                }*/
-                if($user->banned == 1){
-                    return response()->json(['result' => false, 'message' => translate('Tài khoản hoặc mật khẩu không chính xác'), 'data' => null], 401);
+                /* if ($user->email_verified_at == null) {
+                     return response()->json(['result' => false, 'message' => translate('Please verify your account'), 'data' => null], 401);
+                 }*/
+                if ($user->banned == 1) {
+                    return response()->json(['result' => false, 'message' => translate('Tài khoản đã bị khóa'), 'data' => null], 401);
+
                 }
-                if($request->device_token){
+                if ($request->device_token) {
                     $user->device_token = $request->device_token;
                     $user->save();
                 }
                 return $this->loginSuccess($user);
             } else {
-                return response()->json(['result' => false, 'message' => translate('Unauthorized'), 'data' => null], 401);
+                return response()->json(['result' => false, 'message' => translate('Tài khoản hoặc mật khẩu không chính xác'), 'data' => null], 401);
+
             }
         } else {
             return response()->json(['result' => false, 'message' => translate('User not found'), 'data' => null], 401);
         }
     }
 
-    public function changePassword(Request $request){
+    public function changePassword(Request $request)
+    {
         $user = auth()->user();
         if (Hash::check($request->old_password, $user->password)) {
             $user->password = Hash::make($request->new_password);
             $user->save();
-            return response()->json(['result' => true,  'message' => translate('Successfully'), 'data' => null]);
+            return response()->json(['result' => true, 'message' => translate('Successfully'), 'data' => null]);
         }
         return response()->json(['result' => false, 'message' => translate('Password wrong'), 'data' => null]);
     }
@@ -263,25 +278,26 @@ class AuthController extends Controller
                 'referral_code' => $user->referral_code,
                 'balance' => $user->balance,
                 'best_api_user' => $user->best_api_user,
-                'created_at'=>$user->created_at
+                'created_at' => $user->created_at
             ]
         ]);
     }
 
-    public function notification(){
+    public function notification()
+    {
         $user = auth()->user();
-        if(!empty($user->device_token)){
+        if (!empty($user->device_token)) {
             $req = new \stdClass();
             $req->device_token = $user->device_token;
-            $req->title = "Kích hoạt tài khoản !";
-            $req->text = "Tài khoản của bạn đã được kích hoạt";
+            $req->title = "Kích ho?t tài kho?n !";
+            $req->text = "Tài kho?n c?a b?n ?ã ???c kích ho?t";
 
             $req->type = "active_user";
             $req->id = $user->id;
             $req->best_api_user = $user->best_api_user;
             $result = NotificationUtility::sendFirebaseNotification($req);
             return response(['result' => true, 'data' => $result]);
-        }else{
+        } else {
             return response(['result' => false]);
         }
     }
@@ -292,10 +308,10 @@ class AuthController extends Controller
         //$user = User::findOrFail($request->user_id);
         $user = auth()->user();
         $data = [];
-        if(!empty($request->name)){
+        if (!empty($request->name)) {
             $data['name'] = $request->name;
         }
-        if(!empty($request->email)){
+        if (!empty($request->email)) {
             $data['email'] = $request->email;
         }
         $user->update($data);
@@ -315,10 +331,11 @@ class AuthController extends Controller
         ]);
     }
 
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
         $user = auth()->user();
         if (!$user) {
-            return response(['result' => false, 'message' => 'Không tìm thấy thông tin tài khoản']);
+            return response(['result' => false, 'message' => 'Không tìm th?y thông tin tài kho?n']);
         }
         $user->banned = 1;
         $user->save();
@@ -404,7 +421,7 @@ class AuthController extends Controller
                     'referral_code' => $user->referral_code,
                     'balance' => $user->balance,
                     'best_api_user' => $user->best_api_user,
-                    'created_at'=>$user->created_at
+                    'created_at' => date('d-m-Y H:i:s',strtotime($user->created_at))
                 ]
             ]
         ]);
