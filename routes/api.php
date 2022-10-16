@@ -86,6 +86,8 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
         Route::post('create', 'App\Http\Controllers\Api\V2\CustomerBankController@store');
     }));
 
+
+
     Route::group(['prefix' => 'bank', 'middleware' => []], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\CustomerBankController@index');
     }));
@@ -172,6 +174,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::apiResource('colors', 'App\Http\Controllers\Api\V2\ColorController')->only('index');
 
     Route::apiResource('currencies', 'App\Http\Controllers\Api\V2\CurrencyController')->only('index');
+
 
     Route::apiResource('customers', 'App\Http\Controllers\Api\V2\CustomerController')->only('show');
 
@@ -362,3 +365,6 @@ Route::get('notification-order', 'App\Http\Controllers\Api\V2\CronJobsController
 Route::post('telegram-bot', 'App\Http\Controllers\Api\V2\CronJobsController@webhookTelegram');
 Route::get('convert_status', 'App\Http\Controllers\Api\V2\CronJobsController@convertStatus');
 
+Route::group(['prefix' => 'customer-groups', 'middleware' => []], (function () {
+    Route::get('', '\App\Http\Controllers\Api\V2\CustomerGroupController@list_cus_gr');
+}));
