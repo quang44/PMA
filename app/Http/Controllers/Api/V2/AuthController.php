@@ -30,10 +30,7 @@ class AuthController extends Controller
     public function signup(AuthRequest $request)
     {
 
-
-
-
-        $common_config = CommonConfig::where('unit', 'Point')->first();
+        $common_config = CommonConfig::first();
 
         $user = User::where('phone', $request->phone)->first();
         if ($user != null) {

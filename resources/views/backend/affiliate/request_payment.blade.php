@@ -180,8 +180,10 @@
                 success: function (response) {
                     if(response.result === true) {
                         Swal.fire('Cập nhật thành công')
+                        console.log('ok');
                         location.reload();
                     }else {
+                        console.log('error');
                         Swal.fire(response.message, '', 'error')
                     }
                 }

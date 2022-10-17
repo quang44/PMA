@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\AffiliatePayment;
+use App\Models\CustomerGroup;
+use App\Models\Wallet;
 use App\Models\WarrantyBill;
 use App\Models\Staff;
 use App\Models\User;
@@ -14,17 +16,20 @@ use Illuminate\Support\Str;
 class AffiliateController extends Controller
 {
 
-    public function configs(){
+    public function configs()
+    {
 
         return view('backend.affiliate.config');
     }
-    public function employee(Request $request){
+
+    public function employee(Request $request)
+    {
         $sort_search = null;
         $users = User::where('user_type', 'employee')->orderBy('created_at', 'desc');
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $users->where(function ($q) use ($sort_search){
-                $q->where('name', 'like', '%'.$sort_search.'%')->orWhere('phone', 'like', '%'.$sort_search.'%');
+            $users->where(function ($q) use ($sort_search) {
+                $q->where('name', 'like', '%' . $sort_search . '%')->orWhere('phone', 'like', '%' . $sort_search . '%');
             });
         }
         if ((isset($request->banned) ? $request->banned : -1) >= 0) {
@@ -42,12 +47,12 @@ class AffiliateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function employee_store(Request $request)
     {
-        if(User::where('phone', $request->phone)->first() == null){
+        if (User::where('phone', $request->phone)->first() == null) {
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -66,7 +71,7 @@ class AffiliateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -77,7 +82,7 @@ class AffiliateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function employee_edit($id)
@@ -89,8 +94,8 @@ class AffiliateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function employee_update(Request $request, $id)
@@ -99,7 +104,7 @@ class AffiliateController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        if(strlen($request->password) > 0){
+        if (strlen($request->password) > 0) {
             $user->password = Hash::make($request->password);
         }
         $user->save();
@@ -110,7 +115,7 @@ class AffiliateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function employee_destroy($id)
@@ -120,20 +125,21 @@ class AffiliateController extends Controller
         return redirect()->route('affiliate.employee.index');
     }
 
-    public function kol(Request $request){
+    public function kol(Request $request)
+    {
         $sort_search = null;
         $employee = User::where('user_type', 'employee')->pluck('name', 'id');
         $users = User::where('user_type', 'kol')->orderBy('created_at', 'desc');
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $users->where(function ($q) use ($sort_search){
-                $q->where('name', 'like', '%'.$sort_search.'%')->orWhere('phone', 'like', '%'.$sort_search.'%');
+            $users->where(function ($q) use ($sort_search) {
+                $q->where('name', 'like', '%' . $sort_search . '%')->orWhere('phone', 'like', '%' . $sort_search . '%');
             });
         }
         if ((isset($request->banned) ? $request->banned : -1) >= 0) {
             $users = $users->where('banned', $request->banned);
         }
-        if(!empty($request->referred_by)){
+        if (!empty($request->referred_by)) {
             $users = $users->where('referred_by', $request->referred_by);
         }
         $users = $users->paginate(15);
@@ -149,12 +155,12 @@ class AffiliateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function kol_store(Request $request)
     {
-        if(User::where('phone', $request->phone)->first() == null){
+        if (User::where('phone', $request->phone)->first() == null) {
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -175,7 +181,7 @@ class AffiliateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function kol_edit($id)
@@ -188,8 +194,8 @@ class AffiliateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function kol_update(Request $request, $id)
@@ -199,7 +205,7 @@ class AffiliateController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->referred_by = $request->referred_by;
-        if(strlen($request->password) > 0){
+        if (strlen($request->password) > 0) {
             $user->password = Hash::make($request->password);
         }
         $user->save();
@@ -210,7 +216,7 @@ class AffiliateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function kol_destroy($id)
@@ -220,7 +226,8 @@ class AffiliateController extends Controller
         return redirect()->route('affiliate.kol.index');
     }
 
-    public function requestPayment(){
+    public function requestPayment()
+    {
 
         $payments = AffiliatePayment::where('status', 1);
         /*if (!empty($request->start_time)) {
@@ -238,15 +245,16 @@ class AffiliateController extends Controller
         return view('backend.affiliate.request_payment', compact('payments'));
     }
 
-    public function historyPayment(Request $request){
-        $payments = AffiliatePayment::whereIn('status', [-1,2]);
+    public function historyPayment(Request $request)
+    {
+        $payments = AffiliatePayment::whereIn('status', [-1, 2]);
         if ($request->date != null) {
             $payments = $payments->where('created_time', '>=', strtotime(explode(" to ", $request->date)[0]))->where('created_time', '<=', strtotime(explode(" to ", $request->date)[1]) + 86399);
         }
-        if(!empty($request->employee_id)){
+        if (!empty($request->employee_id)) {
             $payments = $payments->where('user_id', $request->employee_id);
         }
-        if(!empty($request->kol_id)){
+        if (!empty($request->kol_id)) {
             $payments = $payments->where('user_id', $request->kol_id);
         }
         $sort_search = null;
@@ -265,28 +273,37 @@ class AffiliateController extends Controller
         return view('backend.affiliate.history_payment', compact('payments', 'sort_search'));
     }
 
-    public function updatePayment($id){
+    public function updatePayment($id)
+    {
         $payment = AffiliatePayment::where('id', $id)->where('status', 1)->first();
-        if(!$payment){
+
+        if (!$payment) {
             return response([
                 'result' => false,
                 'message' => 'Không tìm thấy yêu cầu cần thanh toán'
             ]);
         }
 
+        $wallet = Wallet::where('user_id', $payment->user_id)->first();
+
         $payment->status = 2;
         $payment->payment_time = time();
         $payment->payment_user_id = auth()->id();
         $payment->save();
+        $wallet->amount = config_base64_encode(config_base64_decode($wallet->amount) - $payment->amount);
+        $wallet->save();
+
         return response([
             'result' => true,
             'message' => 'Cập nhật thanh toán thành công'
         ]);
 
     }
-    public function cancelPayment($id, Request $request){
+
+    public function cancelPayment($id, Request $request)
+    {
         $payment = AffiliatePayment::where('id', $id)->where('status', 1)->first();
-        if(!$payment){
+        if (!$payment) {
             return response([
                 'result' => false,
                 'message' => 'Không tìm thấy yêu cầu cần thanh toán'
@@ -308,9 +325,6 @@ class AffiliateController extends Controller
             'message' => 'Hủy thanh toán thành công'
         ]);
     }
-
-
-
 
 
 }

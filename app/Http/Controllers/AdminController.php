@@ -58,7 +58,7 @@ class AdminController extends Controller
             $total_withdraw += $history_withdraw->amount;
         }
         foreach ($wallet as $key => $not_withdraw){
-            $total_not_withdraw += $not_withdraw->amount;
+            $total_not_withdraw += config_base64_decode($not_withdraw->amount);
         }
 
         return view('backend.dashboard', compact('root_categories', 'cached_graph_data', 'total_withdraw', 'total_not_withdraw', 'total_active'));

@@ -710,11 +710,7 @@
                             @endif--}}
                         </ul>
                     </li>
-
-
                 @endif
-
-
                 @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
@@ -916,37 +912,37 @@
                 @endif--}}
 
                 <!-- Club Point Addon-->
-                {{--@if (addon_is_activated('club_point'))
-                    @if(Auth::user()->user_type == 'admin' || in_array('18', json_decode(Auth::user()->staff->role->permissions)))
-                        <li class="aiz-side-nav-item">
-                            <a href="#" class="aiz-side-nav-link">
-                                <i class="lab la-btc aiz-side-nav-icon"></i>
-                                <span class="aiz-side-nav-text">{{translate('Club Point System')}}</span>
-                                @if (env("DEMO_MODE") == "On")
-                                    <span class="badge badge-inline badge-danger">Addon</span>
-                                @endif
-                                <span class="aiz-side-nav-arrow"></span>
-                            </a>
-                            <ul class="aiz-side-nav-list level-2">
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('club_points.configs') }}" class="aiz-side-nav-link">
-                                        <span class="aiz-side-nav-text">{{translate('Club Point Configurations')}}</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('set_product_points')}}" class="aiz-side-nav-link {{ areActiveRoutes(['set_product_points', 'product_club_point.edit'])}}">
-                                        <span class="aiz-side-nav-text">{{translate('Set Product Point')}}</span>
-                                    </a>
-                                </li>
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{route('club_points.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['club_points.index', 'club_point.details'])}}">
-                                        <span class="aiz-side-nav-text">{{translate('User Points')}}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif--}}
+{{--                --}}{{--@if (addon_is_activated('club_point'))--}}
+{{--                    @if(Auth::user()->user_type == 'admin' || in_array('18', json_decode(Auth::user()->staff->role->permissions)))--}}
+{{--                        <li class="aiz-side-nav-item">--}}
+{{--                            <a href="#" class="aiz-side-nav-link">--}}
+{{--                                <i class="lab la-btc aiz-side-nav-icon"></i>--}}
+{{--                                <span class="aiz-side-nav-text">{{translate('Club Point System')}}</span>--}}
+{{--                                @if (env("DEMO_MODE") == "On")--}}
+{{--                                    <span class="badge badge-inline badge-danger">Addon</span>--}}
+{{--                                @endif--}}
+{{--                                <span class="aiz-side-nav-arrow"></span>--}}
+{{--                            </a>--}}
+{{--                            <ul class="aiz-side-nav-list level-2">--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{ route('club_points.configs') }}" class="aiz-side-nav-link">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Club Point Configurations')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('set_product_points')}}" class="aiz-side-nav-link {{ areActiveRoutes(['set_product_points', 'product_club_point.edit'])}}">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('Set Product Point')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                                <li class="aiz-side-nav-item">--}}
+{{--                                    <a href="{{route('club_points.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['club_points.index', 'club_point.details'])}}">--}}
+{{--                                        <span class="aiz-side-nav-text">{{translate('User Points')}}</span>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </li>--}}
+{{--                    @endif--}}
+{{--                @endif--}}
 
                 <!--OTP addon -->
                 {{--@if (addon_is_activated('otp_system'))
