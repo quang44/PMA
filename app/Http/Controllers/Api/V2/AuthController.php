@@ -5,9 +5,11 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\OTPVerificationController;
+use App\Http\Requests\Api\V2\Auth\AuthRequest;
 use App\Models\BusinessSetting;
 use App\Models\Customer;
 use App\Models\CustomerPackage;
+use App\Models\Wallet;
 use App\Services\Extend\TelegramService;
 use App\Utility\NotificationUtility;
 use Illuminate\Http\Request;
@@ -23,8 +25,16 @@ use Socialite;
 
 class AuthController extends Controller
 {
-    public function signup(Request $request)
+
+
+    public function signup(AuthRequest $request)
     {
+
+
+
+
+        $common_config = CommonConfig::where('unit', 'Point')->first();
+
         $user = User::where('phone', $request->phone)->first();
         if ($user != null) {
             return response()->json([
@@ -33,6 +43,7 @@ class AuthController extends Controller
                 'data' => null
             ], 200);
         }
+
         $package = CustomerPackage::where('default', 1)->first();
         $group = CustomerGroup::where('default', 1)->first();
 
@@ -51,25 +62,31 @@ class AuthController extends Controller
                         'data' => null
                     ], 200);
                 }
+
                 $referred_by = $employee->id;
             }
         }
 
         if ($user_type == 'customer') {
             if (!empty($referral_code)) {
-                $kol = User::where('referral_code', $referral_code)->first();
-
+                $kol = User::with('customer_group')->where('referral_code', $referral_code)->first();
                 if (!$kol) {
                     return response()->json([
                         'result' => false,
                         'message' => 'Không tìm thấy thông tin người giới thiệu',
                         'data' => null
                     ], 200);
-                }
 
+                } else {
+
+                    $walletKol = Wallet::where('user_id', $kol->id)->first();
+                    $point=config_base64_decode($walletKol->amount);
+                    $amount= (int)$point += $common_config->for_referrer;
+                    $walletKol->amount =config_base64_encode($amount);
+                    $walletKol->save();
                     $referred_by = $kol->id;
 
-
+                }
             }
         }
 
@@ -88,8 +105,17 @@ class AuthController extends Controller
             'verification_code' => null,//rand(1000, 9999),
             'customer_package_id' => $package->id,
             'customer_group_id' => $group->id
-
         ]);
+        $user->save();
+//return response([
+//    'data'=>$user
+//]);
+        $customerGroup = CustomerGroup::find($user->customer_group_id);
+        $wallet = new Wallet;
+        $wallet->user_id = $user->id;
+        $amount=  $referred_by != 0 ? $customerGroup->point_number + $common_config->for_activator : $customerGroup->point_number;
+        $wallet->amount = config_base64_encode($amount);
+        $wallet->save();
 
         /*if ($request->register_by == 'email') {
             $user = new User([
@@ -122,11 +148,11 @@ class AuthController extends Controller
             }
         }*/
 
-        $user->save();
+
         $text = '
-            <b>[Nguồn] : </b><code>GomDon</code>
-            <b>[Tiêu đề] : </b><code>Khách hàng mới</code>
-            <b>[Mô tả] : </b><a href="' . route('customers.index', ['search' => $user->name]) . '">Xem chi tiểt</a>';
+            <b>[Ngu?n] : </b><code>GomDon</code>
+            <b>[Ti?u ??] : </b><code>Khách hàng mới</code>
+            <b>[M? t?] : </b><a href="' . route('customers.index', ['search' => $user->name]) . '">Xem chi tiết</a>';
         TelegramService::sendMessageGomdon($text);
         return response()->json([
             'result' => true,
@@ -289,8 +315,8 @@ class AuthController extends Controller
         if (!empty($user->device_token)) {
             $req = new \stdClass();
             $req->device_token = $user->device_token;
-            $req->title = "Kích ho?t tài kho?n !";
-            $req->text = "Tài kho?n c?a b?n ?ã ???c kích ho?t";
+            $req->title = "Kích hoạt tài khoản !";
+            $req->text = "Tài khoản của bạ đã được kích hoạt";
 
             $req->type = "active_user";
             $req->id = $user->id;
@@ -335,7 +361,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         if (!$user) {
-            return response(['result' => false, 'message' => 'Không tìm th?y thông tin tài kho?n']);
+            return response(['result' => false, 'message' => 'Kh?ng t?m th?y th?ng tin t?i kho?n']);
         }
         $user->banned = 1;
         $user->save();
@@ -421,7 +447,7 @@ class AuthController extends Controller
                     'referral_code' => $user->referral_code,
                     'balance' => $user->balance,
                     'best_api_user' => $user->best_api_user,
-                    'created_at' => date('d-m-Y H:i:s',strtotime($user->created_at))
+                    'created_at' => date('d-m-Y H:i:s', strtotime($user->created_at))
                 ]
             ]
         ]);

@@ -63,7 +63,7 @@
                                     <td>{{ translate('User Not found') }}</td>
                                 @endif
                                 <td>{{ date('d-m-Y', strtotime($wallet->created_at)) }}</td>
-                                <td>{{ single_price($wallet->amount) }}</td>
+                                <td>{{ single_price(config_base64_decode($wallet->amount)) }}</td>
                                 <td>{{ ucfirst(str_replace('_', ' ', $wallet ->payment_method)) }}</td>
                                 <td class="text-right">
                                     @if ($wallet->offline_payment)
