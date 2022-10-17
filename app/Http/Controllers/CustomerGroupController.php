@@ -2,6 +2,7 @@
 
     namespace App\Http\Controllers;
 
+    use App\Http\Requests\CustomerGroupRequest;
     use App\Models\CustomerGroup;
     use App\Models\CustomerPackage;
     use Illuminate\Http\Request;
@@ -35,7 +36,7 @@
          * @param \Illuminate\Http\Request $request
          * @return \Illuminate\Http\Response
          */
-        public function store(Request $request)
+        public function store(CustomerGroupRequest $request)
         {
             $customer_group = new CustomerGroup();
             $request->validate([
@@ -77,7 +78,7 @@
          * @param int $id
          * @return \Illuminate\Http\Response
          */
-        public function edit(Request $request, $id)
+        public function edit($id)
         {
             $customer_group = CustomerGroup::findOrFail(decrypt($id));
             return view('backend.customer.customer_groups.edit', compact('customer_group'));
@@ -90,7 +91,7 @@
          * @param int $id
          * @return \Illuminate\Http\Response
          */
-        public function update(Request $request, $id)
+        public function update(CustomerGroupRequest $request, $id)
         {
             $customer_group = CustomerGroup::findOrFail($id);
             $customer_group->name = $request->name;

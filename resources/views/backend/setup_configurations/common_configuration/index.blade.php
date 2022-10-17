@@ -1,11 +1,21 @@
 @extends('backend.layouts.app')
 
 @section('content')
+    @php
+        $count_common_config = \App\Models\CommonConfig::count();
+    @endphp
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <h1 class="h3">{{translate('Cấu hình chung')}}</h1>
             </div>
+            @if($count_common_config <= 1)
+            <div class="col-md-6 text-md-right">
+                <a href="{{ route('common_configs.create') }}" class="btn btn-circle btn-info">
+                    <span>{{translate('Tạo cấu hình chung')}}</span>
+                </a>
+            </div>
+                @endif
         </div>
     </div>
 
@@ -38,7 +48,7 @@
                             <td>{{$common_config->contact_info}}</td>
                             <td class="text-right">
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
-                                   href="{{route('common-configs.edit', encrypt($common_config->id))}}"
+                                   href="{{route('common_configs.edit', encrypt($common_config->id))}}"
                                    title="{{ translate('Edit') }}">
                                     <i class="las la-edit"></i>
                                 </a>
@@ -58,29 +68,5 @@
 
 @section('script')
     <script type="text/javascript">
-        function setup_hidden(el) {
-            let status = 0;
-            if (el.prop("checked")) {
-                status = 1;
-            }
-            $.post('{{ route('customer_groups.setup_hidden') }}', {
-                _token: '{{ csrf_token() }}',
-                id: el.val(),
-                status: status
-            }, function (data) {
-                if (data == 1) {
-                    location.reload();
-                } else {
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
-                    location.reload();
-                }
-            });
-        }
-
-        $(document).on('click', '.status_hidden', function () {
-            setup_hidden($(this));
-        });
-
-
     </script>
 @endsection

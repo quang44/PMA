@@ -16,7 +16,10 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Tên nhóm')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" value="{{$customer_group->name}}"  name="name" required>
+                                <input type="text" class="form-control" value="{{old('name') ? old('name') : $customer_group->name}}"  name="name" >
+                                @error('name')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
@@ -32,7 +35,7 @@
                                         </div>
                                     </div>
                                     <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                    <input type="hidden" value="{{$customer_group ->avatar}}" name="avatar" class="selected-files">
+                                    <input type="hidden" value="{{old('avatar') ? old('avatar') : $customer_group ->avatar}}" name="avatar" class="selected-files">
                                 </div>
                                 <div class="file-preview box sm">
                                 </div>
@@ -41,13 +44,34 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Tiền thưởng')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" value="{{$customer_group->bonus}}" name="bonus" required>
+                                <input type="number" class="form-control" value="{{old('bonus') ? old('bonus') : $customer_group->bonus}}" name="bonus" >
+                                @error('bonus')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Mô tả')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" value="{{$customer_group->description}}" name="description" >
+                                <input type="text" class="form-control" value="{{old('description') ? old('description') : $customer_group->description}}" name="description" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số tiền rút')}} <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <input type=text class="form-control" value="{{old('can_withdraw') ? old('can_withdraw') : $customer_group->can_withdraw}}" name="can_withdraw" >
+                                @error('can_withdraw')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số point')}} <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text"  class="form-control" value="{{old('point_number') ? old('point_number') : $customer_group->point_number}}" name="point_number" >
+                                @error('point_number')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
 

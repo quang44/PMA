@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommonConfigRequest;
 use App\Models\c;
 use App\Models\CommonConfig;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class CommonConfigController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.setup_configurations.common_configuration.create');
     }
 
     /**
@@ -36,9 +37,17 @@ class CommonConfigController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CommonConfigRequest $request)
     {
-        //
+        $common_config = new CommonConfig();
+        $common_config ->logo = $request->logo;
+        $common_config-> unit = $request->unit;
+        $common_config->for_referrer = $request->for_referrer;
+        $common_config->for_activator = $request->for_activator;
+        $common_config->contact_info = $request->contact_info;
+        $common_config->save();
+        flash(translate('Cấu hình chung đã được thiết lập !'))->success();
+        return redirect()->route;
     }
 
     /**
@@ -58,7 +67,7 @@ class CommonConfigController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $common_config = CommonConfig::findOrFail(decrypt($id));
         return view('backend.setup_configurations.common_configuration.edit', compact('common_config'));
@@ -71,7 +80,7 @@ class CommonConfigController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(CommonConfigRequest $request,  $id)
     {
         $common_config = CommonConfig::findOrFail($id);
         $common_config ->logo = $request->logo;
@@ -80,8 +89,8 @@ class CommonConfigController extends Controller
         $common_config->for_activator = $request->for_activator;
         $common_config->contact_info = $request->contact_info;
         $common_config->save();
-        flash(translate('Common Config has been updated successfully'))->success();
-        return back();
+        flash(translate('Cấu hình chung đã được thiết lập !'))->success();
+        return redirect()->route('common_configs.index');
     }
 
     /**

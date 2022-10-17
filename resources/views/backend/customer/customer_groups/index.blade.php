@@ -13,21 +13,6 @@
             </div>
         </div>
     </div>
-    <div id="status_return">
-        @if(session()->has('success'))
-            <div class="success_return" style="background-color: green; padding: 12px;">
-            <span
-                style="color: white">{{session()->has('success') ? session()->get('success') : ''}}</span>
-            </div>
-        @elseif(session()->has('error'))
-            <div style="background-color: #c71414; padding: 12px">
-            <span
-                style="color: white">{{session()->get('error')}}</span>
-            </div>
-        @else
-            <div></div>
-        @endif
-    </div>
 
     <div class="card">
         <div class="card-header">
@@ -42,10 +27,10 @@
                     <th>{{translate('Ảnh đại diện')}}</th>
                     <th>{{translate('Tiền thưởng')}}</th>
                     <th>{{translate('Mô tả')}}</th>
+                    <th>{{translate('Số tiền rút')}}</th>
+                    <th>{{translate('Số point')}}</th>
                     <th>{{translate('Mặc định')}}</th>
                     <th>{{translate('Ẩn')}}</th>
-                    <th data-breakpoints="lg">{{translate('Ngày tạo')}}</th>
-                    <th data-breakpoints="lg">{{translate('Ngày cập nhật')}}</th>
                     <th width="10%">{{translate('Options')}}</th>
                 </tr>
                 </thead>
@@ -60,6 +45,8 @@
                             </td>
                             <td>{{single_price($customer_group->bonus)}}</td>
                             <td>{{$customer_group->description != null ? $customer_group->description : 'Chưa có mô tả !'}}</td>
+                            <td>{{single_price($customer_group->can_withdraw)}}</td>
+                            <td>{{$customer_group->point_number}}</td>
                             <td>
                                 <label class="aiz-switch aiz-switch-success mb-0">
                                     <input class="default" value="{{ $customer_group->id }}" type="checkbox"
@@ -72,8 +59,6 @@
                                            @if($customer_group->status == 1) checked @endif>
                                     <span class="slider round"></span>
                                 </label></td>
-                            <td>{{$customer_group->created_at}}</td>
-                            <td>{{$customer_group->updated_at}}</td>
                             <td class="text-right">
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
                                    href="{{route('customer_groups.edit', encrypt($customer_group->id))}}"

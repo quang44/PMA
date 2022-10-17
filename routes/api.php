@@ -31,11 +31,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
     Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
 
-    Route::group(['prefix' => 'pages', 'middleware' => []], (function () {
-        Route::get('', 'App\Http\Controllers\Api\V2\PageController@index');
-        Route::get('/{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
-    }));
-
     Route::group(['prefix' => 'news', 'middleware' => []], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\NewsController@index');
         Route::get('/{id}', 'App\Http\Controllers\Api\V2\NewsController@show')->where('id', '[0-9]+');
@@ -85,6 +80,8 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
         Route::get('', 'App\Http\Controllers\Api\V2\CustomerBankController@show');
         Route::post('create', 'App\Http\Controllers\Api\V2\CustomerBankController@store');
     }));
+
+
 
     Route::group(['prefix' => 'bank', 'middleware' => []], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\CustomerBankController@index');
@@ -172,6 +169,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::apiResource('colors', 'App\Http\Controllers\Api\V2\ColorController')->only('index');
 
     Route::apiResource('currencies', 'App\Http\Controllers\Api\V2\CurrencyController')->only('index');
+
 
     Route::apiResource('customers', 'App\Http\Controllers\Api\V2\CustomerController')->only('show');
 
@@ -351,15 +349,23 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     // warranty Card
     Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store');
 
-});
+    Route::group(['prefix' => 'customer-groups', 'middleware' => []], (function () {
+        Route::get('', '\App\Http\Controllers\Api\V2\CustomerGroupController@index');
+        Route::get('show-customer-group/{id}', '\App\Http\Controllers\Api\V2\CustomerGroupController@show');
+    }));
 
-Route::fallback(function() {
-    return response()->json([
-        'data' => [],
-        'success' => false,
-        'status' => 404,
-        'message' => 'Invalid Route'
-    ]);
+    Route::group(['prefix' => 'common-config', 'middleware' => []], (function () {
+        Route::get('', '\App\Http\Controllers\Api\V2\CommonConfigController@index');
+    }));
+
+    Route::group(['prefix' => 'statistical', 'middleware' => []], (function () {
+        Route::get('', '\App\Http\Controllers\Api\V2\StatisticalController@index');
+    }));
+
+    Route::group(['prefix' => 'pages', 'middleware' => []], (function () {
+        Route::get('', 'App\Http\Controllers\Api\V2\PageController@index');
+        Route::get('/{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
+    }));
 });
 
 Route::get('notice-new-order', 'App\Http\Controllers\Api\V2\CronJobsController@noticeNewOrder');
@@ -369,3 +375,11 @@ Route::post('telegram-bot', 'App\Http\Controllers\Api\V2\CronJobsController@webh
 Route::get('convert_status', 'App\Http\Controllers\Api\V2\CronJobsController@convertStatus');
 
 
+Route::fallback(function() {
+    return response()->json([
+        'data' => [],
+        'success' => false,
+        'status' => 404,
+        'message' => 'Invalid Route'
+    ]);
+});

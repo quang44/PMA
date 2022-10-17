@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AffiliatePayment;
+use App\Models\Wallet;
+use App\Models\WarrantyCard;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
@@ -46,7 +49,19 @@ class AdminController extends Controller
             return $item;
         });
 
-        return view('backend.dashboard', compact('root_categories', 'cached_graph_data'));
+        $history_withdraws = AffiliatePayment::where('status', 2)->get();
+        $wallet = Wallet::where('id', '>', 0)->get();
+        $total_withdraw = 0;
+        $total_not_withdraw = 0;
+        $total_active = WarrantyCard::where('status', 1)->count();
+        foreach ($history_withdraws as $key => $history_withdraw){
+            $total_withdraw += $history_withdraw->amount;
+        }
+        foreach ($wallet as $key => $not_withdraw){
+            $total_not_withdraw += $not_withdraw->amount;
+        }
+
+        return view('backend.dashboard', compact('root_categories', 'cached_graph_data', 'total_withdraw', 'total_not_withdraw', 'total_active'));
     }
 
     function clearCache(Request $request)

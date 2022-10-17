@@ -282,7 +282,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
 
     Route::resource('common_configs', CommonConfigController::class);
     Route::controller(CommonConfigController::class)->group(function () {
-        Route::get('/common_configs/edit/{id}', 'edit')->name('common-configs.edit');
+        Route::get('/common_configs/edit/{id}', 'edit')->name('common_configs.edit');
+        Route::get('/common_configs/create', 'create')->name('common_configs.create');
     });
 
     //Currency

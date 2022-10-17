@@ -103,3 +103,4 @@ class CouponRequest extends FormRequest
         ]);
     }
 }
+
