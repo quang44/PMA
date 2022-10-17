@@ -24,7 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
     * @var array
     */
     protected $fillable = [
-        'name', 'user_type', 'email', 'customer_package_id', 'password', 'address', 'city', 'postal_code', 'phone', 'country', 'provider_id', 'email_verified_at', 'verification_code', 'balance', 'referred_by', 'referral_code', 'banned'
+       'id', 'name', 'user_type', 'email', 'customer_package_id', 'customer_group_id', 'password', 'address', 'city', 'postal_code', 'phone', 'country', 'provider_id', 'email_verified_at', 'verification_code', 'balance', 'referred_by', 'referral_code', 'banned'
     ];
 
     /**
@@ -90,6 +90,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(CustomerPackage::class);
     }
+
+    public function customer_group()
+    {
+        return $this->belongsTo(CustomerGroup::class);
+    }
+
 
     public function customer_bank()
     {

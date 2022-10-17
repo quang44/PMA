@@ -100,6 +100,7 @@ class ReportController extends Controller
 
 
     public function wallet_transaction_history(Request $request) {
+
         $user_id = null;
         $date_range = null;
 

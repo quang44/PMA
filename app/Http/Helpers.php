@@ -53,6 +53,7 @@ if (!function_exists('areActiveRoutesHome')) {
     }
 }
 
+
 //highlights the selected navigation on frontend
 if (!function_exists('default_language')) {
     function default_language()
@@ -1178,6 +1179,26 @@ if (!function_exists('get_url_params')) {
         return $query_params[$key] ?? '';
     }
 }
+// encode md5
+if (!function_exists('config_base64_encode')) {
+    function config_base64_encode($text)
+    {
+        $data= strtoupper(md5(rand(0,1000))."bdh").base64_encode($text) ;
+        return  $data;
+    }
+}
+
+// decode md5
+if (!function_exists('config_base64_decode')) {
+    function config_base64_decode($text)
+    {
+        $result=substr($text,35);
+        return base64_decode($result);
+    }
+}
+
+
+
 
 function hidePhone($string, $start, $total)
 {
