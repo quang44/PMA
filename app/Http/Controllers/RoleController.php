@@ -40,7 +40,8 @@ class RoleController extends Controller
         if($request->has('permissions')){
             $role = new Role;
             $role->name = $request->name;
-            $role->permissions = json_encode($request->permissions);
+          $permission=  $role->permissions = json_encode($request->permissions);
+
             $role->save();
 
             $role_translation = RoleTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'role_id' => $role->id]);
@@ -75,6 +76,7 @@ class RoleController extends Controller
     public function edit(Request $request, $id)
     {
         $lang = $request->lang;
+
         $role = Role::findOrFail($id);
         return view('backend.staff.staff_roles.edit', compact('role','lang'));
     }
@@ -88,6 +90,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+
         $role = Role::findOrFail($id);
 
         if($request->has('permissions')){

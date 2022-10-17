@@ -155,6 +155,7 @@
                                 {{ single_price($order->customer_total_fee) }}
                             </td>
                             <td>
+                                {{$order->status}}
                                 @if($order->status == \App\Utility\OrderDeliveryUtility::STATUS_DELIVERED)
                                     <span class="badge badge-inline badge-success">{{ $status_delivery[$order->status] ?? '' }}</span>
                                 @elseif($order->status == \App\Utility\OrderDeliveryUtility::STATUS_CANCEL)
@@ -170,6 +171,7 @@
                                 @endif
                             </td>
                             <td>
+                                {{$order->status_payment}}
                                 @if($order->status_payment == \App\Utility\OrderDeliveryUtility::STATUS_PAYMENT_PENDING)
                                     <span class="badge badge-inline badge-warning">{{ $status_payment[$order->status_payment] ?? '' }}</span>
                                 @elseif($order->status_payment == \App\Utility\OrderDeliveryUtility::STATUS_PAYMENT_CONFIRM)

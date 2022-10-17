@@ -18,11 +18,12 @@ class WalletController extends Controller
             'last_recharged' => $latest == null ? "Not Available" : $latest->created_at->diffForHumans(),
         ]);
     }
-
+//  lịch sử
     public function walletRechargeHistory()
     {
         return new WalletCollection(Wallet::where('user_id', auth()->user()->id)->latest()->paginate(10));
     }
+
 
     public function processPayment(Request $request)
     {
@@ -30,12 +31,12 @@ class WalletController extends Controller
         $user = User::find($request->user_id);
 
         if ($user->balance >= $request->amount) {
-            
-            $response =  $order->store($request, true);            
+
+            $response =  $order->store($request, true);
             $decoded_response = $response->original;
             if ($decoded_response['result'] == true) { // only decrease user balance with a success
                 $user->balance -= $request->amount;
-                $user->save();            
+                $user->save();
             }
 
             return $response;

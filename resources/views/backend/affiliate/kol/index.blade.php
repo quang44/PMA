@@ -103,6 +103,7 @@
                                 <td>{{$user->email}}</td>
                                 <td><a href="{{ route('customers.index', ['referred_by' => $user->id])}}">{{$user->phone}}</a></td>
                                 <td>{{$employee[$user->referred_by] ?? ''}}</td>
+
                                 <td>
                                     {{ $user->referral_code }}
                                 </td>

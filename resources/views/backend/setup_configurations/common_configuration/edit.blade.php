@@ -26,7 +26,7 @@
                                         </div>
                                     </div>
                                     <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                    <input type="hidden" name="logo" class="selected-files" value="{{ $common_config->logo }}">
+                                    <input type="hidden" name="logo" class="selected-files" value="{{ old('logo') ? old('logo') : $common_config->logo }}">
                                 </div>
                                 <div class="file-preview box sm">
                                 </div>
@@ -35,25 +35,34 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Đơn vị tiền')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" value="{{ $common_config->unit }}"  name="unit" required>
+                                <input type="text" class="form-control" value="{{old('unit') ? old('unit') : $common_config->unit }}"  name="unit">
+                                @error('unit')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Số point cho người giới thiệu')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" value="{{ $common_config->for_referrer }}"  name="for_referrer" required>
+                                <input type="text" class="form-control" value="{{old('for_referrer') ? old('for_referrer') : $common_config->for_referrer }}"  name="for_referrer">
+                                @error('for_referrer')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Số point cho người kích hoạt bảo hiểm')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" value="{{ $common_config->for_activator }}"  name="for_activator" required>
+                                <input type="text" class="form-control" value="{{old('for_activator') ? old('for_activator') : $common_config->for_activator }}"  name="for_activator">
+                                @error('for_activator')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Thông tin liên hệ')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" value="{{ $common_config->contact_info }}"  name="contact_info" required>
+                                <input type="text" class="form-control" value="{{old('contact_info') ? old('contact_info') : $common_config->contact_info }}"  name="contact_info" required>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">

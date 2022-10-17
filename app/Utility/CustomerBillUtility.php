@@ -13,6 +13,6 @@ class CustomerBillUtility
     public static $aryStatus = [
         self::STATUS_NEW => 'Chưa thanh toán',
         self::STATUS_SUCCESS => 'Đã thanh toán',
-        //self::STATUS_CANCEL => 'Hủy thanh toán',
+        self::STATUS_CANCEL => 'Hủy thanh toán',
     ];
 }

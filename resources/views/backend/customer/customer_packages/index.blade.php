@@ -52,7 +52,12 @@
             if (el.prop("checked")) {
                 status = 1;
             }
+<<<<<<< HEAD
+            $.post('{{ route('customer_packages.update_default') }}', {_token:'{{ csrf_token() }}',
+                id:el.value, status:status}, function(data){
+=======
             $.post('{{ route('customer_packages.update_default') }}', {_token:'{{ csrf_token() }}', id:el.val(), status:status}, function(data){
+>>>>>>> 299bbe29422b0408eba09a5f65c9ae5846686622
                 if(data == 1){
                     location.reload();
                 }

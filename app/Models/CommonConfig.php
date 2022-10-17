@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class CommonConfig extends Model
 {
     use HasFactory;
+
 }

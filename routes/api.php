@@ -31,11 +31,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
     Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
 
-    Route::group(['prefix' => 'pages', 'middleware' => []], (function () {
-        Route::get('', 'App\Http\Controllers\Api\V2\PageController@index');
-        Route::get('/{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
-    }));
-
     Route::group(['prefix' => 'news', 'middleware' => []], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\NewsController@index');
         Route::get('/{id}', 'App\Http\Controllers\Api\V2\NewsController@show')->where('id', '[0-9]+');
@@ -348,7 +343,37 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::post('business-settings', 'App\Http\Controllers\Api\V2\ConfigController@business_settings');
     //Pickup Point list
     Route::get('pickup-list', 'App\Http\Controllers\Api\V2\ShippingController@pickup_list');
+
+    // warranty bill
+    Route::apiResource('warranty_bill', 'App\Http\Controllers\Api\V2\WarrantyBillController')->only('index','store');
+    // warranty Card
+    Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store');
+
+    Route::group(['prefix' => 'customer-groups', 'middleware' => []], (function () {
+        Route::get('', '\App\Http\Controllers\Api\V2\CustomerGroupController@index');
+        Route::get('show-customer-group/{id}', '\App\Http\Controllers\Api\V2\CustomerGroupController@show');
+    }));
+
+    Route::group(['prefix' => 'common-config', 'middleware' => []], (function () {
+        Route::get('', '\App\Http\Controllers\Api\V2\CommonConfigController@index');
+    }));
+
+    Route::group(['prefix' => 'statistical', 'middleware' => []], (function () {
+        Route::get('', '\App\Http\Controllers\Api\V2\StatisticalController@index');
+    }));
+
+    Route::group(['prefix' => 'pages', 'middleware' => []], (function () {
+        Route::get('', 'App\Http\Controllers\Api\V2\PageController@index');
+        Route::get('/{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
+    }));
 });
+
+Route::get('notice-new-order', 'App\Http\Controllers\Api\V2\CronJobsController@noticeNewOrder');
+Route::get('delete-user', 'App\Http\Controllers\Api\V2\CronJobsController@deleteUser');
+Route::get('notification-order', 'App\Http\Controllers\Api\V2\CronJobsController@notificationOrder');
+Route::post('telegram-bot', 'App\Http\Controllers\Api\V2\CronJobsController@webhookTelegram');
+Route::get('convert_status', 'App\Http\Controllers\Api\V2\CronJobsController@convertStatus');
+
 
 Route::fallback(function() {
     return response()->json([
@@ -358,13 +383,3 @@ Route::fallback(function() {
         'message' => 'Invalid Route'
     ]);
 });
-
-Route::get('notice-new-order', 'App\Http\Controllers\Api\V2\CronJobsController@noticeNewOrder');
-Route::get('delete-user', 'App\Http\Controllers\Api\V2\CronJobsController@deleteUser');
-Route::get('notification-order', 'App\Http\Controllers\Api\V2\CronJobsController@notificationOrder');
-Route::post('telegram-bot', 'App\Http\Controllers\Api\V2\CronJobsController@webhookTelegram');
-Route::get('convert_status', 'App\Http\Controllers\Api\V2\CronJobsController@convertStatus');
-
-Route::group(['prefix' => 'customer-groups', 'middleware' => []], (function () {
-    Route::get('', '\App\Http\Controllers\Api\V2\CustomerGroupController@list_cus_gr');
-}));

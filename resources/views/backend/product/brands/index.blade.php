@@ -29,7 +29,9 @@
 		                <tr>
 		                    <th>#</th>
 		                    <th>{{translate('Name')}}</th>
+                            <th>{{translate('Code')}}</th>
 		                    <th>{{translate('Logo')}}</th>
+                            <th>{{translate('Status')}}</th>
 		                    <th class="text-right">{{translate('Options')}}</th>
 		                </tr>
 		            </thead>
@@ -38,9 +40,16 @@
 		                    <tr>
 		                        <td>{{ ($key+1) + ($brands->currentPage() - 1)*$brands->perPage() }}</td>
 		                        <td>{{ $brand->getTranslation('name') }}</td>
+                                <td>{{ $brand->code }}</td>
 								<td>
 		                            <img src="{{ uploaded_asset($brand->logo) }}" alt="{{translate('Brand')}}" class="h-50px">
 		                        </td>
+                                <td>
+                                    <label class="aiz-switch aiz-switch-success mb-0">
+                                        <input value="4" type="checkbox" @if($brand->status==1) checked @endif onclick="ChangeStatus( {{$brand->id}},{{$brand->status}})" >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
 		                        <td class="text-right">
 		                            <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('brands.edit', ['id'=>$brand->id, 'lang'=>env('DEFAULT_LANGUAGE')] )}}" title="{{ translate('Edit') }}">
 		                                <i class="las la-edit"></i>
@@ -68,7 +77,7 @@
 				<form action="{{ route('brands.store') }}" method="POST">
 					@csrf
 					<div class="form-group mb-3">
-						<label for="name">{{translate('Name')}}</label>
+						<label for="name">{{translate('Name')}} <small class="text-danger">*</small>  </label>
 						<input type="text" placeholder="{{translate('Name')}}" name="name" class="form-control" required>
 					</div>
 					<div class="form-group mb-3">
@@ -111,5 +120,24 @@
     function sort_brands(el){
         $('#sort_brands').submit();
     }
+    function  ChangeStatus(id,status) {
+        if(status==0){
+            status=1;
+        }else{
+            status=0;
+        }
+        $.post('{{ route('brands.update_status') }}', {_token:'{{ csrf_token() }}',
+            id:id, status:status}, function(data){
+            if(data.result == 1){
+                location.reload()
+                AIZ.plugins.notify('success', '{{ translate('update status successfully') }}');
+            } else{
+                location.reload()
+                AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+            }
+        });
+
+    }
+
 </script>
 @endsection

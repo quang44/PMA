@@ -82,6 +82,7 @@ class ProfileController extends Controller
             $user->password = Hash::make($request->new_password);
         }
         $user->avatar_original = $request->avatar;
+
         if($user->save()){
             flash(translate('Your Profile has been updated successfully!'))->success();
             return back();

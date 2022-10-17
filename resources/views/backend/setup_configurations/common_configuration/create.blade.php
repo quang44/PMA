@@ -25,7 +25,7 @@
                                         </div>
                                     </div>
                                     <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                    <input type="hidden" name="logo" class="selected-files">
+                                    <input type="hidden" name="logo" value="{{old('logo')}}" class="selected-files">
                                 </div>
                                 <div class="file-preview box sm">
                                 </div>
@@ -34,29 +34,38 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Đơn vị tiền')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="unit" >
+                                <input type="text" class="form-control" value="{{old('unit')}}" name="unit" >
+                                @error('unit')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Số point cho người giới thiệu')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control"  name="for_referrer" >
+                                <input type="text" class="form-control" value="{{old('for_referrer')}}" name="for_referrer" >
+                                @error('for_referrer')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Số point cho người kích hoạt bảo hiểm')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control"  name="for_activator" >
+                                <input type="text" class="form-control" value="{{old('for_activator')}}" name="for_activator" >
+                                @error('for_activator')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Thông tin liên hệ')}} </label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control"  name="contact_info" >
+                                <input type="text" class="form-control" value="{{old('contact_info')}}" name="contact_info" >
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Update')}}</button>
+                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
                         </div>
                     </div>
 

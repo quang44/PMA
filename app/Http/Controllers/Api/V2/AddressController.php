@@ -10,7 +10,6 @@ use App\Http\Resources\V2\WardsCollection;
 use App\Http\Resources\V2\AddressCollection;
 use App\Models\Address;
 use App\Models\AddressSearch;
-use App\Models\CustomerGroup;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\Ward;

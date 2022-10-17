@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WarrantyCard;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\BrandTranslation;
@@ -54,7 +55,7 @@ class BrandController extends Controller
         else {
             $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
         }
-
+        $brand->code= preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $request->name)).Str::random(5);
         $brand->logo = $request->logo;
         $brand->save();
 
@@ -108,10 +109,10 @@ class BrandController extends Controller
         $brand->meta_description = $request->meta_description;
         if ($request->slug != null) {
             $brand->slug = strtolower($request->slug);
-        }
-        else {
+        } else {
             $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
         }
+        $brand->code= preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $request->name)).Str::random(5);
         $brand->logo = $request->logo;
         $brand->save();
 
@@ -124,6 +125,22 @@ class BrandController extends Controller
 
     }
 
+
+    function updateStatus(Request $request){
+        $brand=Brand::find($request->id);
+        if($brand!=null){
+            $brand->status= $request->status;
+            $brand->save();
+            return response([
+                'result'=>1,
+            ]);
+        }else{
+            return response([
+                'result'=>0,
+            ]);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -134,11 +151,12 @@ class BrandController extends Controller
     {
         $brand = Brand::findOrFail($id);
         Product::where('brand_id', $brand->id)->delete();
+        WarrantyCard::where('brand_id', $brand->id)->delete();
         foreach ($brand->brand_translations as $key => $brand_translation) {
             $brand_translation->delete();
         }
-        Brand::destroy($id);
 
+        Brand::destroy($id);
         flash(translate('Brand has been deleted successfully'))->success();
         return redirect()->route('brands.index');
 

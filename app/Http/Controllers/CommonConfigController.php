@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommonConfigRequest;
 use App\Models\c;
 use App\Models\CommonConfig;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class CommonConfigController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CommonConfigRequest $request)
     {
         $common_config = new CommonConfig();
         $common_config ->logo = $request->logo;
@@ -66,7 +67,7 @@ class CommonConfigController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $common_config = CommonConfig::findOrFail(decrypt($id));
         return view('backend.setup_configurations.common_configuration.edit', compact('common_config'));
@@ -79,7 +80,7 @@ class CommonConfigController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(CommonConfigRequest $request,  $id)
     {
         $common_config = CommonConfig::findOrFail($id);
         $common_config ->logo = $request->logo;

@@ -47,8 +47,13 @@ use App\Http\Controllers\OrderDeliveryController;
 use App\Http\Controllers\CustomerBillController;
 use App\Http\Controllers\PartnerBillController;
 use App\Http\Controllers\BankController;
+
+use App\Http\Controllers\WarrantyBillController;
+use \App\Http\Controllers\WarrantyCardController;
+
 use App\Http\Controllers\CustomerGroupController;
 use App\Http\Controllers\CommonConfigController;
+
 
 /*
   |--------------------------------------------------------------------------
@@ -67,8 +72,11 @@ Route::controller(UpdateController::class)->group(function () {
     Route::get('/update/step2', 'step2')->name('update.step2');
 });
 
-Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
+
+Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin' ]);
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
+
+
 
     // category
     Route::resource('categories', CategoryController::class);
@@ -83,6 +91,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::controller(BrandController::class)->group(function () {
         Route::get('/brands/edit/{id}', 'edit')->name('brands.edit');
         Route::get('/brands/destroy/{id}', 'destroy')->name('brands.destroy');
+        Route::post('/brands/update_status', 'updateStatus')->name('brands.update_status');
     });
 
     // Products
@@ -194,6 +203,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::post('partner_bill/create', 'store')->name('partner_bill.create');
         Route::post('partner_bill/cancel/{id}', 'cancel')->name('partner_bill.cancel');
         Route::get('partner_bill/{id}', 'show')->name('partner_bill.show');
+
+
+    });
+
+    //       Warranty
+    Route::controller(WarrantyBillController::class)->group(function () {
+        Route::get('warranty_bill', 'paymentWarranty')->name('warranty_bill.index');
+        Route::get('warranty_bill/{id}', 'show')->name('warranty_bill.show');
+        Route::post('warranty_bill/{id}', 'updateWarranty')->name('warranty_bill.update');
+        Route::post('cancel_warranty_bill/{id}', 'cancelWarranty')->name('warranty_bill.cancel');
+    });
+
+    //       Warranty card
+    Route::controller(WarrantyCardController::class)->group(function () {
+        Route::get('warranty_card', 'index')->name('warranty_card.index');
+        Route::get('warranty_card/create', 'create')->name('warranty_card.create');
+        Route::post('warranty_card/store', 'store')->name('warranty_card.store');
+        Route::get('warranty_card/show/{id}', 'show')->name('warranty_card.show');
+        Route::get('warranty_card/{id}', 'edit')->name('warranty_card.edit');
+        Route::put('warranty_card/{id}', 'update')->name('warranty_card.update');
+
+        Route::get('warranty_card/ban/{id}', 'ban')->name('warranty_card.ban');
+        Route::get('warranty_card/destroy/{id}', 'destroy')->name('warranty_card.destroy');
     });
 
     // Newsletter
@@ -402,6 +434,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
         Route::get('/user_search_report', 'user_search_report')->name('user_search_report.index');
         Route::get('/wallet-history', 'wallet_transaction_history')->name('wallet-history.index');
         Route::get('/commission-log', 'commission_history')->name('commission-log.index');
+//        Route::get('/', 'commission_history')->name('commission-log.index');
+
     });
 
     //Blog Section
