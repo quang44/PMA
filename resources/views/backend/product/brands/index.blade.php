@@ -89,8 +89,8 @@
 							<div class="form-control file-amount">{{ translate('Choose File') }}</div>
 							<input type="hidden" name="logo" class="selected-files">
 						</div>
-						<div class="file-preview box sm">
-						</div>
+{{--						<div class="file-preview box sm">--}}
+{{--						</div>--}}
 					</div>
 					<div class="form-group mb-3">
 						<label for="name">{{translate('Meta Title')}}</label>

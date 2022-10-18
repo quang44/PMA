@@ -18,6 +18,7 @@ class WalletController extends Controller
             'last_recharged' => $latest == null ? "Not Available" : $latest->created_at->diffForHumans(),
         ]);
     }
+
 //  lịch sử
     public function walletRechargeHistory()
     {

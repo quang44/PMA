@@ -6,6 +6,8 @@
         <div class=" col-md-6 align-items-center">
             <h1 class="h3">{{translate('Danh sách thẻ bảo hành')}}</h1>
         </div>
+
+
         <div class="col-md-6 text-md-right">
             <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">
                 <span>Add New Card</span>
@@ -19,6 +21,7 @@
                 <div class="col">
                     <h5 class="mb-0 h6">{{translate('Thẻ bảo hành')}}</h5>
                 </div>
+
 
 
                 <div class="col-md-3">
@@ -195,7 +198,9 @@
 @endsection
 
 @section('script')
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
     <script type="text/javascript">
+
 
         {{--$('#form-api').on('submit',function (e) {--}}
         {{--    e.preventDefault()--}}

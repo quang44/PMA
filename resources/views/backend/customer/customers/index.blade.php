@@ -3,9 +3,18 @@
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
-    <div class="align-items-center">
-        <h1 class="h3">{{translate('Tất cả shop')}}</h1>
-    </div>
+  <div class="row">
+      <div class="col-md-6 align-items-center">
+          <h1 class="h3">{{translate('Tất cả Shop')}}</h1>
+      </div>
+
+      <div class="col-md-6 text-md-right">
+          <a href="{{ route('customers.create') }}" class="btn btn-circle btn-info">
+              <span>{{translate('Thêm người dùng')}}</span>
+          </a>
+      </div>
+
+  </div>
 </div>
 
 
@@ -87,7 +96,7 @@
                                                         </div>
                                                     </div>
                                                 </th>-->
-                        <th>{{translate('Tên shop')}}</th>
+                        <th>{{translate('Tên người dùng')}}</th>
                         <th data-breakpoints="lg">{{translate('Email')}}</th>
                         <th data-breakpoints="lg">{{translate('Số điện thoại')}}</th>
                         <th data-breakpoints="lg">{{translate('Tài khoản ngân hàng')}}</th>
@@ -95,6 +104,7 @@
                         <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
                         <th data-breakpoints="lg">{{translate('Kol giới thiệu')}}</th>
                         <th data-breakpoints="lg">{{translate('Gói')}}</th>
+                        <th data-breakpoints="lg">{{translate('Thuộc nhóm')}}</th>
                         <th data-breakpoints="lg">{{translate('Ngày tạo')}}</th>
                         <th data-breakpoints="lg">{{translate('Ngày cập nhật')}}</th>
                         <th data-breakpoints="lg">{{translate('Người cập nhật')}}</th>
@@ -163,6 +173,11 @@
                                 <td>
                                     @if ($user->customer_package != null)
                                         {{$user->customer_package->getTranslation('name')}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($user->customer_group != null)
+                                        {{$user->customer_group->name}}
                                     @endif
                                 </td>
                                 <td>{{ $user->created_at }}</td>

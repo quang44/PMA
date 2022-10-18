@@ -174,6 +174,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     // Customer
     Route::resource('customers', CustomerController::class);
     Route::controller(CustomerController::class)->group(function () {
+        Route::post('customers_store', 'addNewCustomer')->name('customers.addNew');
         Route::get('customers_ban/{customer}', 'ban')->name('customers.ban');
         Route::get('customers_update_bank/{customer}', 'bank')->name('customers.bank');
         Route::post('update-package', 'updatePackage')->name('customers.update_package');

@@ -33,7 +33,7 @@ class AuthController extends Controller
 
 
 
-        $common_config = CommonConfig::where('unit', 'Point')->first();
+        $common_config = CommonConfig::first();
 
         $user = User::where('phone', $request->phone)->first();
         if ($user != null) {
@@ -73,7 +73,7 @@ class AuthController extends Controller
                 if (!$kol) {
                     return response()->json([
                         'result' => false,
-                        'message' => 'Không tìm thấy thông tin người giới thiệu',
+                        'message' => translate('Không tìm thấy thông tin người giới thiệu'),
                         'data' => null
                     ], 200);
 
@@ -83,6 +83,9 @@ class AuthController extends Controller
                     $point=config_base64_decode($walletKol->amount);
                     $amount= (int)$point += $common_config->for_referrer;
                     $walletKol->amount =config_base64_encode($amount);
+                    $walletKol->payment_method=translate('Hệ thống');
+                    $walletKol->user_type='kol';
+                    $walletKol->note=translate('Giới thiệu');
                     $walletKol->save();
                     $referred_by = $kol->id;
 
@@ -115,6 +118,8 @@ class AuthController extends Controller
         $wallet->user_id = $user->id;
         $amount=  $referred_by != 0 ? $customerGroup->point_number + $common_config->for_activator : $customerGroup->point_number;
         $wallet->amount = config_base64_encode($amount);
+        $wallet->payment_method=translate('Hệ thống');
+        $wallet->note=translate('đăng ký tài khoản thành công');
         $wallet->save();
 
         /*if ($request->register_by == 'email') {
@@ -316,7 +321,7 @@ class AuthController extends Controller
             $req = new \stdClass();
             $req->device_token = $user->device_token;
             $req->title = "Kích hoạt tài khoản !";
-            $req->text = "Tài khoản của bạ đã được kích hoạt";
+            $req->text = "Tài khoản của bạn đã được kích hoạt";
 
             $req->type = "active_user";
             $req->id = $user->id;

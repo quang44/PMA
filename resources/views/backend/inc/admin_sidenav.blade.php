@@ -364,7 +364,7 @@
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('customers.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Danh sách shop') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Danh sách Shop') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
