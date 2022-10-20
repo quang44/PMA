@@ -43,12 +43,9 @@ class AuthController extends Controller
 
         $package = CustomerPackage::where('default', 1)->first();
         $group = CustomerGroup::where('default', 1)->first();
-
-
         $user_type = $request->user_type ?? 'customer';
         $referral_code = $request->referral_code;
         $referred_by = 0;
-
         if ($user_type == 'kol') {
             if (!empty($referral_code)) {
                 $employee = User::where('user_type', 'employee')->where('referral_code', $referral_code)->first();

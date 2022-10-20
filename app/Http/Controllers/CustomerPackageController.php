@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerPackageRequest;
 use App\Utility\PayfastUtility;
 use Illuminate\Http\Request;
 use App\Models\CustomerPackage;
-use App\Models\CustomerPackageTranslation;
 use App\Models\CustomerPackagePayment;
 use Auth;
 use Session;
@@ -14,7 +14,6 @@ use App\Http\Controllers\PublicSslCommerzPaymentController;
 use App\Http\Controllers\InstamojoController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\VoguePayController;
-use App\Utility\PayhereUtility;
 
 class CustomerPackageController extends Controller
 {
@@ -45,23 +44,18 @@ class CustomerPackageController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CustomerPackageRequest $request)
     {
-
         $customer_package = new CustomerPackage;
         $customer_package->name = $request->name;
-        $customer_package->fee = $request->fee;
-        /*$customer_package->default = $request->product_upload;
-        $customer_package->logo = $request->logo;*/
-
+        $customer_package->avatar = $request->avatar;
+        $customer_package->bonus = $request->bonus;
+        $customer_package->description = $request->description;
+        $customer_package->withdraw = $request->withdraw;
+        $customer_package->point = $request->point;
         $customer_package->save();
 
-        $customer_package_translation = CustomerPackageTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'customer_package_id' => $customer_package->id]);
-        $customer_package_translation->name = $request->name;
-        $customer_package_translation->save();
-
-
-        flash(translate('Package has been inserted successfully'))->success();
+        flash(translate('Customer group has been inserted successfully'))->success();
         return redirect()->route('customer_packages.index');
     }
 
@@ -84,9 +78,8 @@ class CustomerPackageController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $lang = $request->lang;
         $customer_package = CustomerPackage::findOrFail($id);
-        return view('backend.customer.customer_packages.edit', compact('customer_package', 'lang'));
+        return view('backend.customer.customer_packages.edit', compact('customer_package'));
     }
 
     /**
@@ -96,23 +89,18 @@ class CustomerPackageController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CustomerPackageRequest $request, $id)
     {
         $customer_package = CustomerPackage::findOrFail($id);
-        if ($request->lang == env("DEFAULT_LANGUAGE")) {
-            $customer_package->name = $request->name;
-        }
-        $customer_package->fee = $request->fee;
-        /*$customer_package->product_upload = $request->product_upload;
-        $customer_package->logo = $request->logo;*/
-
+        $customer_package->name = $request->name;
+        $customer_package->avatar = $request->avatar;
+        $customer_package->bonus = $request->bonus;
+        $customer_package->description = $request->description;
+        $customer_package->withdraw = $request->withdraw;
+        $customer_package->point = $request->point;
         $customer_package->save();
 
-        $customer_package_translation = CustomerPackageTranslation::firstOrNew(['lang' => $request->lang, 'customer_package_id' => $customer_package->id]);
-        $customer_package_translation->name = $request->name;
-        $customer_package_translation->save();
-
-        flash(translate('Package has been updated successfully'))->success();
+        flash(translate('Customer group has been updated successfully'))->success();
         return back();
     }
 
@@ -130,7 +118,7 @@ class CustomerPackageController extends Controller
         }
         CustomerPackage::destroy($id);
 
-        flash(translate('Package has been deleted successfully'))->success();
+        flash(translate('Customer group has been deleted successfully'))->success();
         return redirect()->route('customer_packages.index');
     }
 
@@ -187,14 +175,39 @@ class CustomerPackageController extends Controller
         return redirect()->route('customer_products.index');
     }
 
-    public function update_default(Request $request){
-        if($request->status == 1){
-            CustomerPackage::where('id', '>', 0)->update(['default' => 0]);
-        }
+    public function setup_hidden(Request $request)
+    {
         $customer_package = CustomerPackage::findOrFail($request->id);
-        $customer_package->default = (int) $request->status;
-        if($customer_package->save()){
-            flash(translate('Package updated successfully'))->success();
+        if ($customer_package->default != 0) {
+            flash(translate('Nhóm người dùng mặc định không được ở trạng thái ẩn !'))->error();
+            return 0;
+        }
+        $customer_package->status = (int)$request->status;
+        if ($customer_package->save()) {
+            flash(translate('Trạng thái ẩn nhóm người dùng được thay đổi !'))->success();
+            return 1;
+        }
+        return 0;
+    }
+
+    public function setup_default(Request $request)
+    {
+
+        $customer_package = CustomerPackage::findOrFail($request->id);
+        if ($customer_package->status != 0) {
+            flash(translate('Nhóm người dùng mặc định không được ở trạng thái ẩn !'))->error();
+            return 0;
+        } elseif ($customer_package->default != 0) {
+            flash(translate('Nhóm người dùng đang ở chế độ mặc định !'))->error();
+            return 0;
+        } else {
+            if ($request->status == 1) {
+                CustomerPackage::where('id', '>', 0)->update(['default' => 0]);
+            }
+        }
+        $customer_package->default = (int)$request->status;
+        if ($customer_package->save()) {
+            flash(translate('Nhóm người dùng đã được cài làm mặc định !'))->success();
             return 1;
         }
         return 0;

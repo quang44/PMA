@@ -527,20 +527,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::resource('customer_packages', CustomerPackageController::class);
     Route::controller(CustomerPackageController::class)->group(function () {
         Route::get('/customer_packages/edit/{id}', 'edit')->name('customer_packages.edit');
+        Route::get('/customer_packages/create', 'create')->name('customer_packages.create');
         Route::get('/customer_packages/destroy/{id}', 'destroy')->name('customer_packages.destroy');
-        Route::post('/customer_packages/update_default', 'update_default')->name('customer_packages.update_default');
-    });
-    //Customer Group
-    Route::resource('customer_groups', CustomerGroupController::class);
-    Route::controller(CustomerGroupController::class)->group(function () {
-        Route::get('/customer_groups/edit/{id}', 'edit')->name('customer_groups.edit');
-        Route::get('/customer_groups/destroy/{id}', 'destroy')->name('customer_groups.destroy');
-        Route::post('/customer_groups/setup_hidden', 'setup_hidden')->name('customer_groups.setup_hidden');
-        Route::post('/customer_groups/setup_default', 'setup_default')->name('customer_groups.setup_default');
-        Route::get('/customer_groups/config/withdraw', 'withdraw')->name('customer_groups.withdraw');
-        Route::post('/customer_groups/config/withdraw', 'update_withdraw')->name('customer_groups.update_withdraw');
-        Route::get('/customer_groups/config/point', 'config_point')->name('customer_groups.config_point');
-        Route::post('/customer_groups/config/point', 'update_point')->name('customer_groups.update_point');
+        Route::post('/customer_packages/setup_hidden', 'setup_hidden')->name('customer_packages.setup_hidden');
+        Route::post('/customer_packages/setup_default', 'setup_default')->name('customer_packages.setup_default');
     });
 
     //Classified Products
