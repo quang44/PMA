@@ -25,7 +25,7 @@ class WarrantyCardController extends Controller
             $warranty_cards =$warranty_cards->where('status',$status);
         }
 
-        $warranty_cards=$warranty_cards->with('brand')->get();
+        $warranty_cards=$warranty_cards->with('brand','uploads')->get();
 
         return view('backend.customer.warranty_cards.index',compact('warranty_cards','search','status'));
 
@@ -63,9 +63,10 @@ class WarrantyCardController extends Controller
         $Warranty->address = $request->address;
         $Warranty->seri = $request->seri;
         $Warranty->brand_id = $request->brand_id;
-        $Warranty->qr_code_image = $request->qr_code_image;
-        $Warranty->seri_image = $request->seri_image;
+//        $Warranty->qr_code_image = $request->qr_code_image;
+//        $Warranty->seri_image = $request->seri_image;
         $Warranty->save();
+        uploadMultipleImage($request->image,$Warranty->id,$path='uploads/warranty');
 
         flash(translate('Card has been add new successfully'))->success();
         return redirect()->route('warranty_card.index');

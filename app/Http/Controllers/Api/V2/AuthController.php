@@ -30,9 +30,6 @@ class AuthController extends Controller
     public function signup(AuthRequest $request)
     {
 
-
-
-
         $common_config = CommonConfig::first();
 
         $user = User::where('phone', $request->phone)->first();
@@ -45,7 +42,7 @@ class AuthController extends Controller
         }
 
         $package = CustomerPackage::where('default', 1)->first();
-        $group = CustomerGroup::where('default', 1)->first();
+//        $group = CustomerGroup::where('default', 1)->first();
 
 
         $user_type = $request->user_type ?? 'customer';
@@ -107,7 +104,7 @@ class AuthController extends Controller
             'email_verified_at' => date('Y-m-d H:i:s'),
             'verification_code' => null,//rand(1000, 9999),
             'customer_package_id' => $package->id,
-            'customer_group_id' => $group->id
+//            'customer_group_id' => $group->id
         ]);
         $user->save();
 //return response([
@@ -249,13 +246,15 @@ class AuthController extends Controller
 
                 }
                 if ($request->device_token) {
+//                    return response([
+//                        'token'=>$request->device_token
+//                    ]);
                     $user->device_token = $request->device_token;
                     $user->save();
                 }
                 return $this->loginSuccess($user);
             } else {
                 return response()->json(['result' => false, 'message' => translate('Tài khoản hoặc mật khẩu không chính xác'), 'data' => null], 401);
-
             }
         } else {
             return response()->json(['result' => false, 'message' => translate('User not found'), 'data' => null], 401);
@@ -307,9 +306,9 @@ class AuthController extends Controller
                 'phone' => $user->phone,
                 'referred_by' => $user->referred_by,
                 'referral_code' => $user->referral_code,
-                'balance' => $user->balance,
-                'best_api_user' => $user->best_api_user,
-                'created_at' => $user->created_at
+//                'balance' => $user->balance,
+//                'best_api_user' => $user->best_api_user,
+                'created_at' => date('d-m-Y H:i:s',strtotime($user->created_at))
             ]
         ]);
     }
@@ -366,7 +365,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         if (!$user) {
-            return response(['result' => false, 'message' => 'Kh?ng t?m th?y th?ng tin t?i kho?n']);
+            return response(['result' => false, 'message' => translate('Không tìm thấy thông tin tài khoản')]);
         }
         $user->banned = 1;
         $user->save();

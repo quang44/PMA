@@ -44,7 +44,7 @@
                                 <img src="{{ uploaded_asset($customer_group->avatar) }}" alt="avatar" class="h-50px">
                             </td>
                             <td>{{single_price($customer_group->bonus)}}</td>
-                            <td>{{$customer_group->description != null ? $customer_group->description : 'Chưa có mô tả !'}}</td>
+                            <td @if(!$customer_group->description) style="color: red" @endif">{{$customer_group->description != null ? $customer_group->description : 'Chưa có mô tả !'}}</td>
                             <td>{{single_price($customer_group->can_withdraw)}}</td>
                             <td>{{$customer_group->point_number}}</td>
                             <td>

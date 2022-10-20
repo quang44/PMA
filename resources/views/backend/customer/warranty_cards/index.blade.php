@@ -8,11 +8,11 @@
         </div>
 
 
-        <div class="col-md-6 text-md-right">
-            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">
-                <span>Add New Card</span>
-            </a>
-        </div>
+{{--        <div class="col-md-6 text-md-right">--}}
+{{--            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
+{{--                <span>Add New Card</span>--}}
+{{--            </a>--}}
+{{--        </div>--}}
     </div>
 
     <div class="card">
@@ -42,7 +42,7 @@
 
                         <input type="text" class="form-control" id="search" name="search"
                                @isset($search) value="{{ $search }}"
-                               @endisset placeholder="{{ translate('Nhập tên hoặc số seri') }}">
+                               @endisset placeholder="{{ translate('Nhập tên khách hàng hoặc số seri') }}">
                     </div>
                 </div>
             </div>
@@ -57,8 +57,7 @@
                             <th data-breakpoints="lg">{{translate('Địa chỉ')}}</th>
                             <th data-breakpoints="lg">{{translate('Seri')}}</th>
                             <th data-breakpoints="lg">{{translate('Thời gian kích hoạt')}}</th>
-                            <th data-breakpoints="lg">{{translate('Ảnh QR Code')}}</th>
-                            <th data-breakpoints="lg">{{translate('Ảnh Seri')}}</th>
+                            <th data-breakpoints="lg">{{translate('Ảnh')}}</th>
                             <th data-breakpoints="lg">{{translate('Điểm nhận được')}}</th>
                             <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
                             <th data-breakpoints="lg">{{translate('Ghi chú ')}}</th>
@@ -78,23 +77,23 @@
                                     <td> @if($warranty_card->active_time>0)
                                             {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
-                                            <span
-                                                class="badge badge-inline badge-secondary">{{ trans('Chưa kích hoạt') }}</span>
+                                            <span class="badge badge-inline badge-secondary">{{ trans('Chưa kích hoạt') }}</span>
                                         @endif
                                     </td>
-                                    <td><img class="h-50px" src="{{ uploaded_asset($warranty_card->qr_code_image) }}"
-                                             alt="Qr Code "></td>
-                                    <td><img class="h-50px" src=" {{uploaded_asset($warranty_card->seri_image)}}"
-                                             alt="Seri"></td>
+                                    <td>
+
+                                        @foreach($warranty_card->uploads as $img)
+                                        <img class="h-50px" src="{{ get_image_asset($img->id,$img->object_id) }}" alt="image">
+                                        @endforeach
+                                    </td>
+
                                     <td>{{$warranty_card->point}}</td>
                                     <td>
                                         @if($warranty_card->status == 0)
-                                            <span
-                                                class="badge badge-inline badge-secondary">{{ trans('Chờ duyệt') }}</span>
+                                            <span class="badge badge-inline badge-secondary">{{ trans('Chờ duyệt') }}</span>
                                         @else
                                             @if($warranty_card->status == 1)
-                                                <span
-                                                    class="badge badge-inline badge-success">{{ trans('Đã Duyệt') }}</span>
+                                                <span class="badge badge-inline badge-success">{{ trans('Đã Duyệt') }}</span>
                                             @else
                                                 <span class="badge badge-inline badge-danger">{{ trans('Hủy') }}</span>
                                             @endif
@@ -125,11 +124,11 @@
                                                 <i class="las la-user-alt-slash"></i>
                                             </a>
                                         @endif
-                                        <a href="{{ route('warranty_card.edit', [ encrypt($warranty_card->id) ]) }}"
-                                           class="btn btn-soft-warning btn-icon btn-circle btn-sm"
-                                           title="{{ translate('Cập nhật thông tin thẻ') }}">
-                                            <i class="las la-edit"></i>
-                                        </a>
+{{--                                        <a href="{{ route('warranty_card.edit', [ encrypt($warranty_card->id) ]) }}"--}}
+{{--                                           class="btn btn-soft-warning btn-icon btn-circle btn-sm"--}}
+{{--                                           title="{{ translate('Cập nhật thông tin thẻ') }}">--}}
+{{--                                            <i class="las la-edit"></i>--}}
+{{--                                        </a>--}}
                                         <a href="#"
                                            class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                            data-href="{{route('warranty_card.destroy', encrypt($warranty_card->id))}}"

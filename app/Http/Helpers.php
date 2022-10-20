@@ -848,6 +848,35 @@ if (!function_exists('uploaded_asset')) {
     }
 }
 
+//return file uploaded via uploader
+if (!function_exists('get_image_asset')) {
+    function get_image_asset($id, $object_id)
+    {
+        if (($asset = \App\Models\Upload::where('id',$id)->where('object_id',$object_id)->first()) != null) {
+            return  $asset->external_link == null ? my_asset($asset->file_name) : $asset->external_link ;
+        }
+        return null;
+    }
+}
+
+
+//return file uploaded via uploader
+if (!function_exists('image_asset_by_object')) {
+    function image_asset_by_object($id)
+    {
+        $dataImage=[];
+        if (($asset = \App\Models\Upload::where('object_id',$id)->get()) != null) {
+            foreach ($asset as $img){
+               $dataImage[]= $img->external_link == null ? my_asset($img->file_name) : $img->external_link ;
+            }
+            return $dataImage;
+        }
+        return null;
+    }
+}
+
+
+
 if (!function_exists('my_asset')) {
     /**
      * Generate an asset path for the application.
@@ -911,26 +940,25 @@ if (!function_exists('getFileBaseURL')) {
 }
 
  if (!function_exists('uploadImageURL')) {
-        function uploadImageURL($imageName)
+        function uploadMultipleImage($imageName,$id=null,$path)
         {
-            $image=$imageName->getClientOriginalName();
-            $name= substr($image, 0, strpos($image,'.'));
-            $realImage = $imageName->hashName();
-            $extension =$imageName->getClientOriginalExtension();
-            $size =  $imageName->getSize();
-            $newPath = "uploads/all/$realImage";
-            if (env('FILESYSTEM_DRIVER') == 's3') {
-                Storage::disk('s3')->put($newPath,base_path('public/') . $newPath);
-                unlink(base_path('public/') . $newPath);
+            foreach ($imageName as $key=> $image){
+                $img= $image->getClientOriginalName();
+                $name= substr($img, 0, strpos($img,'.'));
+                $realImage = $image->hashName();
+                $extension =$image->getClientOriginalExtension();
+                $size =  $image->getSize();
+                $newPath = $path."/$realImage";
+                $image->store($path, 'local');
+                $upload = new Upload;
+                $upload->file_original_name=$name;
+                $upload->extension = $extension;
+                $upload->file_name = $newPath;
+                $upload->type = 'image';
+                $upload->file_size = $size;
+                $upload->object_id=$id;
+                $upload->save();
             }
-            $upload = new Upload;
-            $upload->file_original_name=$name;
-            $upload->extension = $extension;
-            $upload->file_name = $newPath;
-            $upload->type = 'image';
-            $upload->file_size = $size;
-            $upload->save();
-            return $upload->id;
         }
     }
 

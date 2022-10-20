@@ -9,22 +9,27 @@ class WarrantyCard extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
+
+
         return [
-            'data'=>$this->collection->map(function ($data){
+            'data' => $this->collection->map(function ($data) {
                 return
                     [
-                        'id'=>$data->id,
-                        'user_name'=>$data->user_name,
-                        'address'=>$data->address,
-                        'point'=>$data->point,
-                        'qr_code_img'=>uploaded_asset($data->qr_code_image),
-                        'seri_image'=>uploaded_asset($data->seri_image),
-
+                        'id' => $data->id,
+                        'brand' => $data->brand->name,
+                        'user_name' => $data->user_name,
+                        'address' => $data->address,
+                        'point' =>$data->point,
+                        'image' => image_asset_by_object($data->id),
+                        'status'=>$data->status,
+                        'reason'=>$data->reason,
+                        'active_time'=> date('d/m/Y H:i:s', strtotime($data->active_time)),
+                        'created_at' => date('d/m/Y H:i:s', strtotime($data->created_at)),
                     ];
             })
         ];

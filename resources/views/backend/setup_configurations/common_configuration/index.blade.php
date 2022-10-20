@@ -9,7 +9,7 @@
             <div class="col-md-6">
                 <h1 class="h3">{{translate('Cấu hình chung')}}</h1>
             </div>
-            @if($count_common_config ==0)
+            @if($count_common_config == 0)
             <div class="col-md-6 text-md-right">
                 <a href="{{ route('common_configs.create') }}" class="btn btn-circle btn-info">
                     <span>{{translate('Tạo cấu hình chung')}}</span>

@@ -186,28 +186,29 @@ class SendSMSUtility
             $response = curl_exec($ch);
             curl_close($ch);
             return $response;
-        } elseif (OtpConfiguration::where('type', 'firebase')->first()->value == 1) {
-            $data = [
-                "apiKey" => "AIzaSyBPolbBt0hf1b20p8qZkfsrMv1zaT-wn6k",
-                "authDomain" => "appbandonghanh.firebaseapp.com",
-                "projectId" => "appbandonghanh",
-                "storageBucket" => "appbandonghanh.appspot.com",
-                "messagingSenderId" => "99831074492",
-                "appId" => "1:99831074492:web:44217467bcde475b3f4ab9",
-                "measurementId" => "G-52R7Z8REE8"
-            ];
-            $url = "https://www.msegat.com/gw/sendsms.php";
-            $ch = curl_init($url);
-
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            $response = curl_exec($ch);
-            curl_close($ch);
-            return $response;
         }
+//        elseif (OtpConfiguration::where('type', 'firebase')->first()->value == 1) {
+//            $data = [
+//                "apiKey" => "AIzaSyBPolbBt0hf1b20p8qZkfsrMv1zaT-wn6k",
+//                "authDomain" => "appbandonghanh.firebaseapp.com",
+//                "projectId" => "appbandonghanh",
+//                "storageBucket" => "appbandonghanh.appspot.com",
+//                "messagingSenderId" => "99831074492",
+//                "appId" => "1:99831074492:web:44217467bcde475b3f4ab9",
+//                "measurementId" => "G-52R7Z8REE8"
+//            ];
+//            $url = "https://www.msegat.com/gw/sendsms.php";
+//            $ch = curl_init($url);
+//
+//            curl_setopt($ch, CURLOPT_URL, $url);
+//            curl_setopt($ch, CURLOPT_POST, 1);
+//            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+//            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//            $response = curl_exec($ch);
+//            curl_close($ch);
+//            return $response;
+//        }
         return true;
     }
 }

@@ -75,9 +75,6 @@ Route::controller(UpdateController::class)->group(function () {
 
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin' ]);
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
-
-
-
     // category
     Route::resource('categories', CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {
@@ -174,7 +171,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     // Customer
     Route::resource('customers', CustomerController::class);
     Route::controller(CustomerController::class)->group(function () {
-        Route::post('customers_store', 'addNewCustomer')->name('customers.addNew');
+//        Route::post('customers_store', 'addNewCustomer')->name('customers.addNew');
         Route::get('customers_ban/{customer}', 'ban')->name('customers.ban');
         Route::get('customers_update_bank/{customer}', 'bank')->name('customers.bank');
         Route::post('update-package', 'updatePackage')->name('customers.update_package');

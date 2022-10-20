@@ -13,26 +13,42 @@ use Illuminate\Http\Request;
 class WarrantyCardController extends Controller
 {
     function  index(){
-        return new WarrantyCardCollection(WarrantyCard::all());
+        return new WarrantyCardCollection(WarrantyCard::with('brand','uploads')->get());
     }
+
+    function search(Request $request){
+        $warranty=WarrantyCard::with('brand','uploads')
+            ->where('user_name','like','%'.$request->user_name.'%')
+            ->get();
+        return new WarrantyCardCollection($warranty);
+    }
+
+    function show($id){
+        $warranty=WarrantyCard::where('id',$id)->get();
+        return new WarrantyCardCollection($warranty);
+    }
+
 
 // i test req from FormData in javascript
     function  store(WarrantyCardRequest $request){
 
-
-
-        $idUpload= uploadImageURL($request->seri_image);
         $warrantyCard=new WarrantyCard;
+        $warrantyCard->user_id=auth()->user()->id;
         $warrantyCard->user_name=$request->user_name;
         $warrantyCard->address=$request->address;
         $warrantyCard->seri=$request->seri;
         $warrantyCard->brand_id=$request->brand;
-        $warrantyCard->seri_image=$idUpload;
-        if($request->qr_code_image!=null){
-            $idUpload= uploadImageURL($request->qr_code_image);
-            $warrantyCard->qr_code_image=$idUpload;
-        }
+        $warrantyCard->active_time=date('Y-m-d H:i:s');
+
+//        $warrantyCard->seri_image=$idUpload;
+//        if($request->qr_code_image!=null){
+//            $idUpload= uploadImageURL($request->qr_code_image);
+//            $warrantyCard->qr_code_image=$idUpload;
+//        }
         $warrantyCard->save();
+        $id=$warrantyCard->id;
+        uploadMultipleImage($request->image,$id,$path='uploads/warranty');
+
 
         return response([
             'result'=>true,

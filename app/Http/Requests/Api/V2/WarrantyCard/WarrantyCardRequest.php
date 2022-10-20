@@ -29,22 +29,20 @@ class WarrantyCardRequest extends FormRequest
            if ($this->request->get('qr_code_image') !=null) {
                $qr_code_image   = 'required|mimes:jpeg,png,jpg,svg,gif|max:2048';
         }
-
+//        |regex:/^[a-zA-Z_ ]*$/
         return [
-            'user_name'=>'required|regex:/^[a-zA-Z_ ]*$/|max:255|unique:warranty_cards',
+            'user_name'=>'required|max:255|unique:warranty_cards',
             'address'=>'required',
             'seri'=>'required|numeric|regex:/^[0-9]*$/u',
             'brand'=>'required',
-            'seri_image'=>'required|mimes:jpeg,png,jpg,svg,gif|max:2048',
-            'qr_code_image'=>$qr_code_image,
+//            'seri_image'=>'required|mimes:jpeg,png,jpg,svg,gif|max:2048',
+//            'qr_code_image'=>$qr_code_image,
         ];
     }
 
     function messages()
     {
-        return [
-            'user_name.regex'=>'Your  username is not valid. Only characters A-Z, a-z and  are  acceptable',
-        ];
+        return [];
     }
 
     protected function failedValidation(Validator $validator)

@@ -28,8 +28,7 @@ class AuthRequest extends FormRequest
         return [
             'name'=>'required|unique:users',
             'phone'=>'required|numeric',
-            'email'=>'required|email',
-            'password'=>'required|min:6'
+            'password'=>'required|min:6|confirmed'
         ];
     }
 
