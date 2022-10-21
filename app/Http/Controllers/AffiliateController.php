@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AffiliatePayment;
-use App\Models\CustomerGroup;
+
 use App\Models\Wallet;
 use App\Models\WarrantyBill;
 use App\Models\Staff;

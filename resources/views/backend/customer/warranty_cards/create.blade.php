@@ -63,25 +63,25 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="name">{{translate('Qr Code image ')}} <small>({{ translate('120x80') }})</small></label>
-                            <div class="input-group" data-toggle="aizuploader" data-type="image">
-                                <div class="input-group-prepend">
-                                    <div
-                                        class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
-                                </div>
-                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                <input type="hidden" name="qr_code_image" class="selected-files">
-                            </div>
-                            <div class="file-preview box sm">
-                            </div>
-                            @error('qr_code_image')
-                            <div class="" style="color: red">{{ $message }}</div>
-                            @enderror
-                        </div>
+{{--                        <div class="form-group mb-3">--}}
+{{--                            <label for="name">{{translate('Qr Code image ')}} <small>({{ translate('120x80') }})</small></label>--}}
+{{--                            <div class="input-group" data-toggle="aizuploader" data-type="image">--}}
+{{--                                <div class="input-group-prepend">--}}
+{{--                                    <div--}}
+{{--                                        class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>--}}
+{{--                                </div>--}}
+{{--                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>--}}
+{{--                                <input type="hidden" name="qr_code_image" class="selected-files">--}}
+{{--                            </div>--}}
+{{--                            <div class="file-preview box sm">--}}
+{{--                            </div>--}}
+{{--                            @error('qr_code_image')--}}
+{{--                            <div class="" style="color: red">{{ $message }}</div>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
 
                         <div class="form-group mb-3">
-                            <label for="name">{{translate('Seri image ')}} <small>({{ translate('120x80') }}
+                            <label for="name">{{translate(' image ')}} <small>({{ translate('120x80') }}
                                     ) </small><span class="text-danger">*</span> </label>
                             <div class="input-group" data-toggle="aizuploader" data-type="image">
                                 <div class="input-group-prepend">
@@ -89,7 +89,7 @@
                                         class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                                 </div>
                                 <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                <input type="hidden" name="seri_image" class="selected-files">
+                                <input type="hidden" name="image[]" class="selected-files">
                             </div>
                             <div class="file-preview box sm">
                             </div>

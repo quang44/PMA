@@ -43,6 +43,8 @@ class AuthController extends Controller
 
         $package = CustomerPackage::where('default', 1)->first();
         $group = CustomerGroup::where('default', 1)->first();
+
+       $group = CustomerGroup::where('default', 1)->first();
         $user_type = $request->user_type ?? 'customer';
         $referral_code = $request->referral_code;
         $referred_by = 0;
@@ -67,7 +69,7 @@ class AuthController extends Controller
                 if (!$kol) {
                     return response()->json([
                         'result' => false,
-                        'message' => 'Không tìm thấy thông tin người giới thiệu',
+                        'message' => translate('Không tìm thấy thông tin người giới thiệu'),
                         'data' => null
                     ], 200);
 
@@ -77,6 +79,9 @@ class AuthController extends Controller
                     $point=config_base64_decode($walletKol->amount);
                     $amount= (int)$point += $common_config->for_referrer;
                     $walletKol->amount =config_base64_encode($amount);
+                    $walletKol->payment_method=translate('Hệ thống');
+                    $walletKol->user_type='kol';
+                    $walletKol->note=translate('Giới thiệu');
                     $walletKol->save();
                     $referred_by = $kol->id;
 
@@ -98,7 +103,7 @@ class AuthController extends Controller
             'email_verified_at' => date('Y-m-d H:i:s'),
             'verification_code' => null,//rand(1000, 9999),
             'customer_package_id' => $package->id,
-            'customer_group_id' => $group->id
+//            'customer_group_id' => $group->id
         ]);
         $user->save();
 //return response([
@@ -109,6 +114,8 @@ class AuthController extends Controller
         $wallet->user_id = $user->id;
         $amount=  $referred_by != 0 ? $customerGroup->point_number + $common_config->for_activator : $customerGroup->point_number;
         $wallet->amount = config_base64_encode($amount);
+        $wallet->payment_method=translate('Hệ thống');
+        $wallet->note=translate('đăng ký tài khoản thành công');
         $wallet->save();
 
         /*if ($request->register_by == 'email') {
@@ -238,13 +245,15 @@ class AuthController extends Controller
 
                 }
                 if ($request->device_token) {
+//                    return response([
+//                        'token'=>$request->device_token
+//                    ]);
                     $user->device_token = $request->device_token;
                     $user->save();
                 }
                 return $this->loginSuccess($user);
             } else {
                 return response()->json(['result' => false, 'message' => translate('Tài khoản hoặc mật khẩu không chính xác'), 'data' => null], 401);
-
             }
         } else {
             return response()->json(['result' => false, 'message' => translate('User not found'), 'data' => null], 401);
@@ -296,9 +305,9 @@ class AuthController extends Controller
                 'phone' => $user->phone,
                 'referred_by' => $user->referred_by,
                 'referral_code' => $user->referral_code,
-                'balance' => $user->balance,
-                'best_api_user' => $user->best_api_user,
-                'created_at' => $user->created_at
+//                'balance' => $user->balance,
+//                'best_api_user' => $user->best_api_user,
+                'created_at' => date('d-m-Y H:i:s',strtotime($user->created_at))
             ]
         ]);
     }
@@ -310,7 +319,7 @@ class AuthController extends Controller
             $req = new \stdClass();
             $req->device_token = $user->device_token;
             $req->title = "Kích hoạt tài khoản !";
-            $req->text = "Tài khoản của bạ đã được kích hoạt";
+            $req->text = "Tài khoản của bạn đã được kích hoạt";
 
             $req->type = "active_user";
             $req->id = $user->id;
@@ -355,7 +364,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         if (!$user) {
-            return response(['result' => false, 'message' => 'Kh?ng t?m th?y th?ng tin t?i kho?n']);
+            return response(['result' => false, 'message' => translate('Không tìm thấy thông tin tài khoản')]);
         }
         $user->banned = 1;
         $user->save();

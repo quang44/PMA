@@ -54,6 +54,19 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Nhóm')}}</label>
+                        <div class="col-sm-9">
+                            <select name="customer_group_id" id="" class="form-control" required>
+                                @foreach($groups as $group)
+                                    <option value="{{ $group->id }}" @if(old('customer_group_id', $user->customer_group_id) == $group->id) selected @endif>{{ $group->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('group_id')
+                            <div class="" style="color: red">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="email">{{translate('Mật khẩu khách hàng')}}</label>
                         <div class="col-sm-9">
                             <input type="password" placeholder="" id="password" name="password" value="" class="form-control" >
@@ -69,22 +82,23 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="email">{{translate('Tài khoản Best Api')}}</label>
-                        <div class="col-sm-9">
-                            <input type="text" placeholder="" id="best_api_user" name="best_api_user" value="{{ old('best_api_user', $user->best_api_user) }}" class="form-control" >
-                            @error('best_api_user')
-                            <div class="" style="color: red">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="email">{{translate('Mật khẩu Best Api')}}</label>
-                        <div class="col-sm-9">
-                            <input type="text" placeholder="" id="best_api_password" name="best_api_password" value="{{ old('best_api_password', $user->best_api_password) }}" class="form-control" >
-                        </div>
+{{--                    <div class="form-group row">--}}
+{{--                        <label class="col-sm-3 col-from-label" for="email">{{translate('Tài khoản Best Api')}}</label>--}}
+{{--                        <div class="col-sm-9">--}}
+{{--                            <input type="text" placeholder="" id="best_api_user" name="best_api_user" value="{{ old('best_api_user', $user->best_api_user) }}" class="form-control" >--}}
+{{--                            @error('best_api_user')--}}
+{{--                            <div class="" style="color: red">{{ $message }}</div>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="form-group row">--}}
+{{--                        <label class="col-sm-3 col-from-label" for="email">{{translate('Mật khẩu Best Api')}}</label>--}}
+{{--                        <div class="col-sm-9">--}}
+{{--                            <input type="text" placeholder="" id="best_api_password" name="best_api_password" value="{{ old('best_api_password', $user->best_api_password) }}" class="form-control" >--}}
+{{--                        </div>--}}
 
-                    </div>
+{{--                    </div>--}}
+
                     <div class="form-group mb-0 text-right">
                         <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
                     </div>

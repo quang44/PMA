@@ -349,32 +349,22 @@
 
                 <!-- Customers -->
                 @if(Auth::user()->user_type == 'admin' || in_array('8', json_decode(Auth::user()->staff->role->permissions)))
-                    @php
-                        $count_update = \App\Models\User::where('bank_updated', 1)->count();
-                    @endphp
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-user-friends aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate('Shop') }}</span>
-                            @if($count_update > 0)
-                            <span class="badge badge-info" style="margin-right: 3px">{{ $count_update }}</span>
-                            @endif
+                            <span class="aiz-side-nav-text">{{ translate('User') }}</span>
+                            <span class="badge badge-info" style="margin-right: 3px">{{ \App\Models\User::count() }}</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('customers.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Danh sách Shop') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Danh sách người dùng') }}</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('customer_packages.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_packages.index', 'customer_packages.create', 'customer_packages.edit'])}}">
                                     <span class="aiz-side-nav-text">{{ translate('Nhóm Người Dùng') }}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('warranty_card.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['warranty_card.index', 'warranty_card.show'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Thẻ bảo hành') }}</span>
                                 </a>
                             </li>
                             {{--@if(get_setting('classified_product') == 1)
@@ -394,6 +384,28 @@
 
 
                 @endif
+
+
+                @if(Auth::user()->user_type == 'admin' || in_array('8', json_decode(Auth::user()->staff->role->permissions)))
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-money-bill aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate(' Bảo hành') }}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <ul class="aiz-side-nav-list level-2">
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('warranty_card.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['warranty_card.index', 'warranty_card.show'])}}">
+                                    <span class="aiz-side-nav-text">{{ translate('Thẻ bảo hành') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                @endif
+
+
 
 {{--                <li class="aiz-side-nav-item">--}}
 {{--                    <a href="{{ route('questions.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['questions.index', 'questions.create', 'questions.edit'])}}">--}}
@@ -431,17 +443,17 @@
                                     <span class="aiz-side-nav-text">{{ translate('Phiếu thanh toán đối tác') }}</span>
                                 </a>
                             </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('warranty_bill.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Thanh toán bảo hành') }}</span>
-                                </a>
-                            </li>
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('warranty_bill.index')}}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate('Thanh toán bảo hành') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
 
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('warranty_bill.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Phiếu Thanh toán bảo hành') }}</span>
-                                </a>
-                            </li>
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('warranty_bill.index')}}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate('Phiếu Thanh toán bảo hành') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
 
                             {{--@if(get_setting('classified_product') == 1)
                                 <li class="aiz-side-nav-item">

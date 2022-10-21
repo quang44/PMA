@@ -10,6 +10,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
     Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');*/
 
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('logout', 'App\Http\Controllers\Api\V2\AuthController@logout');
         Route::get('user', 'App\Http\Controllers\Api\V2\AuthController@user');
@@ -80,7 +81,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
         Route::get('', 'App\Http\Controllers\Api\V2\CustomerBankController@show');
         Route::post('create', 'App\Http\Controllers\Api\V2\CustomerBankController@store');
     }));
-
 
 
     Route::group(['prefix' => 'bank', 'middleware' => []], (function () {
@@ -344,10 +344,16 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     //Pickup Point list
     Route::get('pickup-list', 'App\Http\Controllers\Api\V2\ShippingController@pickup_list');
 
-    // warranty bill
-    Route::apiResource('warranty_bill', 'App\Http\Controllers\Api\V2\WarrantyBillController')->only('index','store');
-    // warranty Card
-    Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store');
+
+
+    Route::group(['prefix' => 'warranty', 'middleware' => 'auth:sanctum'], (function () {
+        // warranty bill
+        Route::apiResource('warranty_bill', 'App\Http\Controllers\Api\V2\WarrantyBillController')->only('index','store');
+
+        // warranty Card
+        Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store','show');
+        Route::get('warranty_cards/search','App\Http\Controllers\Api\V2\WarrantyCardController@search');
+    }));
 
     Route::group(['prefix' => 'customer-groups', 'middleware' => []], (function () {
         Route::get('', '\App\Http\Controllers\Api\V2\CustomerPackageController@index');

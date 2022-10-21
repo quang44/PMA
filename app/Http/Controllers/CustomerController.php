@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerRequest;
+use App\Models\CustomerGroup;
 use App\Models\CustomerPackage;
 use App\Models\OrderDelivery;
 use App\Services\Delivery\BestExpressService;
@@ -33,7 +35,7 @@ class CustomerController extends Controller
             $users = $users->where('referred_by', $request->referred_by);
         }
         if ((isset($request->banned) ? $request->banned : -1) >= 0) {
-            switch ($request->banned){
+            switch ($request->banned) {
                 case 1:
                     $users = $users->where('banned', $request->banned);
                     break;
@@ -45,16 +47,16 @@ class CustomerController extends Controller
                     break;
             }
 
-        }else{
+        } else {
             $users = $users->whereIn('banned', [0, 2]);
         }
         if ((isset($request->bank_updated) ? $request->bank_updated : -1) >= 0) {
             $users = $users->where('bank_updated', $request->bank_updated);
         }
         if ($request->has_best_api > 0) {
-            if($request->has_best_api == 1){
+            if ($request->has_best_api == 1) {
                 $users = $users->whereNull('best_api_user');
-            }elseif ($request->has_best_api == 2){
+            } elseif ($request->has_best_api == 2) {
                 $users = $users->whereNotNull('best_api_user');
             }
         }
@@ -72,7 +74,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        $packages = CustomerPackage::all();
+        return view('backend.customer.customers.create', compact('packages'));
     }
 
     /**
@@ -118,6 +121,35 @@ class CustomerController extends Controller
         echo json_encode($response);
     }
 
+//    public function addNewCustomer(CustomerRequest $request)
+//    {
+//
+//        $user = new User;
+//        $user->name = $request->name;
+//        $user->email = $request->email;
+//        $user->phone = $request->phone;
+//        $user->password = bcrypt($request->password);
+//        $user->referral_code = $request->phone;
+//        $user->customer_package_id = $request->customer_package_id;
+//        $user->customer_group_id = $request->customer_group_id;
+//        $user->device_token =$request->device_token;
+//           $user->email_verified_at = date('Y-m-d H:i:s');
+//       $user->save();
+//
+//           if (!empty($user->device_token)) {
+//               $req = new \stdClass();
+//               $req->device_token = $user->device_token;
+//               $req->title = "Kích hoạt tài khoản !";
+//               $req->text = "Tài khoản của bạn đã được kích hoạt";
+//               $req->type = "active_user";
+//               $req->id = $user->id;
+//               NotificationUtility::sendFirebaseNotification($req);
+//           }
+//       flash(translate('Tạo mới tài khoản thành công'))->success();
+//       return redirect()->route('customers.index');
+//    }
+
+
     /**
      * Display the specified resource.
      *
@@ -139,8 +171,10 @@ class CustomerController extends Controller
     {
         $user = User::findOrFail(decrypt($id));
         $packages = CustomerPackage::all();
+        $groups = CustomerGroup::all();
+
         //$kols = User::where('user_type', 'kol')->pluck('name', 'id');
-        return view('backend.customer.customers.edit', compact('user', 'packages'));
+        return view('backend.customer.customers.edit', compact('user', 'packages', 'groups'));
     }
 
     /**
@@ -155,7 +189,7 @@ class CustomerController extends Controller
         $request->validate([
             'email' => 'nullable|string|email',
             'name' => 'required|string',
-            'phone' => 'required|string|unique:users,phone,'.$id,
+            'phone' => 'required|string|unique:users,phone,' . $id,
             'customer_package_id' => 'required',
             'password' => 'nullable|string|min:6|confirmed',
         ], [
@@ -173,28 +207,28 @@ class CustomerController extends Controller
         $user->phone = $request->phone;
         $user->customer_package_id = $request->customer_package_id;
         //$user->referred_by = $request->referred_by;
-        $con1 = $con2 = 0;
-        if(empty($user->best_api_user)){
-            $con1 = 1;
-        }
-        if(!empty($request->best_api_user) && ($user->best_api_user != $request->best_api_user || $user->best_api_password != $request->best_api_password)){
-            $best = new BestExpressService();
-            $token = $best->checkLogin($request->best_api_user, $request->best_api_password);
-            if(empty($token)){
-                return back()->withErrors(['best_api_user' => 'Tài khoản best không đúng']);
-            }
-            $user->best_api_user = $request->best_api_user;
-            $user->best_api_password = $request->best_api_password;
-            $user->best_api_token = $token;
-            $con2 = 1;
-        }
-        if(!empty($request->password)){
+//        $con1 = $con2 = 0;
+//        if (empty($user->best_api_user)) {
+//            $con1 = 1;
+//        }
+//        if (!empty($request->best_api_user) && ($user->best_api_user != $request->best_api_user || $user->best_api_password != $request->best_api_password)) {
+//            $best = new BestExpressService();
+//            $token = $best->checkLogin($request->best_api_user, $request->best_api_password);
+//            if (empty($token)) {
+//                return back()->withErrors(['best_api_user' => 'Tài khoản best không đúng']);
+//            }
+//            $user->best_api_user = $request->best_api_user;
+//            $user->best_api_password = $request->best_api_password;
+//            $user->best_api_token = $token;
+//            $con2 = 1;
+//        }
+        if (!empty($request->password)) {
             $user->password = bcrypt($request->password);
         }
         $user->updated_by = auth()->id();
         $user->save();
-        if($con1 == 1 && $con2 == 1){
-            if(!empty($user->device_token)){
+//        if ($con1 == 1 && $con2 == 1) {
+            if (!empty($user->device_token)) {
                 $req = new \stdClass();
                 $req->device_token = $user->device_token;
                 $req->title = "Kích hoạt tài khoản !";
@@ -206,7 +240,7 @@ class CustomerController extends Controller
                 NotificationUtility::sendFirebaseNotification($req);
             }
 
-        }
+//        }
         flash(translate('Cập nhật thông tin tài khoản thành công'))->success();
         return redirect()->route('customers.index');
     }

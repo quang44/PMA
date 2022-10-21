@@ -12,4 +12,7 @@ class WarrantyCard extends Model
     function brand(){
         return $this->belongsTo(Brand::class);
     }
+    function uploads(){
+        return $this->hasMany(Upload::class,'object_id','id');
+    }
 }

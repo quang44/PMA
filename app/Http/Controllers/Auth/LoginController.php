@@ -34,8 +34,6 @@ class LoginController extends Controller
      * @var string
      */
     /*protected $redirectTo = '/';*/
-
-
     /**
      * Redirect the user to the Google authentication page.
      *
@@ -130,6 +128,7 @@ class LoginController extends Controller
 
     public function mobileHandleProviderCallback($request, $provider)
     {
+
         $return_provider = '';
         $result = false;
         if($provider) {
@@ -180,6 +179,7 @@ class LoginController extends Controller
      */
     public function authenticated()
     {
+
         if (session('temp_user_id') != null) {
             Cart::where('temp_user_id', session('temp_user_id'))
                 ->update(
@@ -193,6 +193,11 @@ class LoginController extends Controller
         }
 
         if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
+<<<<<<< HEAD
+=======
+
+//            CoreComponentRepository::instantiateShopRepository();
+>>>>>>> 35079cd3c13c27245ce767097273c8fcdeeedf61
             return redirect()->route('admin.dashboard');
         } elseif (auth()->user()->user_type == 'seller') {
             return redirect()->route('seller.dashboard');
@@ -216,6 +221,7 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse(Request $request)
     {
+
         flash(translate('Invalid login credentials'))->error();
         return back();
     }
@@ -228,6 +234,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
+
         if (auth()->user() != null && (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')) {
             $redirect_route = 'login';
         } else {

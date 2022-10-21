@@ -229,6 +229,7 @@ class AffiliateController extends Controller
                 'message' => 'Vui lòng cập nhật thông tin tài khoản ngân hàng trước'
             ]);
         }
+
         DB::transaction(function () use ($user, $value, $customer_bank) {
             $user->balance = $user->balance - $value;
             $user->save();
