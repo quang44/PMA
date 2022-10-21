@@ -58,9 +58,7 @@
                             <th data-breakpoints="lg">{{translate('Seri')}}</th>
                             <th data-breakpoints="lg">{{translate('Thời gian kích hoạt')}}</th>
                             <th data-breakpoints="lg">{{translate('Ảnh')}}</th>
-                            <th data-breakpoints="lg">{{translate('Điểm nhận được')}}</th>
                             <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
-                            <th data-breakpoints="lg">{{translate('Ghi chú ')}}</th>
                             <th class="text-right">{{translate('Options')}}</th>
                         </tr>
                         </thead>
@@ -87,7 +85,6 @@
                                         @endforeach
                                     </td>
 
-                                    <td>{{$warranty_card->point}}</td>
                                     <td>
                                         @if($warranty_card->status == 0)
                                             <span class="badge badge-inline badge-secondary">{{ trans('Chờ duyệt') }}</span>
@@ -99,7 +96,6 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td>{{$warranty_card->note}}</td>
 
 
                                     <td class="text-right">
@@ -111,7 +107,7 @@
                                         @if($warranty_card->status==0 )
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-info btn-icon btn-circle btn-sm"
-                                               onclick="updateCard('{{route('warranty_card.ban', encrypt($warranty_card->id))}}');"
+                                               onclick="updateCard('{{route('warranty_card.ban', encrypt($warranty_card->id))}}',1);"
                                                title="{{ translate('Kích hoạt Thẻ') }}">
                                                 <i class="las la-credit-card"></i>
                                             </a>
@@ -119,7 +115,7 @@
 
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-danger btn-icon btn-circle btn-sm"
-                                               onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}');"
+                                               onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}' ,2);"
                                                title="{{ translate('Hủy thẻ') }}">
                                                 <i class="las la-user-alt-slash"></i>
                                             </a>
@@ -226,14 +222,14 @@
             $('#sort_Card').submit();
         })
 
-        function confirm_ban(url) {
+        function confirm_ban(url,status) {
             $('#confirm-ban').modal('show', {backdrop: 'static'});
-            document.getElementById('confirmation').setAttribute('action', url);
+            document.getElementById('confirmation').setAttribute('action', url+'?status='+status);
         }
 
-        function updateCard(url) {
+        function updateCard(url,status) {
             $('#confirm-update-bank').modal('show', {backdrop: 'static'});
-            document.getElementById('updateCard').setAttribute('href', url);
+            document.getElementById('updateCard').setAttribute('href', url+'?status='+status);
         }
 
 
