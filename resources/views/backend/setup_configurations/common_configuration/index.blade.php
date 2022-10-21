@@ -29,9 +29,10 @@
                 <tr>
                     <th data-breakpoints="lg" width="10%">#</th>
                     <th data-breakpoints="lg">{{translate('Logo')}}</th>
-                    <th data-breakpoints="lg">{{translate('Đơn vị tiền tệ')}}</th>
-                    <th data-breakpoints="lg">{{translate('Số point cho người giới thiệu')}}</th>
-                    <th data-breakpoints="lg">{{translate('Số point cho người kích hoạt bảo hiểm')}}</th>
+                    <th data-breakpoints="lg">{{translate('Đơn vị tiền')}}</th>
+                    <th data-breakpoints="lg">{{translate('Point cho người giới thiệu')}}</th>
+                    <th data-breakpoints="lg">{{translate('Point cho người kích hoạt bảo hiểm')}}</th>
+                    <th data-breakpoints="lg">{{translate('Chuyển đổi point')}}</th>
                     <th data-breakpoints="lg">{{translate('Thông tin liên hệ')}}</th>
                     <th width="10%">{{translate('Options')}}</th>
                 </tr>
@@ -41,10 +42,11 @@
                     @if($common_config != null)
                         <tr>
                             <td>{{$common_config->id}}</td>
-                            <td><img src="{{ uploaded_asset($common_config->logo) }}" alt="logo" class="h-50px">
+                            <td width="120px"><img src="{{ uploaded_asset($common_config->logo) }}" alt="logo" class="h-50px">
                             <td>{{$common_config->unit}}</td>
                             <td>{{$common_config->for_referrer}}</td>
                             <td>{{$common_config->for_activator}}</td>
+                            <td>{{$common_config->exchange}}</td>
                             <td>{{$common_config->contact_info}}</td>
                             <td class="text-right">
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"

@@ -59,6 +59,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Chuyển đổi point')}} <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="{{old('exchange')}}" name="exchange" >
+                                @error('exchange')
+                                <span class="text-danger"> {{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Thông tin liên hệ')}} </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('contact_info')}}" name="contact_info" >

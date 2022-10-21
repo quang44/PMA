@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Bonus')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Bonus Point')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"

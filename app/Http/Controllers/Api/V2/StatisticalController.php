@@ -18,18 +18,27 @@ class StatisticalController extends Controller
         $total_withdraw = 0;
         $total_not_withdraw = 0;
         $total_active = WarrantyCard::where('status', 1)->count();
-        foreach ($history_withdraws as $key => $history_withdraw){
-            $total_withdraw += $history_withdraw->amount;
+        if($history_withdraws != null){
+            foreach ($history_withdraws as $key => $history_withdraw){
+                $total_withdraw += $history_withdraw->amount;
+            }
         }
-        foreach ($wallet as $key => $not_withdraw){
-            $total_not_withdraw += $not_withdraw->amount;
+        if($wallet != null){
+            foreach ($wallet as $key => $not_withdraw){
+                $total_not_withdraw += config_base64_decode($not_withdraw->amount);
+            }
         }
-        return response()->json([
-            'result'=>true,
+
+        $data[] = [
             'total_worker'=>$total_worker,
             'total_withdraw'=>$total_withdraw,
             'total_not_withdraw'=>$total_not_withdraw,
             'total_active'=>$total_active
+        ];
+        return response()->json([
+            'result'=>true,
+            'data'=> $data
+
         ]);
     }
 

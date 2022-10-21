@@ -28,6 +28,10 @@ class CommonConfigController extends Controller
      */
     public function create()
     {
+        $common_configs = CommonConfig::all();
+        if($common_configs !=null){
+            return redirect()->back();
+        }
         return view('backend.setup_configurations.common_configuration.create');
     }
 
@@ -45,9 +49,10 @@ class CommonConfigController extends Controller
         $common_config->for_referrer = $request->for_referrer;
         $common_config->for_activator = $request->for_activator;
         $common_config->contact_info = $request->contact_info;
+        $common_config ->exchange = $request->exchange;
         $common_config->save();
         flash(translate('Cấu hình chung đã được thiết lập !'))->success();
-        return redirect()->route;
+        return redirect()->route('common_configs.index');
     }
 
     /**
@@ -88,6 +93,7 @@ class CommonConfigController extends Controller
         $common_config->for_referrer = $request->for_referrer;
         $common_config->for_activator = $request->for_activator;
         $common_config->contact_info = $request->contact_info;
+        $common_config ->exchange = $request->exchange;
         $common_config->save();
         flash(translate('Cấu hình chung đã được thiết lập !'))->success();
         return redirect()->route('common_configs.index');

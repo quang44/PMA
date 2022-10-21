@@ -35,12 +35,12 @@ class CustomerPackageRequest extends FormRequest
     {
         return [
             'name.required' => 'Không để trống tên nhóm người dùng !',
-            'bonus.required' => 'Không để trống tiền thưởng !',
-            'withdraw.required' => 'Không để trống số tiền rút !',
+            'bonus.required' => 'Không để trống điểm thưởng của nhóm người dùng !',
+            'bonus.numeric' => 'Điểm thưởng của nhóm người dùng phải là một số !',
+            'withdraw.required' => 'Không để trống số có thể tiền rút của nhóm người dùng !',
             'point.required' => 'Không để trống số point !',
-            'withdraw.numeric' => 'Số tiền rút phải có định dạng số !',
-            'point.numeric' => 'Số point phải có định dạng số !',
-            'bonus' => 'Tiền thưởng phải có định dạng số !',
+            'withdraw.numeric' => 'Số tiền có thể rút phải là một số !',
+            'point.numeric' => 'Số point phải là một số !',
         ];
     }
 }

@@ -350,8 +350,8 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
     Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store');
 
     Route::group(['prefix' => 'customer-groups', 'middleware' => []], (function () {
-        Route::get('', '\App\Http\Controllers\Api\V2\CustomerGroupController@index');
-        Route::get('show-customer-group/{id}', '\App\Http\Controllers\Api\V2\CustomerGroupController@show');
+        Route::get('', '\App\Http\Controllers\Api\V2\CustomerPackageController@index');
+        Route::get('{id}', '\App\Http\Controllers\Api\V2\CustomerPackageController@show');
     }));
 
     Route::group(['prefix' => 'common-config', 'middleware' => []], (function () {
@@ -364,7 +364,7 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
 
     Route::group(['prefix' => 'pages', 'middleware' => []], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\PageController@index');
-        Route::get('/{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
+        Route::get('{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
     }));
 });
 

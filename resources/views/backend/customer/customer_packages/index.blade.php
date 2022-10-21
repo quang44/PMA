@@ -22,7 +22,7 @@
                         <p class="mb-3 h6 fw-600">{{$customer_package->name}}</p>
                         <img src="{{ uploaded_asset($customer_package->avatar) }}" alt="avatar" class="h-50px"><br><br>
                         <p>{{$customer_package->description ? $customer_package->description : 'Chưa có mô tả !' }}</p>
-                        <p><b>Thưởng : {{single_price($customer_package->bonus)}}</b></p>
+                        <p><b>Điểm thưởng : {{number_format($customer_package->bonus,0,'.','.')}}</b></p>
                         <p><b>Số point : {{number_format($customer_package->point, 0,'.', '.')}}</b></p>
                         <p><b>Số tiền có thể rút : {{single_price($customer_package->withdraw)}}</b></p>
                         <label class="aiz-switch aiz-switch-success mb-0">
