@@ -193,11 +193,7 @@ class LoginController extends Controller
         }
 
         if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
-<<<<<<< HEAD
-=======
-
 //            CoreComponentRepository::instantiateShopRepository();
->>>>>>> 35079cd3c13c27245ce767097273c8fcdeeedf61
             return redirect()->route('admin.dashboard');
         } elseif (auth()->user()->user_type == 'seller') {
             return redirect()->route('seller.dashboard');

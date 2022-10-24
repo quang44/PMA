@@ -4,7 +4,7 @@
 
     <div class="aiz-titlebar text-left mt-2 mb-3 row">
         <div class=" col-md-6 align-items-center">
-            <h1 class="h3">{{translate('Danh sách thẻ bảo hành')}}</h1>
+            <h1 class="h3">{{translate('List of warranty cards')}}</h1>
         </div>
 
 
@@ -19,7 +19,7 @@
         <form class="" id="sort_Card" action="" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col">
-                    <h5 class="mb-0 h6">{{translate('Thẻ bảo hành')}}</h5>
+                    <h5 class="mb-0 h6">{{translate('Insurance card')}}</h5>
                 </div>
 
 
@@ -29,11 +29,11 @@
                         <select name="sort_status" id="sort_selectCart" class="form-control">
                             <option value="-1">Trạng thái của thẻ</option>
                             <option value="0"
-                                    @if(request('sort_status',-1)==0) selected @endif>{{translate('Chờ duyệt')}}</option>
+                                    @if(request('sort_status',-1)==0) selected @endif>{{translate('Pending')}}</option>
                             <option value="1"
-                                    @if(request('sort_status',-1)==1) selected @endif>{{translate('Đã duyệt')}}</option>
+                                    @if(request('sort_status',-1)==1) selected @endif>{{translate('Approved')}}</option>
                             <option value="2"
-                                    @if(request('sort_status',-1)==2) selected @endif>{{translate('Hủy thẻ')}}</option>
+                                    @if(request('sort_status',-1)==2) selected @endif>{{translate('Cancelled')}}</option>
                         </select>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
 
                         <input type="text" class="form-control" id="search" name="search"
                                @isset($search) value="{{ $search }}"
-                               @endisset placeholder="{{ translate('Nhập tên khách hàng hoặc số seri') }}">
+                               @endisset placeholder="{{ translate('Enter customer name or serial number') }}">
                     </div>
                 </div>
             </div>
@@ -52,13 +52,13 @@
                     <table class="table aiz-table mb-0">
                         <thead>
                         <tr>
-                            <th>{{translate('Tên Hãng')}}</th>
-                            <th data-breakpoints="lg">{{translate('Tên khách hàng')}}</th>
-                            <th data-breakpoints="lg">{{translate('Địa chỉ')}}</th>
+                            <th>{{translate('Brand name')}}</th>
+                            <th data-breakpoints="lg">{{translate('Customer name')}}</th>
+                            <th data-breakpoints="lg">{{translate('Address')}}</th>
                             <th data-breakpoints="lg">{{translate('Seri')}}</th>
-                            <th data-breakpoints="lg">{{translate('Thời gian kích hoạt')}}</th>
-                            <th data-breakpoints="lg">{{translate('Ảnh')}}</th>
-                            <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
+                            <th data-breakpoints="lg">{{translate('Activation time')}}</th>
+                            <th data-breakpoints="lg">{{translate('Avatar')}}</th>
+                            <th data-breakpoints="lg">{{translate('Status')}}</th>
                             <th class="text-right">{{translate('Options')}}</th>
                         </tr>
                         </thead>
@@ -75,7 +75,7 @@
                                     <td> @if($warranty_card->active_time>0)
                                             {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Chưa kích hoạt') }}</span>
+                                            <span class="badge badge-inline badge-secondary">{{ trans('Not activated') }}</span>
                                         @endif
                                     </td>
                                     <td>
@@ -87,12 +87,12 @@
 
                                     <td>
                                         @if($warranty_card->status == 0)
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Chờ duyệt') }}</span>
+                                            <span class="badge badge-inline badge-secondary">{{ trans('Pending') }}</span>
                                         @else
                                             @if($warranty_card->status == 1)
-                                                <span class="badge badge-inline badge-success">{{ trans('Đã Duyệt') }}</span>
+                                                <span class="badge badge-inline badge-success">{{ trans('Approved') }}</span>
                                             @else
-                                                <span class="badge badge-inline badge-danger">{{ trans('Hủy') }}</span>
+                                                <span class="badge badge-inline badge-danger">{{ trans('Cancelled') }}</span>
                                             @endif
                                         @endif
                                     </td>
@@ -108,7 +108,7 @@
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-info btn-icon btn-circle btn-sm"
                                                onclick="updateCard('{{route('warranty_card.ban', encrypt($warranty_card->id))}}',1);"
-                                               title="{{ translate('Kích hoạt Thẻ') }}">
+                                               title="{{ translate('Activate Cards') }}">
                                                 <i class="las la-credit-card"></i>
                                             </a>
 
@@ -116,7 +116,7 @@
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-danger btn-icon btn-circle btn-sm"
                                                onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}' ,2);"
-                                               title="{{ translate('Hủy thẻ') }}">
+                                               title="{{ translate('Cancel the card') }}">
                                                 <i class="las la-user-alt-slash"></i>
                                             </a>
                                         @endif

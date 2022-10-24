@@ -10,24 +10,24 @@
         <div class="col-lg-6 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{translate('Thông tin Thẻ Bảo hành ')}} </h5>
+                    <h5 class="mb-0 h6">{{translate('Warranty Card Information ')}} </h5>
                 </div>
                 <div class="card-body align-content-center">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Hãng ')}} :</label>
+                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Brand')}} :</label>
                         <div class="col-sm-9">
                             <span>{{$warranty_card->brand->name}}</span>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="name">{{translate('Tên khách hàng')}} :</label>
+                        <label class="col-sm-3 col-from-label" for="name">{{translate('Customer name')}} :</label>
                         <div class="col-sm-9">
                             <span>{{$warranty_card->user_name}}</span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="address">{{translate('Địa chỉ')}} :</label>
+                        <label class="col-sm-3 col-from-label" for="address">{{translate('Address')}} :</label>
                         <div class="col-sm-9">
                             <span>{{$warranty_card->address}}</span>
 
@@ -41,33 +41,33 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="Seri">{{translate('Thời gian Tạo')}} :</label>
+                        <label class="col-sm-3 col-from-label" for="Seri">{{translate('Created_at')}} :</label>
                         <div class="col-sm-9">
                             <span>{{date('d-m-Y H:i:s',strtotime($warranty_card->created_at))}}</span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="Seri">{{translate('Thời gian kích hoạt thẻ')}}
+                        <label class="col-sm-3 col-from-label" for="Seri">{{translate('Activation time')}}
                             :</label>
                         <div class="col-sm-9">
                                 <span class="text-danger">@if($warranty_card->active_time>0)
                                         {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                     @else
-                                        {{ trans('Chưa kích hoạt') }}
+                                        {{ trans('Not activated') }}
                                     @endif
                                 </span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('trạng thái')}} :</label>
+                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Status')}} :</label>
                         <div class="col-sm-9">
                                 <span>
                                     @if($warranty_card->status==0)
-                                        {{translate('chưa duyệt')}}
+                                        {{translate('Pendding')}}
                                     @elseif($warranty_card->status==1)
-                                        {{translate('đã duyệt')}}
+                                        {{translate('Approved')}}
                                     @else
-                                        {{translate('hủy')}}  / lý do :  {{$warranty_card->reason}}
+                                        {{translate('Cancelled')}}  / lý do :  {{$warranty_card->reason}}
                                     @endif
                                 </span>
 
@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label" for="package_id">{{translate('ghi chú khách hàng')}}
+                    <label class="col-sm-3 col-from-label" for="package_id">{{translate('Customer Notes')}}
                         :</label>
                     <div class="col-sm-9">
                         <span>{{$warranty_card->note}}</span>

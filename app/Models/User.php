@@ -88,12 +88,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function customer_package()
     {
-        return $this->belongsTo(CustomerPackage::class);
-    }
-
-    public function customer_group()
-    {
-        return $this->belongsTo(CustomerGroup::class);
+        return $this->belongsTo(CustomerPackage::class, 'customer_group_id', 'id');
     }
 
 

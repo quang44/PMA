@@ -15,7 +15,7 @@
                           method="POST">
                         @csrf
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Name')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Customer group name ')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Bonus Point')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Reward Points')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -58,15 +58,20 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">Description</label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Description')}}</label>
                             <div class="col-sm-10">
-                    <textarea class="form-control" name="description" id="" cols="30" rows="10">
-                        {!! old('description') !!}
-                    </textarea>
+					<textarea
+                        class="aiz-text-editor form-control"
+                        placeholder="{{translate('Content..')}}"
+                        data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]'
+                        data-min-height="300"
+                        name="description"
+                    >{!! old('description')!!}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Withdraw')}} <span
+                            <label class="col-sm-2 col-from-label"
+                                   for="name">{{translate('Amount that can be withdrawn')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type=text class="form-control"
@@ -78,7 +83,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Number of points')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -87,6 +92,16 @@
                                 @error('point')
                                 <span class="text-danger"> {{$message}}</span>
                                 @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Default')}} </label>
+                            <div class="col-sm-10">
+                                <label class="aiz-switch aiz-switch-success mb-0">
+                                    <input class="default" name="default" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
                             </div>
                         </div>
 

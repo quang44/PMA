@@ -6,7 +6,7 @@
         <div class="col-lg-6 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{translate('Thông tin Thẻ Bảo hành')}}</h5>
+                    <h5 class="mb-0 h6">{{translate('Warranty Card Information')}}</h5>
                 </div>
 
                 <form action="{{ route('warranty_card.update',[encrypt( $Warranty->id)]) }}" method="POST">
@@ -14,9 +14,9 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="name">{{translate('User name')}}</label>
+                            <label class="col-sm-3 col-from-label" for="name">{{translate('Customer name')}}</label>
                             <div class="col-sm-9">
-                                <input type="text" placeholder="{{translate('User name')}}" id="name" name="user_name"
+                                <input type="text" placeholder="{{translate('Customer name')}}" id="name" name="user_name"
                                        value="{{ old('user_name', $Warranty->user_name) }}" class="form-control">
                                 @error('user_name')
                                 <div class="" style="color: red">{{ $message }}</div>
@@ -44,10 +44,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="package_id">{{translate('Hãng ')}}</label>
+                            <label class="col-sm-3 col-from-label" for="package_id">{{translate('Brand ')}}</label>
                             <div class="col-sm-9">
                                 <select name="brand_id" id="" class="form-control" required>
-                                    <option value="">chọn hãng sản xuất....</option>
+                                    <option value="">{{ translate('Choose manufacturer....') }}</option>
 
                                     @foreach($brands as $brand)
                                         @if($brand->status==1)

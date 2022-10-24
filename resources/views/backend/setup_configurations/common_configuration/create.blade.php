@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Đơn vị tiền')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Currency unit')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('unit')}}" name="unit" >
                                 @error('unit')
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số point cho người giới thiệu')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Points for referrers')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('for_referrer')}}" name="for_referrer" >
                                 @error('for_referrer')
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số point cho người kích hoạt bảo hiểm')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point for activator insurance')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('for_activator')}}" name="for_activator" >
                                 @error('for_activator')
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Chuyển đổi point')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Convert points to cash')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('exchange')}}" name="exchange" >
                                 @error('exchange')
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Thông tin liên hệ')}} </label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Contact Info')}} </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('contact_info')}}" name="contact_info" >
                             </div>

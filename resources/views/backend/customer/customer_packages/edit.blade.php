@@ -16,7 +16,7 @@
                         <input type="hidden" name="_method" value="PATCH">
                         @csrf
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Name')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Customer group name')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Bonus Point')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Reward Points')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -59,15 +59,19 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">Description</label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Description')}}</label>
                             <div class="col-sm-10">
-                    <textarea class="form-control" name="description" id="" cols="30" rows="10">
-                        {!! $customer_package->description !!}
-                    </textarea>
+					<textarea
+                        class="aiz-text-editor form-control"
+                        placeholder="{{translate('Content..')}}"
+                        data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]'
+                        data-min-height="300"
+                        name="description"
+                    >{!! old('description') ? old('description') : $customer_package->description !!}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Withdraw')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Amount that can be withdrawn')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type=text class="form-control"
@@ -79,7 +83,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Number of points')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"

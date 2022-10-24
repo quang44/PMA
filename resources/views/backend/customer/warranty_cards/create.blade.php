@@ -6,17 +6,17 @@
         <div class="col-lg-6 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0 h6">{{translate('Thêm thẻ bảo hành')}}</h5>
+                    <h5 class="mb-0 h6">{{translate('Add warranty card')}}</h5>
                 </div>
 
                 <form action="{{ route('warranty_card.store')}}" method="POST">
                     @csrf
                     <div class="card-body">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="name">{{translate('User name')}} <span
+                            <label class="col-sm-3 col-from-label" for="name">{{translate('Customer name')}} <span
                                     class="text-danger"> *</span> </label>
                             <div class="col-sm-9">
-                                <input type="text" placeholder="{{translate('User name')}}" id="name" name="user_name"
+                                <input type="text" placeholder="{{translate('Customer name')}}" id="name" name="user_name"
                                        value="{{ old('user_name') }}" class="form-control" required>
                                 @error('user_name')
                                 <div class="" style="color: red">{{ $message }}</div>
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="package_id">{{translate('Hãng ')}} <span
+                            <label class="col-sm-3 col-from-label" for="package_id">{{translate('Brand ')}} <span
                                     class="text-danger"> *</span> </label>
                             <div class="col-sm-9">
                                 <select name="brand_id" id="" class="form-control" required>
