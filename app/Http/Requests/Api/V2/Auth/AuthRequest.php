@@ -26,8 +26,8 @@ class AuthRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:users',
-            'phone'=>'required|numeric',
+            'name'=>'required',
+            'phone'=>'required|numeric|unique:users',
             'password'=>'required|min:6|confirmed'
         ];
     }

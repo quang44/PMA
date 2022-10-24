@@ -42,9 +42,7 @@ class AuthController extends Controller
         }
 
         $package = CustomerPackage::where('default', 1)->first();
-        $group = CustomerGroup::where('default', 1)->first();
 
-       $group = CustomerGroup::where('default', 1)->first();
         $user_type = $request->user_type ?? 'customer';
         $referral_code = $request->referral_code;
         $referred_by = 0;
@@ -80,7 +78,6 @@ class AuthController extends Controller
                     $amount= (int)$point += $common_config->for_referrer;
                     $walletKol->amount =config_base64_encode($amount);
                     $walletKol->payment_method=translate('Hệ thống');
-                    $walletKol->user_type='kol';
                     $walletKol->note=translate('Giới thiệu');
                     $walletKol->save();
                     $referred_by = $kol->id;
@@ -101,18 +98,14 @@ class AuthController extends Controller
             'banned' => 0,
             'device_token' => $request->device_token,
             'email_verified_at' => date('Y-m-d H:i:s'),
-            'verification_code' => null,//rand(1000, 9999),
             'customer_package_id' => $package->id,
-//            'customer_group_id' => $group->id
+            'verification_code' => rand(100000, 999999)
         ]);
         $user->save();
-//return response([
-//    'data'=>$user
-//]);
-        $customerGroup = CustomerGroup::find($user->customer_group_id);
+
         $wallet = new Wallet;
         $wallet->user_id = $user->id;
-        $amount=  $referred_by != 0 ? $customerGroup->point_number + $common_config->for_activator : $customerGroup->point_number;
+        $amount=  $referred_by != 0 ? $package->point_number + $common_config->for_activator : $package->point_number;
         $wallet->amount = config_base64_encode($amount);
         $wallet->payment_method=translate('Hệ thống');
         $wallet->note=translate('đăng ký tài khoản thành công');
@@ -150,15 +143,15 @@ class AuthController extends Controller
         }*/
 
 
-        $text = '
-            <b>[Ngu?n] : </b><code>GomDon</code>
-            <b>[Ti?u ??] : </b><code>Khách hàng mới</code>
-            <b>[M? t?] : </b><a href="' . route('customers.index', ['search' => $user->name]) . '">Xem chi tiết</a>';
-        TelegramService::sendMessageGomdon($text);
+//        $text = '
+//            <b>[Nguồn] : </b><code>GomDon</code>
+//            <b>[Tiêu đề] : </b><code>Khách hàng mới</code>
+//            <b>[Mô tả] : </b><a href="' . route('customers.index', ['search' => $user->name]) . '">Xem chi tiết</a>';
+//        TelegramService::sendMessageGomdon($text);
         return response()->json([
             'result' => true,
             'message' => translate('Registration Successful'),
-            'data' => null
+            'data' => ['id'=>$user->id,'verification_code'=>$user->verification_code]
         ]);
         //return  $this->loginSuccess($user);
         //create token
@@ -171,17 +164,17 @@ class AuthController extends Controller
         ], 201);*/
     }
 
-    /*public function resendCode(Request $request)
+    public function resendCode(Request $request)
     {
         $user = User::where('id', $request->user_id)->first();
         $user->verification_code = rand(100000, 999999);
 
-        if ($request->verify_by == 'email') {
-            $user->notify(new AppEmailVerificationNotification());
-        } else {
-            $otpController = new OTPVerificationController();
-            $otpController->send_code($user);
-        }
+//        if ($request->verify_by == 'email') {
+//            $user->notify(new AppEmailVerificationNotification());
+//        } else {
+//            $otpController = new OTPVerificationController();
+//            $otpController->send_code($user);
+//        }
 
         $user->save();
 
@@ -189,13 +182,14 @@ class AuthController extends Controller
             'result' => true,
             'message' => translate('Verification code is sent again'),
         ], 200);
-    }*/
+    }
 
-    /*public function confirmCode(Request $request)
+
+    public function confirmCode(Request $request)
     {
-        $user = User::where('id', $request->user_id)->first();
+        $user = User::findOrFail( $request->user_id);
 
-        if ($user->verification_code == $request->verification_code) {
+        if ($user!=null && $user->verification_code == $request->verification_code) {
             $user->email_verified_at = date('Y-m-d H:i:s');
             $user->verification_code = null;
             $user->save();
@@ -209,7 +203,7 @@ class AuthController extends Controller
                 'message' => translate('Code does not match, you can request for resending the code'),
             ], 200);
         }
-    }*/
+    }
 
     public function login(Request $request)
     {

@@ -5,10 +5,10 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('login', 'App\Http\Controllers\Api\V2\AuthController@login');
     Route::post('signup', 'App\Http\Controllers\Api\V2\AuthController@signup');
     Route::post('password/reset', 'App\Http\Controllers\Api\V2\AuthController@resetPassword');
-    /*Route::post('social-login', 'App\Http\Controllers\Api\V2\AuthController@socialLogin');*/
-    /*Route::post('password/forget_request', 'App\Http\Controllers\Api\V2\PasswordResetController@forgetRequest');
+    Route::post('social-login', 'App\Http\Controllers\Api\V2\AuthController@socialLogin');
+    Route::post('password/forget_request', 'App\Http\Controllers\Api\V2\PasswordResetController@forgetRequest');
     Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
-    Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');*/
+    Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');
 
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -19,8 +19,8 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
     });
-    /*Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
-    Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');*/
+    Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
+    Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
 });
 
 Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
