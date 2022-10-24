@@ -32,7 +32,7 @@
                     <th data-breakpoints="lg">{{translate('Đơn vị tiền')}}</th>
                     <th data-breakpoints="lg">{{translate('Point cho người giới thiệu')}}</th>
                     <th data-breakpoints="lg">{{translate('Point cho người kích hoạt bảo hiểm')}}</th>
-                    <th data-breakpoints="lg">{{translate('Chuyển đổi point')}}</th>
+                    <th data-breakpoints="lg">{{translate('Chuyển point (1đ=1000vnd)')}}</th>
                     <th data-breakpoints="lg">{{translate('Thông tin liên hệ')}}</th>
                     <th width="10%">{{translate('Options')}}</th>
                 </tr>

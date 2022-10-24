@@ -73,7 +73,7 @@
                                     <td>{{$warranty_card->address}}</td>
                                     <td>{{$warranty_card->seri}}</td>
                                     <td> @if($warranty_card->active_time>0)
-                                            {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
+                                            {{date('d/m/Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
                                             <span class="badge badge-inline badge-secondary">{{ trans('Chưa kích hoạt') }}</span>
                                         @endif
@@ -99,6 +99,8 @@
 
 
                                     <td class="text-right">
+
+
                                         <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
                                            href="{{ route('warranty_card.show',[encrypt($warranty_card->id)]) }}"
                                            title="View">

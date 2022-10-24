@@ -25,18 +25,15 @@ class WarrantyCardRequest extends FormRequest
      */
     public function rules()
     {
-          $qr_code_image='sometimes';
-           if ($this->request->get('qr_code_image') !=null) {
-               $qr_code_image   = 'required|mimes:jpeg,png,jpg,svg,gif|max:2048';
-        }
+
+
 //        |regex:/^[a-zA-Z_ ]*$/
         return [
             'user_name'=>'required|max:255|unique:warranty_cards',
             'address'=>'required',
             'seri'=>'required|numeric|regex:/^[0-9]*$/u',
             'brand'=>'required',
-//            'seri_image'=>'required|mimes:jpeg,png,jpg,svg,gif|max:2048',
-//            'qr_code_image'=>$qr_code_image,
+            'image'=>'required',
         ];
     }
 

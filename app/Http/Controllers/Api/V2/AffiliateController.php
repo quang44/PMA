@@ -8,7 +8,9 @@ use App\Http\Resources\V2\OrderAffiliateCollection;
 use App\Http\Resources\V2\OrderDeliveryCollection;
 use App\Http\Resources\V2\UserCollection;
 use App\Models\AffiliatePayment;
+use App\Models\CommonConfig;
 use App\Models\CustomerBank;
+use App\Models\CustomerPackage;
 use App\Models\NoticeUser;
 use App\Models\OrderDelivery;
 use App\Models\User;
@@ -36,7 +38,7 @@ class AffiliateController extends Controller
             $users = User::where('user_type', $user_type)->where('referred_by', $user->id);
         }
         $keyword = $request->search;
-        if(!empty($keyword)){
+        if (!empty($keyword)) {
             $users = $users->where(function ($query) use ($keyword) {
                 $query->where('name', 'like', '%' . $keyword . '%')->orWhere('phone', 'like', '%' . $keyword . '%');
             });
@@ -49,23 +51,23 @@ class AffiliateController extends Controller
         }
         $users = $users->orderBy('created_at', 'desc')->get();
         $ids = $users->pluck('id');
-        if($user_type == 'kol'){
+        if ($user_type == 'kol') {
             $user_shop = User::whereIn('referred_by', $ids)->select('referred_by', DB::raw('count(*) as count'))->groupBy('referred_by')->get()->pluck('count', 'referred_by')->toArray();
             $order_count = OrderDelivery::whereIn('kol_id', $ids)->where('affiliate_payment', 1)->select('kol_id', DB::raw('count(*) as count'))->get()->pluck('count', 'kol_id')->toArray();
         }
-        if($user_type == 'customer'){
+        if ($user_type == 'customer') {
             $order_count = OrderDelivery::whereIn('user_id', $ids)->where('affiliate_payment', 1)->select('user_id', DB::raw('count(*) as count'))->groupBy('user_id')->get()->pluck('count', 'user_id')->toArray();
         }
-        if($users){
-            foreach ($users as $key => $user){
+        if ($users) {
+            foreach ($users as $key => $user) {
                 $user['count_shop'] = isset($user_shop[$user->id]) ? $user_shop[$user->id] : 0;
                 $user['count_order'] = isset($order_count[$user->id]) ? $order_count[$user->id] : 0;
                 $users[$key] = $user;
             }
-            if($user_type == 'kol'){
+            if ($user_type == 'kol') {
                 $users = $users->sortByDesc('count_shop')->values();
             }
-            if($user_type == 'customer'){
+            if ($user_type == 'customer') {
                 $users = $users->sortByDesc('count_order')->values();
             }
         }
@@ -85,12 +87,13 @@ class AffiliateController extends Controller
         return new UserCollection($users);*/
     }
 
-    public function static(Request $request){
+    public function static(Request $request)
+    {
 
         $user = auth()->user();
         $user_type = $user->user_type == 'employee' ? 'kol' : 'customer';
         $referred_by = $user->id;
-        if ($user_type =='kol' && !empty($request->kol_id)) {
+        if ($user_type == 'kol' && !empty($request->kol_id)) {
             $user_type = 'customer';
             $referred_by = $request->kol_id;
         }
@@ -133,7 +136,8 @@ class AffiliateController extends Controller
 
     }
 
-    public function order_static(){
+    public function order_static()
+    {
         $user = auth()->user();
         $user_type = $user->user_type;
         if ($user_type == 'employee') {
@@ -160,7 +164,8 @@ class AffiliateController extends Controller
         ]);
     }
 
-    public function payment_static(){
+    public function payment_static()
+    {
         $id = auth()->id();
 
         /*if (!empty($request->status)) {
@@ -208,35 +213,55 @@ class AffiliateController extends Controller
 
     public function requestPayment(Request $request)
     {
+
+        $user = User::with('customer_package')->find(auth()->id());
         $value = (int)$request->value;
-        $user = User::find(auth()->id());
-        if($value < 10000){
+        $configPoint = CommonConfig::first();
+        $point = $value / (int)$configPoint->exchange;
+
+        if ($value < 10000) {
             return response([
-                'result' => false,
-                'message' => 'Số tiền cần thanh toán phải từ 10.000 vnđ'
+                'result' => $user->customer_package,
+                'message' =>'Số tiền cần thanh toán phải từ 10.000 vnđ trở lên'
             ]);
         }
-        if ($value > $user->balance) {
+
+        if (!is_int($point)) {
+            return response([
+                'result' => false,
+                'message' => 'Số tiền không hợp lệ'
+            ]);
+        }
+
+        if($value > $user->customer_package->withdraw){
+            return response([
+                'result' => false,
+                'message' => "số tiền tối thiểu bạn có thẻ rút là ".number_format($user->customer_package->withdraw,0, ',', '.')." vnđ "
+            ]);
+        }
+
+
+        if ($point > $user->balance) {
             return response([
                 'result' => false,
                 'message' => 'Số tiền cần thanh toán nhiều hơn số dư tài khoản'
             ]);
         }
         $customer_bank = CustomerBank::where('user_id', $user->id)->first();
-        if(!$customer_bank){
+        if (!$customer_bank) {
             return response([
                 'result' => false,
                 'message' => 'Vui lòng cập nhật thông tin tài khoản ngân hàng trước'
             ]);
         }
 
-        DB::transaction(function () use ($user, $value, $customer_bank) {
-            $user->balance = $user->balance - $value;
+        DB::transaction(function () use ($user, $value,$point, $customer_bank) {
+            $user->balance = $user->balance - $point;
             $user->save();
             $request = new AffiliatePayment();
             $request->user_id = $user->id;
             $request->value = $value;
-            $request->vat = (int)($value * 10/100);
+            $request->vat = (int)($value * 10 / 100);
             $request->amount = $request->value - $request->vat;
             $request->status = 1; // gửi yêu cầu
             $request->bank_name = $customer_bank->name;
@@ -250,35 +275,40 @@ class AffiliateController extends Controller
         ]);
     }
 
-    public function cancelPayment(Request $request){
+    public function cancelPayment(Request $request)
+    {
         $user = User::find(auth()->id());
-        $payment = AffiliatePayment::where('id',$request->id)->where('user_id', $user->id)->first();
-        if(!$payment){
+        $payment = AffiliatePayment::where('id', $request->id)->where('user_id', $user->id)->first();
+        if (!$payment) {
             return response([
                 'result' => false,
-                'message' => 'Không tìm thấy thông tin cần thành toán'
+                'message' => "Không tìm thấy thông tin cần thành toán"
             ]);
         }
-        if($payment->status != 1){
+        if ($payment->status != 1) {
             return response([
                 'result' => false,
-                'message' => 'Không tìm thấy thông tin cần thành toán'
+                'message' => "Không tìm thấy thông tin cần thành toán"
             ]);
         }
+
         DB::transaction(function () use ($user, $payment) {
-            $user->balance = $user->balance + $payment->value;
+            $pointConfig=CommonConfig::first();
+            $point=$payment->value/(int)$pointConfig->exchange;
+            $user->balance = $user->balance + $point;
             $user->save();
             $payment->status = -1; // huy tt
-            if($user->user_type == 'employee'){
+            if ($user->user_type == 'employee') {
                 $payment->reason = 'Nhân viên tự hủy yêu cầu thanh toán';
             }
-            if($user->user_type == 'kol'){
+            if ($user->user_type == 'kol') {
                 $payment->reason = 'Cộng tác viên tự hủy yêu cầu thanh toán';
             }
             $payment->save();
         });
         return response([
             'result' => true,
+            'messages'=>'Gửi yêu cầu hủy rút tiền thành công'
         ]);
 
     }
@@ -316,13 +346,15 @@ class AffiliateController extends Controller
         }
 
         if ($user_type == 'employee') {
-            $orders = OrderDelivery::where('employee_id', $user->id)/*->where('status_payment', OrderDeliveryUtility::STATUS_PAYMENT_SUCCESS)*/;
+            $orders = OrderDelivery::where('employee_id', $user->id)/*->where('status_payment', OrderDeliveryUtility::STATUS_PAYMENT_SUCCESS)*/
+            ;
         }
         if ($user_type == 'kol') {
-            $orders = OrderDelivery::where('kol_id', $user->id)/*->where('status_payment', OrderDeliveryUtility::STATUS_PAYMENT_SUCCESS)*/;
+            $orders = OrderDelivery::where('kol_id', $user->id)/*->where('status_payment', OrderDeliveryUtility::STATUS_PAYMENT_SUCCESS)*/
+            ;
         }
 
-        if(!empty($request->shop_id)){
+        if (!empty($request->shop_id)) {
             $orders = $orders->where('user_id', (int)$request->shop_id);
         }
         if ((int)$request->start_time > 0) {
@@ -337,7 +369,8 @@ class AffiliateController extends Controller
         return new OrderDeliveryCollection($orders);
     }
 
-    public function order_detail(Request $request){
+    public function order_detail(Request $request)
+    {
         $user = auth()->user();
         $user_type = $user->user_type;
         if ($user_type != 'employee' && $user_type != 'kol') {

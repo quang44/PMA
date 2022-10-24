@@ -45,7 +45,7 @@ class AuthController extends Controller
 
         $user_type = $request->user_type ?? 'customer';
         $referral_code = $request->referral_code;
-        $referred_by = 0;
+        $referred_by = "";
         if ($user_type == 'kol') {
             if (!empty($referral_code)) {
                 $employee = User::where('user_type', 'employee')->where('referral_code', $referral_code)->first();
@@ -86,6 +86,7 @@ class AuthController extends Controller
             }
         }
 
+        $amount=  $referred_by != "" ? $package->point_number + $common_config->for_activator : $package->bonus;
         $user = new User([
             'name' => $request->name,
             'phone' => $request->phone,
@@ -94,7 +95,7 @@ class AuthController extends Controller
             'user_type' => $user_type,
             'referred_by' => $referred_by,
             'referral_code' => $request->phone,//Str::random(10),
-            'balance' => 0,
+            'balance' => $amount,
             'banned' => 0,
             'device_token' => $request->device_token,
             'email_verified_at' => date('Y-m-d H:i:s'),
@@ -105,7 +106,6 @@ class AuthController extends Controller
 
         $wallet = new Wallet;
         $wallet->user_id = $user->id;
-        $amount=  $referred_by != 0 ? $package->point_number + $common_config->for_activator : $package->point_number;
         $wallet->amount = config_base64_encode($amount);
         $wallet->payment_method=translate('Hệ thống');
         $wallet->note=translate('đăng ký tài khoản thành công');
@@ -150,7 +150,7 @@ class AuthController extends Controller
 //        TelegramService::sendMessageGomdon($text);
         return response()->json([
             'result' => true,
-            'message' => translate('Registration Successful'),
+            'message' => translate('Registration Successful '),
             'data' => ['id'=>$user->id,'verification_code'=>$user->verification_code]
         ]);
         //return  $this->loginSuccess($user);

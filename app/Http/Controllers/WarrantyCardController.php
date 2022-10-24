@@ -45,10 +45,11 @@ class WarrantyCardController extends Controller
             $WarrantyCard->active_time=date('H:i:s');
             $wallet= Wallet::where('user_id',$WarrantyCard->user_id)->first();
             $amount=config_base64_decode( $wallet->amount);
-            $point=(int)$amount+(int)$commonConfig->for_activator;
+            $point=$amount+(int)$commonConfig->for_activator;
             $wallet->amount=config_base64_encode($point);
+            $wallet->note="+ $commonConfig->for_activator kích hoạt thẻ bảo hành";
             $wallet->save();
-            $user->balance=$user->balance+(int)$point;
+            $user->balance=$user->balance+(int)$commonConfig->for_activator;
             $user->save();
             flash(translate('Thẻ đã được kích hoạt thành công'))->success();
         } else {
