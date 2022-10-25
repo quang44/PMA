@@ -34,7 +34,7 @@
                     <div class="px-3 pt-3">
                         <div class="opacity-50">
                             <span class="fs-12 d-block">{{ translate('Total') }}</span>
-                            {{ translate('Số tiền đã rút trên toàn hệ thống') }}
+                            {{ translate('Amount withdrawn in the whole system') }}
                         </div>
                         <div class="h3 fw-700 mb-3">{{ single_price($total_withdraw ? $total_withdraw : 0) }}</div>
                     </div>
@@ -48,7 +48,7 @@
                     <div class="px-3 pt-3">
                         <div class="opacity-50">
                             <span class="fs-12 d-block">{{ translate('Total') }}</span>
-                            {{ translate('Số tền chưa rút trên toàn hệ thống') }}
+                            {{ translate('Unwithdrawn amount in the whole system') }}
                         </div>
                         <div class="h3 fw-700 mb-3">{{ single_price($total_not_withdraw ? $total_not_withdraw : 0) }}</div>
                     </div>

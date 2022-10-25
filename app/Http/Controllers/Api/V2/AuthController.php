@@ -105,7 +105,7 @@ class AuthController extends Controller
 
         $wallet = new Wallet;
         $wallet->user_id = $user->id;
-        $amount=  $referred_by != 0 ? $package->point_number + $common_config->for_activator : $package->point_number;
+        $amount=  $referred_by != 0 ? $package->bonus + $common_config->for_activator : $package->bonus;
         $wallet->amount = config_base64_encode($amount);
         $wallet->payment_method=translate('Hệ thống');
         $wallet->note=translate('đăng ký tài khoản thành công');
@@ -447,6 +447,14 @@ class AuthController extends Controller
                     'created_at' => date('d-m-Y H:i:s', strtotime($user->created_at))
                 ]
             ]
+        ]);
+    }
+
+    public function balances(){
+        $available_balances = available_balances();
+        return response()->json([
+            'status'=>200,
+            'available_balances'=>$available_balances
         ]);
     }
 }
