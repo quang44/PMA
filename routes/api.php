@@ -15,6 +15,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::get('logout', 'App\Http\Controllers\Api\V2\AuthController@logout');
         Route::get('user', 'App\Http\Controllers\Api\V2\AuthController@user');
         Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@notification');
+        Route::get('user/notificationWarranty', 'App\Http\Controllers\Api\V2\AuthController@notificationWarranty');
         Route::post('user/update', 'App\Http\Controllers\Api\V2\AuthController@update');
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
@@ -23,7 +24,11 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
 });
 
-Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
+    Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
+
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('historyPoint', 'App\Http\Controllers\Api\V2\LogController@index');
+});
 
     Route::get('convert', 'App\Http\Controllers\Api\V2\AddressController@convertAddress');
     Route::get('address/search', 'App\Http\Controllers\Api\V2\AddressController@search');

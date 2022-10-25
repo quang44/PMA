@@ -24,6 +24,7 @@
     use App\Utility\SendSMSUtility;
     use App\Utility\NotificationUtility;
     use Carbon\Carbon;
+    use App\Models\Log;
 
 //sensSMS function for OTP
     if (!function_exists('sendSMS')) {
@@ -62,6 +63,23 @@
         }
     }
 
+//    new notification
+    if (!function_exists('NewNotification')) {
+        function NewNotification($type, $content)
+        {
+            return NotificationUtility::SendNotifications($type, $content, auth()->id());
+
+        }
+    }
+
+// new log
+    if (!function_exists('log_history')) {
+        function log_history($data)
+        {
+            $historyLog=new Log();
+           return $historyLog->newQuery()->create($data);
+        }
+    }
     /**
      * Save JSON File
      * @return Response

@@ -9,6 +9,7 @@ use App\Models\Upload;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\WarrantyCard;
+use App\Utility\CustomerBillUtility;
 use Illuminate\Http\Request;
 
 class WarrantyCardController extends Controller
@@ -37,28 +38,45 @@ class WarrantyCardController extends Controller
 
     public function ban($id,Request $request)
     {
-            $WarrantyCard = WarrantyCard::findOrFail(decrypt($id));
+
+            $WarrantyCard = WarrantyCard::with('brand')->findOrFail(decrypt($id));
+
             $commonConfig=CommonConfig::first();
             $user=User::find($WarrantyCard->user_id);
+            $content="";
         if ($request->status==1) {
             $WarrantyCard->status = 1;
             $WarrantyCard->active_time=date('H:i:s');
+
             $wallet= Wallet::where('user_id',$WarrantyCard->user_id)->first();
             $amount=config_base64_decode( $wallet->amount);
             $point=$amount+(int)$commonConfig->for_activator;
+
             $wallet->amount=config_base64_encode($point);
-            $wallet->note="+ $commonConfig->for_activator kích hoạt thẻ bảo hành";
             $wallet->save();
+
             $user->balance=$user->balance+(int)$commonConfig->for_activator;
             $user->save();
+            $content="Yêu cầu bảo hành thiết bị ".$WarrantyCard->brand->name." của bạn đã được  phê duyệt .Liện hệ với BQT để biết thêm chi tiết";
             flash(translate('Thẻ đã được kích hoạt thành công'))->success();
+
+            $data=['type'=>CustomerBillUtility::TYPE_LOG_ADDITION,
+                'point'=>(int)$commonConfig->for_activator,
+                'amount'=>(int)$commonConfig->for_activator*$commonConfig->exchange,
+                'object'=>0,
+                'amount_first'=>(int)$amount,
+                'amount_later'=>(int)config_base64_decode($wallet->amount),
+                'user_id'=>$user->id,
+                'content'=>"Thẻ bảo hành của khách hàng $WarrantyCard->user_name được kích hoạt"
+            ];
+            log_history($data);
         } else {
             $WarrantyCard->status = 2;
+            $content="Yêu cầu bảo hành thiết bị ".$WarrantyCard->brand->name." của bạn đã đã bị hủy .Liện hệ với BQT để biết thêm chi tiết";
             $WarrantyCard->reason=$request->reason;
             flash(translate('Thẻ đã được hủy'))->warning();
-
         }
-
+        NewNotification('warranty',$content,$user->id);
         $WarrantyCard->save();
 
         return back();

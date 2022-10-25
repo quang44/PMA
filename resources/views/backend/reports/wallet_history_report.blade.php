@@ -50,7 +50,6 @@
                             <th data-breakpoints="lg">{{  translate('Date') }}</th>
                             <th>{{ translate('Point')}}</th>
                             <th data-breakpoints="lg">{{ translate('Payment Method')}}</th>
-                            <th data-breakpoints="lg">{{ translate('Note')}}</th>
                             <th data-breakpoints="lg" class="text-right">{{ translate('Approval')}}</th>
                         </tr>
                     </thead>
@@ -66,7 +65,6 @@
                                 <td>{{ date('d-m-Y', strtotime($wallet->created_at)) }}</td>
                                 <td>{{ single_price((int)config_base64_decode($wallet->amount)) }}</td>
                                 <td>{{ ucfirst(str_replace('_', ' ', $wallet ->payment_method)) }}</td>
-                                <td>{{ ucfirst(str_replace('_', ' ', $wallet ->note)) }}</td>
                                 <td class="text-right">
                                     @if ($wallet->offline_payment)
                                         @if ($wallet->approval)

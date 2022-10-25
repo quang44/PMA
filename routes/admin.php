@@ -177,7 +177,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('update-package', 'updatePackage')->name('customers.update_package');
         Route::get('/customers/login/{id}', 'login')->name('customers.login');
         Route::get('/customers/destroy/{id}', 'destroy')->name('customers.destroy');
-        Route::get('customer_pay', 'customerPay')->name('customers.customer_pay');
+//        Route::get('customer_pay', 'customerPay')->name('customers.customer_pay');
         Route::post('/bulk-customer-delete', 'bulk_customer_delete')->name('bulk-customer-delete');
     });
 
@@ -186,24 +186,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/banks/destroy/{id}', 'destroy')->name('banks.destroy');
     });
 
-    Route::controller(CustomerBillController::class)->group(function () {
-        Route::get('customer_bill', 'index')->name('customer_bill.index');
-        Route::get('customer_bill/{id}', 'show')->name('customer_bill.show');
-        Route::get('customer_bill/create/{user_id}', 'create')->name('customer_bill.create');
-        Route::post('customer_bill/create/{user_id}', 'store')->name('customer_bill.create');
-        Route::post('customer_bill/update-payment/{id}', 'updatePayment')->name('customer_bill.update_payment');
-        Route::post('customer_bill/cancel/{id}', 'cancel')->name('customer_bill.cancel');
-    });
+//    Route::controller(CustomerBillController::class)->group(function () {
+//        Route::get('customer_bill', 'index')->name('customer_bill.index');
+//        Route::get('customer_bill/{id}', 'show')->name('customer_bill.show');
+//        Route::get('customer_bill/create/{user_id}', 'create')->name('customer_bill.create');
+//        Route::post('customer_bill/create/{user_id}', 'store')->name('customer_bill.create');
+//        Route::post('customer_bill/update-payment/{id}', 'updatePayment')->name('customer_bill.update_payment');
+//        Route::post('customer_bill/cancel/{id}', 'cancel')->name('customer_bill.cancel');
+//    });
 
-    Route::controller(PartnerBillController::class)->group(function () {
-        Route::get('partner_bill', 'index')->name('partner_bill.index');
-        Route::get('partner_bill/create', 'create')->name('partner_bill.create');
-        Route::post('partner_bill/create', 'store')->name('partner_bill.create');
-        Route::post('partner_bill/cancel/{id}', 'cancel')->name('partner_bill.cancel');
-        Route::get('partner_bill/{id}', 'show')->name('partner_bill.show');
-
-
-    });
+//    Route::controller(PartnerBillController::class)->group(function () {
+//        Route::get('partner_bill', 'index')->name('partner_bill.index');
+//        Route::get('partner_bill/create', 'create')->name('partner_bill.create');
+//        Route::post('partner_bill/create', 'store')->name('partner_bill.create');
+//        Route::post('partner_bill/cancel/{id}', 'cancel')->name('partner_bill.cancel');
+//        Route::get('partner_bill/{id}', 'show')->name('partner_bill.show');
+//
+//
+//    });
 
     //       Warranty
     Route::controller(WarrantyBillController::class)->group(function () {
@@ -285,15 +285,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
     //Currency
-    Route::controller(CurrencyController::class)->group(function () {
-        Route::get('/currency', 'currency')->name('currency.index');
-        Route::post('/currency/update', 'updateCurrency')->name('currency.update');
-        Route::post('/your-currency/update', 'updateYourCurrency')->name('your_currency.update');
-        Route::get('/currency/create', 'create')->name('currency.create');
-        Route::post('/currency/store', 'store')->name('currency.store');
-        Route::post('/currency/currency_edit', 'edit')->name('currency.edit');
-        Route::post('/currency/update_status', 'update_status')->name('currency.update_status');
-    });
+//    Route::controller(CurrencyController::class)->group(function () {
+//        Route::get('/currency', 'currency')->name('currency.index');
+//        Route::post('/currency/update', 'updateCurrency')->name('currency.update');
+//        Route::post('/your-currency/update', 'updateYourCurrency')->name('your_currency.update');
+//        Route::get('/currency/create', 'create')->name('currency.create');
+//        Route::post('/currency/store', 'store')->name('currency.store');
+//        Route::post('/currency/currency_edit', 'edit')->name('currency.edit');
+//        Route::post('/currency/update_status', 'update_status')->name('currency.update_status');
+//    });
 
     //Tax
     Route::resource('tax', TaxController::class);
@@ -366,15 +366,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/staffs/destroy/{id}', [StaffController::class, 'destroy'])->name('staffs.destroy');
 
     // Flash Deal
-    Route::resource('flash_deals', FlashDealController::class);
-    Route::controller(FlashDealController::class)->group(function () {
-        Route::get('/flash_deals/edit/{id}', 'edit')->name('flash_deals.edit');
-        Route::get('/flash_deals/destroy/{id}', 'destroy')->name('flash_deals.destroy');
-        Route::post('/flash_deals/update_status', 'update_status')->name('flash_deals.update_status');
-        Route::post('/flash_deals/update_featured', 'update_featured')->name('flash_deals.update_featured');
-        Route::post('/flash_deals/product_discount', 'product_discount')->name('flash_deals.product_discount');
-        Route::post('/flash_deals/product_discount_edit', 'product_discount_edit')->name('flash_deals.product_discount_edit');
-    });
+//    Route::resource('flash_deals', FlashDealController::class);
+//    Route::controller(FlashDealController::class)->group(function () {
+//        Route::get('/flash_deals/edit/{id}', 'edit')->name('flash_deals.edit');
+//        Route::get('/flash_deals/destroy/{id}', 'destroy')->name('flash_deals.destroy');
+//        Route::post('/flash_deals/update_status', 'update_status')->name('flash_deals.update_status');
+//        Route::post('/flash_deals/update_featured', 'update_featured')->name('flash_deals.update_featured');
+//        Route::post('/flash_deals/product_discount', 'product_discount')->name('flash_deals.product_discount');
+//        Route::post('/flash_deals/product_discount_edit', 'product_discount_edit')->name('flash_deals.product_discount_edit');
+//    });
 
     //Subscribers
     Route::controller(SubscriberController::class)->group(function () {
@@ -448,28 +448,28 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/blog/change-status', 'change_status')->name('blog.change-status');
     });
 
-    Route::resource('banner', BannerController::class);
-    Route::controller(BannerController::class)->group(function () {
-        Route::get('/banner/destroy/{id}', 'destroy')->name('banner.destroy');
-        Route::post('/banner/change-status', 'change_status')->name('banner.change-status');
-    });
+//    Route::resource('banner', BannerController::class);
+//    Route::controller(BannerController::class)->group(function () {
+//        Route::get('/banner/destroy/{id}', 'destroy')->name('banner.destroy');
+//        Route::post('/banner/change-status', 'change_status')->name('banner.change-status');
+//    });
 
-    Route::resource('popup', \App\Http\Controllers\PopupController::class);
-    Route::controller(\App\Http\Controllers\PopupController::class)->group(function () {
-        Route::get('/popup/destroy/{id}', 'destroy')->name('popup.destroy');
-        Route::post('/popup/change-status', 'change_status')->name('popup.change-status');
-    });
+//    Route::resource('popup', \App\Http\Controllers\PopupController::class);
+//    Route::controller(\App\Http\Controllers\PopupController::class)->group(function () {
+//        Route::get('/popup/destroy/{id}', 'destroy')->name('popup.destroy');
+//        Route::post('/popup/change-status', 'change_status')->name('popup.change-status');
+//    });
 
 
     //Coupons
-    Route::resource('coupon', CouponController::class);
-    Route::controller(CouponController::class)->group(function () {
-        Route::get('/coupon/destroy/{id}', 'destroy')->name('coupon.destroy');
-
-        //Coupon Form
-        Route::post('/coupon/get_form', 'get_coupon_form')->name('coupon.get_coupon_form');
-        Route::post('/coupon/get_form_edit', 'get_coupon_form_edit')->name('coupon.get_coupon_form_edit');
-    });
+//    Route::resource('coupon', CouponController::class);
+//    Route::controller(CouponController::class)->group(function () {
+//        Route::get('/coupon/destroy/{id}', 'destroy')->name('coupon.destroy');
+//
+//        //Coupon Form
+//        Route::post('/coupon/get_form', 'get_coupon_form')->name('coupon.get_coupon_form');
+//        Route::post('/coupon/get_form_edit', 'get_coupon_form_edit')->name('coupon.get_coupon_form_edit');
+//    });
 
     //Reviews
     Route::controller(ReviewController::class)->group(function () {

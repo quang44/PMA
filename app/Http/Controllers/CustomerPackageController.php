@@ -46,7 +46,13 @@ class CustomerPackageController extends Controller
      */
     public function store(CustomerPackageRequest $request)
     {
+        $group_default = CustomerPackage::where('default', 1)->first();
         $customer_package = new CustomerPackage;
+        if($request->default && $request->default == 'on'){
+            $group_default ->default = 0;
+            $group_default->save();
+            $customer_package->default = 1;
+        }
         $customer_package->name = $request->name;
         $customer_package->avatar = $request->avatar;
         $customer_package->bonus = $request->bonus;

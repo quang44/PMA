@@ -6,9 +6,12 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\OTPVerificationController;
 use App\Http\Requests\Api\V2\Auth\AuthRequest;
+use App\Http\Resources\V2\LogCollection;
 use App\Models\BusinessSetting;
 use App\Models\Customer;
 use App\Models\CustomerPackage;
+use App\Models\Log;
+use App\Models\Notification;
 use App\Models\Wallet;
 use App\Services\Extend\TelegramService;
 use App\Utility\NotificationUtility;
@@ -324,6 +327,17 @@ class AuthController extends Controller
             return response(['result' => false]);
         }
     }
+
+    public function notificationWarranty()
+    {
+        $user = auth()->user();
+        $Notification=Notification::where('user_id',$user->id)->where('type','warranty')->get();
+            return response(['data' => $Notification]);
+    }
+
+
+
+
 
     public function update(Request $request)
     {

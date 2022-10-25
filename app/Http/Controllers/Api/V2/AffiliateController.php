@@ -215,6 +215,9 @@ class AffiliateController extends Controller
     {
 
         $user = User::with('customer_package')->find(auth()->id());
+        return response([
+            'result' => $user,
+        ]);
         $value = (int)$request->value;
         $configPoint = CommonConfig::first();
         $point = $value / (int)$configPoint->exchange;

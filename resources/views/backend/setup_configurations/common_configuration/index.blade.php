@@ -34,6 +34,11 @@
                     <th data-breakpoints="lg">{{translate('Point cho người kích hoạt bảo hiểm')}}</th>
                     <th data-breakpoints="lg">{{translate('Chuyển point (1đ=1000vnd)')}}</th>
                     <th data-breakpoints="lg">{{translate('Thông tin liên hệ')}}</th>
+                    <th data-breakpoints="lg">{{translate('Currency unit')}}</th>
+                    <th data-breakpoints="lg">{{translate('Points for referrers')}}</th>
+                    <th data-breakpoints="lg">{{translate('Point for activator insurance')}}</th>
+                    <th data-breakpoints="lg">{{translate('Convert points to cash')}}</th>
+                    <th data-breakpoints="lg">{{translate('Contact Info')}}</th>
                     <th width="10%">{{translate('Options')}}</th>
                 </tr>
                 </thead>

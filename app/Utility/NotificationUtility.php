@@ -10,7 +10,7 @@ use Mail;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderNotification;
 use App\Models\FirebaseNotification;
-
+use App\Models\Notification as NotificationCustomer;
 class NotificationUtility
 {
     public static function sendOrderPlacedNotification($order, $request = null)
@@ -115,5 +115,13 @@ class NotificationUtility
 
         $firebase_notification->save();
         return $result;
+    }
+
+    static function  SendNotifications($type,$content,$user_id){
+        $notification=new NotificationCustomer();
+        $notification->user_id=$user_id;
+        $notification->type=$type;
+        $notification->data=$content;
+        $notification->save();
     }
 }

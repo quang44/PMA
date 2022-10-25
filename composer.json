@@ -36,6 +36,7 @@
         "mehedi-iitdu/core-component-repository": "1.8",
         "mercadopago/dx-php": "^2.4",
         "milon/barcode": "^9.0",
+        "nexmo/laravel": "^3.0",
         "niklasravnsborg/laravel-pdf": "^4.0",
         "osenco/mpesa": "^1.20",
         "paypal/paypal-checkout-sdk": "dev-master",

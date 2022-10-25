@@ -29,7 +29,7 @@ class WarrantyCardRequest extends FormRequest
 
 //        |regex:/^[a-zA-Z_ ]*$/
         return [
-            'user_name'=>'required|max:255|unique:warranty_cards',
+            'user_name'=>'required|max:255',
             'address'=>'required',
             'seri'=>'required|numeric|regex:/^[0-9]*$/u',
             'brand'=>'required',

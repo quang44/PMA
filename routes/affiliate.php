@@ -25,12 +25,12 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
         Route::post('/affiliate/employee/edit/{id}', 'employee_update')->name('affiliate.employee.update');
         Route::get('/affiliate/employee/destroy/{id}', 'employee_destroy')->name('affiliate.employee.destroy');
 
-        Route::get('/affiliate/kol', 'kol')->name('affiliate.kol.index');
-        Route::get('/affiliate/kol/create', 'kol_create')->name('affiliate.kol.create');
-        Route::post('/affiliate/kol/create', 'kol_store')->name('affiliate.kol.create');
-        Route::get('/affiliate/kol/edit/{id}', 'kol_edit')->name('affiliate.kol.edit');
-        Route::post('/affiliate/kol/edit/{id}', 'kol_update')->name('affiliate.kol.update');
-        Route::get('/affiliate/kol/destroy/{id}', 'kol_destroy')->name('affiliate.kol.destroy');
+//        Route::get('/affiliate/kol', 'kol')->name('affiliate.kol.index');
+//        Route::get('/affiliate/kol/create', 'kol_create')->name('affiliate.kol.create');
+//        Route::post('/affiliate/kol/create', 'kol_store')->name('affiliate.kol.create');
+//        Route::get('/affiliate/kol/edit/{id}', 'kol_edit')->name('affiliate.kol.edit');
+//        Route::post('/affiliate/kol/edit/{id}', 'kol_update')->name('affiliate.kol.update');
+//        Route::get('/affiliate/kol/destroy/{id}', 'kol_destroy')->name('affiliate.kol.destroy');
 
         //Route::get('/affiliate', 'index')->name('affiliate.index');
         //Route::post('/affiliate/affiliate_option_store', 'affiliate_option_store')->name('affiliate.store');
