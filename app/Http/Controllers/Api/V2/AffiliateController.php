@@ -214,10 +214,8 @@ class AffiliateController extends Controller
     public function requestPayment(Request $request)
     {
 
-        $user = User::with('customer_package')->find(auth()->id());
-        return response([
-            'result' => $user,
-        ]);
+        $user = User::with('customer_package')->find(auth()->user()->id);
+
         $value = (int)$request->value;
         $configPoint = CommonConfig::first();
         $point = $value / (int)$configPoint->exchange;
@@ -243,8 +241,11 @@ class AffiliateController extends Controller
             ]);
         }
 
-
-        if ($point > $user->balance) {
+            $balance=available_balances($user->id);
+//return response([
+//    'data'=>$balance
+//]);
+        if ($point > $balance) {
             return response([
                 'result' => false,
                 'message' => 'Số tiền cần thanh toán nhiều hơn số dư tài khoản'
@@ -263,8 +264,8 @@ class AffiliateController extends Controller
             $user->save();
             $request = new AffiliatePayment();
             $request->user_id = $user->id;
-            $request->value = $value;
-            $request->vat = (int)($value * 10 / 100);
+            $request->value = $point;
+            $request->vat = (int)($point * 10 / 100);
             $request->amount = $request->value - $request->vat;
             $request->status = 1; // gửi yêu cầu
             $request->bank_name = $customer_bank->name;

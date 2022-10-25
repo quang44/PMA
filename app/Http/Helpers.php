@@ -65,9 +65,9 @@
 
 //    new notification
     if (!function_exists('NewNotification')) {
-        function NewNotification($type, $content)
+        function NewNotification($type, $content,$id)
         {
-            return NotificationUtility::SendNotifications($type, $content, auth()->id());
+            return NotificationUtility::SendNotifications($type, $content, $id);
 
         }
     }
@@ -77,7 +77,7 @@
         function log_history($data)
         {
             $historyLog=new Log();
-           return $historyLog->newQuery()->create($data);
+            return $historyLog->newQuery()->create($data);
         }
     }
     /**
@@ -1235,7 +1235,7 @@
         }
     }
 
-
+    if (!function_exists('hidePhone')) {
     function hidePhone($string, $start, $total)
     {
         if (!is_string($string)) {
@@ -1245,4 +1245,26 @@
 
         $new_string = substr_replace($string, $text, $start, $total);
         return $new_string;
+    }
+    }
+
+    if (!function_exists('available_balances')) {
+    function available_balances($user_id)
+    {
+        $wallet_user = Wallet::where('user_id', $user_id)->first();
+        $affiliate_wating = \App\Models\AffiliatePayment::where('status', 1)->where('user_id',$user_id)->get();
+
+        $wating_point = 0;
+        $wallet_point = 0;
+        if (count($affiliate_wating) > 0 ) {
+            foreach ($affiliate_wating as $key => $item) {
+                $wating_point += $item->amount;
+            }
+        }
+        if ($wallet_user != null && config_base64_decode($wallet_user->amount) != null) {
+            $wallet_point = config_base64_decode($wallet_user->amount);
+        }
+
+        return $wallet_point - $wating_point;
+    }
     }

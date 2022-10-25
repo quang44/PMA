@@ -12,7 +12,7 @@ class WalletCollection extends ResourceCollection
         return [
             'data' => $this->collection->map(function($data) {
                 return [
-                    'amount' => format_price ($data->amount) ,
+                    'amount' => format_price (config_base64_decode($data->amount)) ,
                     'payment_method' => ucwords(str_replace('_', ' ', $data->payment_method)),
                     'approval_string' => $data->offline_payment ? ($data->approval == 1 ? "Approved" : "Decliend") : "N/A",
                     'date' => Carbon::createFromTimestamp(strtotime($data->created_at))->format('d-m-Y'),

@@ -51,23 +51,23 @@ class WalletController extends Controller
         }
     }
 
-    public function offline_recharge(Request $request)
-    {
-        $wallet = new Wallet;
-        $wallet->user_id = auth()->user()->id;
-        $wallet->amount = $request->amount;
-        $wallet->payment_method = $request->payment_option;
-        $wallet->payment_details = $request->trx_id;
-        $wallet->approval = 0;
-        $wallet->offline_payment = 1;
-        $wallet->reciept = $request->photo;
-        $wallet->save();
-       // flash(translate('Offline Recharge has been done. Please wait for response.'))->success();
-        //return redirect()->route('wallet.index');
-        return response()->json([
-            'result' => true,
-            'message' => translate('Offline Recharge has been done. Please wait for response.')
-        ]);
-    }
+//    public function offline_recharge(Request $request)
+//    {
+//        $wallet = new Wallet;
+//        $wallet->user_id = auth()->user()->id;
+//        $wallet->amount = $request->amount;
+//        $wallet->payment_method = $request->payment_option;
+//        $wallet->payment_details = $request->trx_id;
+//        $wallet->approval = 0;
+//        $wallet->offline_payment = 1;
+//        $wallet->reciept = $request->photo;
+//        $wallet->save();
+//       // flash(translate('Offline Recharge has been done. Please wait for response.'))->success();
+//        //return redirect()->route('wallet.index');
+//        return response()->json([
+//            'result' => true,
+//            'message' => translate('Offline Recharge has been done. Please wait for response.')
+//        ]);
+//    }
 
 }

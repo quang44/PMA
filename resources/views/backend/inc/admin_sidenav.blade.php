@@ -19,7 +19,7 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{route('admin.dashboard')}}" class="aiz-side-nav-link">
                         <i class="las la-home aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{translate('Dashboard')}}</span>
+                        <span class="aiz-side-nav-text">Bảng điều khiển</span>
                     </a>
                 </li>
 
@@ -56,7 +56,7 @@
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-shopping-cart aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{translate('Products')}}</span>
+                            <span class="aiz-side-nav-text">Sản Phẩm</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <!--Submenu-->
@@ -106,7 +106,7 @@
 
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('brands.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['brands.index', 'brands.create', 'brands.edit'])}}" >
-                                    <span class="aiz-side-nav-text">{{translate('Brand')}}</span>
+                                    <span class="aiz-side-nav-text">Nhãn hiệu</span>
                                 </a>
                             </li>
 
@@ -352,19 +352,19 @@
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-user-friends aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate('User') }}</span>
+                            <span class="aiz-side-nav-text">Người dùng</span>
                             <span class="badge badge-info" style="margin-right: 3px">{{ \App\Models\User::count() }}</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('customers.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Account') }}</span>
+                                    <span class="aiz-side-nav-text">Tài khoản người dùng</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('customer_packages.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_packages.index', 'customer_packages.create', 'customer_packages.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Customer Group') }}</span>
+                                    <span class="aiz-side-nav-text">Nhóm người dùng</span>
                                 </a>
                             </li>
                             {{--@if(get_setting('classified_product') == 1)
@@ -390,13 +390,13 @@
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-money-bill aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate(' Insurances') }}</span>
+                            <span class="aiz-side-nav-text">Bảo hành</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('warranty_card.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['warranty_card.index', 'warranty_card.show'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate(' Insurance card') }}</span>
+                                    <span class="aiz-side-nav-text">Thẻ hào hành</span>
                                 </a>
                             </li>
                         </ul>
@@ -527,7 +527,7 @@
                     <li class="aiz-side-nav-item">
                         <a href="{{ route('uploaded-files.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['uploaded-files.create'])}}">
                             <i class="las la-folder-open aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate('Uploaded Files') }}</span>
+                            <span class="aiz-side-nav-text">Tải file</span>
                         </a>
                     </li>
                 @endif
@@ -537,7 +537,7 @@
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-file-alt aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{ translate('Reports') }}</span>
+                            <span class="aiz-side-nav-text">Báo cáo</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
@@ -675,7 +675,7 @@
                     <li class="aiz-side-nav-item">
                         <a href="{{ route('support_ticket.admin_index') }}" class="aiz-side-nav-link">
                             <i class="las la-headphones aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{translate('Support')}}</span>
+                            <span class="aiz-side-nav-text">Hỗ trợ</span>
                             @if($support_ticket > 0)<span class="badge badge-info">{{ $support_ticket }}</span>@endif
                         </a>
                     </li>
@@ -685,7 +685,7 @@
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-link aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{translate('Withdraw money')}}</span>
+                            <span class="aiz-side-nav-text">Rút tiền</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
@@ -706,12 +706,12 @@
 {{--                            </li>--}}
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('affiliate.request_payment')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Request Withdrawal') }}</span>
+                                    <span class="aiz-side-nav-text">Yêu cầu rút tiền</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('affiliate.history_payment') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Payment history')}}</span>
+                                    <span class="aiz-side-nav-text">Lịch sử rút tiền</span>
                                 </a>
                             </li>
                         </ul>
@@ -979,13 +979,13 @@
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link {{ areActiveRoutes(['website.footer', 'website.header'])}}" >
                             <i class="las la-desktop aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{translate('Website Setup')}}</span>
+                            <span class="aiz-side-nav-text">Cài đặt website</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('common_configs.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('General configuration')}}</span>
+                                    <span class="aiz-side-nav-text">Cấu hình chung</span>
                                 </a>
                             </li>
                             <!--- <li class="aiz-side-nav-item">
@@ -1013,170 +1013,169 @@
                 @endif
 
                 <!-- Setup & Configurations -->
-                @if(Auth::user()->user_type == 'admin' || in_array('14', json_decode(Auth::user()->staff->role->permissions)))
-                    <li class="aiz-side-nav-item">
-                        <a href="#" class="aiz-side-nav-link">
-                            <i class="las la-dharmachakra aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{translate('Configuration')}}</span>
-                            <span class="aiz-side-nav-arrow"></span>
-                        </a>
-                        <ul class="aiz-side-nav-list level-2">
-<!--                            <li class="aiz-side-nav-item">
-                                <a href="{{route('general_setting.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('General Settings')}}</span>
-                                </a>
-                            </li>
-
-<!--                            <li class="aiz-side-nav-item">
-                                <a href="{{route('activation.index')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Features activation')}}</span>
-                                </a>
-                            </li>-->
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('languages.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['languages.index', 'languages.create', 'languages.store', 'languages.show', 'languages.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Language')}}</span>
-                                </a>
-                            </li>
+{{--                @if(Auth::user()->user_type == 'admin' || in_array('14', json_decode(Auth::user()->staff->role->permissions)))--}}
+{{--                    <li class="aiz-side-nav-item">--}}
+{{--                        <a href="#" class="aiz-side-nav-link">--}}
+{{--                            <i class="las la-dharmachakra aiz-side-nav-icon"></i>--}}
+{{--                            <span class="aiz-side-nav-text">Cấu hình</span>--}}
+{{--                            <span class="aiz-side-nav-arrow"></span>--}}
+{{--                        </a>--}}
+{{--                        <ul class="aiz-side-nav-list level-2">--}}
+{{--<!--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('general_setting.index')}}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('General Settings')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('activation.index')}}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Features activation')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>-->--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('languages.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['languages.index', 'languages.create', 'languages.store', 'languages.show', 'languages.edit'])}}">--}}
+{{--                                    <span class="aiz-side-nav-text">Ngôn ngữ</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
 
 {{--                            <li class="aiz-side-nav-item">--}}
 {{--                                <a href="{{route('currency.index')}}" class="aiz-side-nav-link">--}}
 {{--                                    <span class="aiz-side-nav-text">{{translate('Tiền tệ')}}</span>--}}
 {{--                                </a>--}}
 {{--                            </li>--}}
-<!--                            <li class="aiz-side-nav-item">
-                                <a href="{{route('tax.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['tax.index', 'tax.create', 'tax.store', 'tax.show', 'tax.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Vat & TAX')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{route('pick_up_points.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['pick_up_points.index','pick_up_points.create','pick_up_points.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Pickup point')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('smtp_settings.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('SMTP Settings')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('payment_method.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Payment Methods')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('order_configuration.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Order Configuration')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('file_system.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('File System & Cache Configuration')}}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('social_login.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Social media Logins')}}</span>
-                                </a>
-                            </li>
+{{--<!--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('tax.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['tax.index', 'tax.create', 'tax.store', 'tax.show', 'tax.edit'])}}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Vat & TAX')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{route('pick_up_points.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['pick_up_points.index','pick_up_points.create','pick_up_points.edit'])}}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Pickup point')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('smtp_settings.index') }}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('SMTP Settings')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('payment_method.index') }}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Payment Methods')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('order_configuration.index') }}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Order Configuration')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('file_system.index') }}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('File System & Cache Configuration')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('social_login.index') }}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Social media Logins')}}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
 
-                            <li class="aiz-side-nav-item">
-                                <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Facebook')}}</span>
-                                    <span class="aiz-side-nav-arrow"></span>
-                                </a>
-                                <ul class="aiz-side-nav-list level-3">
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('facebook_chat.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Facebook Chat')}}</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('facebook-comment') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Facebook Comment')}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="javascript:void(0);" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Facebook')}}</span>--}}
+{{--                                    <span class="aiz-side-nav-arrow"></span>--}}
+{{--                                </a>--}}
+{{--                                <ul class="aiz-side-nav-list level-3">--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{ route('facebook_chat.index') }}" class="aiz-side-nav-link">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Facebook Chat')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{ route('facebook-comment') }}" class="aiz-side-nav-link">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Facebook Comment')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
+{{--                            </li>--}}
 
-                            <li class="aiz-side-nav-item">
-                                <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Google')}}</span>
-                                    <span class="aiz-side-nav-arrow"></span>
-                                </a>
-                                <ul class="aiz-side-nav-list level-3">
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google_analytics.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Analytics Tools')}}</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Google reCAPTCHA')}}</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google-map.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Google Map')}}</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{ route('google-firebase.index') }}" class="aiz-side-nav-link">
-                                            <span class="aiz-side-nav-text">{{translate('Google Firebase')}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="javascript:void(0);" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Google')}}</span>--}}
+{{--                                    <span class="aiz-side-nav-arrow"></span>--}}
+{{--                                </a>--}}
+{{--                                <ul class="aiz-side-nav-list level-3">--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{ route('google_analytics.index') }}" class="aiz-side-nav-link">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Analytics Tools')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{ route('google_recaptcha.index') }}" class="aiz-side-nav-link">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Google reCAPTCHA')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{ route('google-map.index') }}" class="aiz-side-nav-link">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Google Map')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{ route('google-firebase.index') }}" class="aiz-side-nav-link">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Google Firebase')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
+{{--                            </li>--}}
 
-                            <li class="aiz-side-nav-item">
-                                <a href="javascript:void(0);" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{translate('Shipping')}}</span>
-                                    <span class="aiz-side-nav-arrow"></span>
-                                </a>
-                                <ul class="aiz-side-nav-list level-3">
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{route('shipping_configuration.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['shipping_configuration.index','shipping_configuration.edit','shipping_configuration.update'])}}">
-                                            <span class="aiz-side-nav-text">{{translate('Shipping Configuration')}}</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{route('countries.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['countries.index','countries.edit','countries.update'])}}">
-                                            <span class="aiz-side-nav-text">{{translate('Shipping Countries')}}</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{route('states.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['states.index','states.edit','states.update'])}}">
-                                            <span class="aiz-side-nav-text">{{translate('Shipping States')}}</span>
-                                        </a>
-                                    </li>
-                                    <li class="aiz-side-nav-item">
-                                        <a href="{{route('cities.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['cities.index','cities.edit','cities.update'])}}">
-                                            <span class="aiz-side-nav-text">{{translate('Shipping Cities')}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>-->
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="javascript:void(0);" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{translate('Shipping')}}</span>--}}
+{{--                                    <span class="aiz-side-nav-arrow"></span>--}}
+{{--                                </a>--}}
+{{--                                <ul class="aiz-side-nav-list level-3">--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{route('shipping_configuration.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['shipping_configuration.index','shipping_configuration.edit','shipping_configuration.update'])}}">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Shipping Configuration')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{route('countries.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['countries.index','countries.edit','countries.update'])}}">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Shipping Countries')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{route('states.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['states.index','states.edit','states.update'])}}">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Shipping States')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="aiz-side-nav-item">--}}
+{{--                                        <a href="{{route('cities.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['cities.index','cities.edit','cities.update'])}}">--}}
+{{--                                            <span class="aiz-side-nav-text">{{translate('Shipping Cities')}}</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
+{{--                            </li>-->--}}
 
-                        </ul>
-                    </li>
-                @endif
+{{--                        </ul>--}}
+{{--                    </li>--}}
+{{--                @endif--}}
 
                 <!-- Staffs -->
                 @if(Auth::user()->user_type == 'admin' || in_array('20', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-user-tie aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">{{translate('Staffs')}}</span>
+                            <span class="aiz-side-nav-text">Nhân viên</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('staffs.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['staffs.index', 'staffs.create', 'staffs.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Staff')}}</span>
+                                    <span class="aiz-side-nav-text">Nhân viên</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('roles.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['roles.index', 'roles.create', 'roles.edit'])}}">
-                                    <span class="aiz-side-nav-text">{{translate('Rights group')}}</span>
+                                    <span class="aiz-side-nav-text">Nhóm quyền</span>
                                 </a>
                             </li>
                         </ul>
@@ -1185,13 +1184,13 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('banks.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['banks.index', 'banks.create', 'banks.store', 'banks.show', 'banks.edit'])}}">
                         <i class="las la-university aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{translate('Banks')}}</span>
+                        <span class="aiz-side-nav-text">Ngân hàng</span>
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('website.pages') }}" class="aiz-side-nav-link {{ areActiveRoutes(['website.pages'])}}">
                         <i class="las la-pager aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{translate('Pages')}}</span>
+                        <span class="aiz-side-nav-text">Trang nội dung</span>
                     </a>
                 </li>
 {{--                <li class="aiz-side-nav-item">--}}
@@ -1203,13 +1202,13 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('user_manual.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_manual.index', 'user_manual.create', 'user_manual.edit'])}}">
                         <i class="las la-mail-bulk aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('User manual') }}</span>
+                        <span class="aiz-side-nav-text">Hướng dẫn sử dụng</span>
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('questions.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['questions.index', 'questions.create', 'questions.edit'])}}">
                         <i class="las la-question aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Instruction question') }}</span>
+                        <span class="aiz-side-nav-text">Câu hỏi hướng dẫn</span>
                     </a>
                 </li>
 

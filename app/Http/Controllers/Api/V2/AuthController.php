@@ -14,6 +14,7 @@ use App\Models\Log;
 use App\Models\Notification;
 use App\Models\Wallet;
 use App\Services\Extend\TelegramService;
+use App\Utility\CustomerBillUtility;
 use App\Utility\NotificationUtility;
 use Illuminate\Http\Request;
 use App\Models\CustomerGroup;
@@ -109,10 +110,22 @@ class AuthController extends Controller
 
         $wallet = new Wallet;
         $wallet->user_id = $user->id;
+        $amount=  $referred_by != 0 ? $package->bonus + $common_config->for_activator : $package->bonus;
         $wallet->amount = config_base64_encode($amount);
         $wallet->payment_method=translate('Hệ thống');
         $wallet->note=translate('đăng ký tài khoản thành công');
         $wallet->save();
+
+        $data=['type'=>CustomerBillUtility::TYPE_LOG_ADDITION,
+            'point'=>(int)$amount,
+            'amount'=>(int)$amount*$common_config->exchange,
+            'object'=>0,
+            'amount_first'=>(int)$amount,
+            'amount_later'=>(int)config_base64_decode($wallet->amount),
+            'user_id'=>$user->id,
+            'content'=>"Đăng ký tài khoản thành công"
+        ];
+
 
         /*if ($request->register_by == 'email') {
             $user = new User([
@@ -352,6 +365,9 @@ class AuthController extends Controller
             $data['email'] = $request->email;
         }
         $user->update($data);
+
+
+
         return response()->json([
             'result' => true,
             'message' => translate('Profile information has been updated successfully')
@@ -461,6 +477,14 @@ class AuthController extends Controller
                     'created_at' => date('d-m-Y H:i:s', strtotime($user->created_at))
                 ]
             ]
+        ]);
+    }
+
+    public function balances(){
+        $available_balances = available_balances();
+        return response()->json([
+            'status'=>200,
+            'available_balances'=>$available_balances
         ]);
     }
 }

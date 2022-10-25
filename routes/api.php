@@ -9,13 +9,14 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('password/forget_request', 'App\Http\Controllers\Api\V2\PasswordResetController@forgetRequest');
     Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
     Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');
+    Route::get('balances', 'App\Http\Controllers\Api\V2\AuthController@balances');
 
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('logout', 'App\Http\Controllers\Api\V2\AuthController@logout');
         Route::get('user', 'App\Http\Controllers\Api\V2\AuthController@user');
+//        Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@notification');
         Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@notification');
-        Route::get('user/notificationWarranty', 'App\Http\Controllers\Api\V2\AuthController@notificationWarranty');
         Route::post('user/update', 'App\Http\Controllers\Api\V2\AuthController@update');
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
@@ -332,9 +333,9 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
     Route::post('file/image-upload', 'App\Http\Controllers\Api\V2\FileController@imageUpload')->middleware('auth:sanctum');
 
-    Route::get('wallet/balance', 'App\Http\Controllers\Api\V2\WalletController@balance')->middleware('auth:sanctum');
+//    Route::get('wallet/balance', 'App\Http\Controllers\Api\V2\WalletController@balance')->middleware('auth:sanctum');
     Route::get('wallet/history', 'App\Http\Controllers\Api\V2\WalletController@walletRechargeHistory')->middleware('auth:sanctum');
-    Route::post('wallet/offline-recharge', 'App\Http\Controllers\Api\V2\WalletController@offline_recharge')->middleware('auth:sanctum');
+//    Route::post('wallet/offline-recharge', 'App\Http\Controllers\Api\V2\WalletController@offline_recharge')->middleware('auth:sanctum');
 
     Route::get('flash-deals', 'App\Http\Controllers\Api\V2\FlashDealController@index');
     Route::get('flash-deal-products/{id}', 'App\Http\Controllers\Api\V2\FlashDealController@products');
