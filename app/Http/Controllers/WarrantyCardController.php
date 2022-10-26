@@ -50,17 +50,15 @@ class WarrantyCardController extends Controller
 
             $wallet= Wallet::where('user_id',$WarrantyCard->user_id)->first();
             $amount=config_base64_decode( $wallet->amount);
-            $point=$amount+(int)$commonConfig->for_activator;
 
-            $wallet->amount=config_base64_encode($point);
+            $wallet->amount=config_base64_encode($amount+(int)$commonConfig->for_activator);
             $wallet->save();
 
             $user->balance=$user->balance+(int)$commonConfig->for_activator;
             $user->save();
             $content="Yêu cầu bảo hành thiết bị ".$WarrantyCard->brand->name." của bạn đã được  phê duyệt .Liện hệ với BQT để biết thêm chi tiết";
-            flash(translate('Thẻ đã được kích hoạt thành công'))->success();
 
-            $data=['type'=>CustomerBillUtility::TYPE_LOG_ADDITION,
+            log_history(['type'=>CustomerBillUtility::TYPE_LOG_ADDITION,
                 'point'=>(int)$commonConfig->for_activator,
                 'amount'=>(int)$commonConfig->for_activator*$commonConfig->exchange,
                 'object'=>0,
@@ -68,15 +66,26 @@ class WarrantyCardController extends Controller
                 'amount_later'=>(int)config_base64_decode($wallet->amount),
                 'user_id'=>$user->id,
                 'content'=>"Thẻ bảo hành của khách hàng $WarrantyCard->user_name được kích hoạt"
-            ];
-            log_history($data);
+            ]);
+
+            flash(translate('Thẻ đã được kích hoạt thành công'))->success();
         } else {
             $WarrantyCard->status = 2;
             $content="Yêu cầu bảo hành thiết bị ".$WarrantyCard->brand->name." của bạn đã đã bị hủy .Liện hệ với BQT để biết thêm chi tiết";
             $WarrantyCard->reason=$request->reason;
             flash(translate('Thẻ đã được hủy'))->warning();
         }
-        NewNotification('warranty',$content,$user->id);
+
+        NewNotification([
+            'type'=>CustomerBillUtility::TYPE_NOTIFICATION_WARRANTY,
+            'data'=>$content,
+            'user_id'=>$user->id,
+            'amount_first'=>$amount,
+            'accept_by'=>auth()->id(),
+            'amount_later'=>config_base64_decode($wallet->amount),
+            'notifiable_type'=>CustomerBillUtility::TYPE_NOTIFICATION_USER,
+        ]);
+
         $WarrantyCard->save();
 
         return back();

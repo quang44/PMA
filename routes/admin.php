@@ -431,6 +431,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/wish_report', 'wish_report')->name('wish_report.index');
         Route::get('/user_search_report', 'user_search_report')->name('user_search_report.index');
         Route::get('/wallet-history', 'wallet_transaction_history')->name('wallet-history.index');
+        Route::get('/wallet_balance_history/{id}', 'wallet_balance_history')->name('wallet-balance.balance');
         Route::get('/commission-log', 'commission_history')->name('commission-log.index');
 //        Route::get('/', 'commission_history')->name('commission-log.index');
 

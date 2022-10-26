@@ -573,7 +573,7 @@
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wallet-history.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử nạp tiền vào ví') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử biến động ví') }}</span>
                                 </a>
                             </li>
                         </ul>
@@ -685,7 +685,7 @@
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-link aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">Rút tiền</span>
+                            <span class="aiz-side-nav-text">Thanh toán</span>
                             <span class="aiz-side-nav-arrow"></span>
                         </a>
                         <ul class="aiz-side-nav-list level-2">
@@ -706,12 +706,12 @@
 {{--                            </li>--}}
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('affiliate.request_payment')}}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Yêu cầu rút tiền</span>
+                                    <span class="aiz-side-nav-text">Yêu cầu thanh toán</span>
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('affiliate.history_payment') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">Lịch sử rút tiền</span>
+                                    <span class="aiz-side-nav-text">Lịch sử thanh toán</span>
                                 </a>
                             </li>
                         </ul>

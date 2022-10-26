@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api\V2;
 use App\Http\Controllers\OTPVerificationController;
 use App\Http\Requests\Api\V2\Auth\AuthRequest;
 use App\Http\Resources\V2\LogCollection;
+use App\Http\Resources\V2\NotificationCollection;
 use App\Models\BusinessSetting;
 use App\Models\Customer;
 use App\Models\CustomerPackage;
@@ -47,7 +48,7 @@ class AuthController extends Controller
 
         $package = CustomerPackage::where('default', 1)->first();
 
-        $user_type = $request->user_type ?? 'customer';
+        $user_type = $request->user_type ?? 'employee';
         $referral_code = $request->referral_code;
         $referred_by = "";
         if ($user_type == 'kol') {
@@ -65,7 +66,7 @@ class AuthController extends Controller
             }
         }
 
-        if ($user_type == 'customer') {
+        if ($user_type == 'customer' || $user_type == 'employer') {
             if (!empty($referral_code)) {
                 $kol = User::with('customer_group')->where('referral_code', $referral_code)->first();
                 if (!$kol) {
@@ -322,30 +323,30 @@ class AuthController extends Controller
         ]);
     }
 
-    public function notification()
+//    public function notification()
+//    {
+//        $user = auth()->user();
+//        if (!empty($user->device_token)) {
+//            $req = new \stdClass();
+//            $req->device_token = $user->device_token;
+//            $req->title = "Kích hoạt tài khoản !";
+//            $req->text = "Tài khoản của bạn đã được kích hoạt";
+//
+//            $req->type = "active_user";
+//            $req->id = $user->id;
+//            $req->best_api_user = $user->best_api_user;
+//            $result = NotificationUtility::sendFirebaseNotification($req);
+//            return response(['result' => true, 'data' => $result]);
+//        } else {
+//            return response(['result' => false]);
+//        }
+//    }
+
+    public function AuthNotification()
     {
         $user = auth()->user();
-        if (!empty($user->device_token)) {
-            $req = new \stdClass();
-            $req->device_token = $user->device_token;
-            $req->title = "Kích hoạt tài khoản !";
-            $req->text = "Tài khoản của bạn đã được kích hoạt";
-
-            $req->type = "active_user";
-            $req->id = $user->id;
-            $req->best_api_user = $user->best_api_user;
-            $result = NotificationUtility::sendFirebaseNotification($req);
-            return response(['result' => true, 'data' => $result]);
-        } else {
-            return response(['result' => false]);
-        }
-    }
-
-    public function notificationWarranty()
-    {
-        $user = auth()->user();
-        $Notification=Notification::where('user_id',$user->id)->where('type','warranty')->get();
-            return response(['data' => $Notification]);
+        $Notification=Notification::where('user_id',$user->id)->orderBy('created_at','DESC')->get();
+            return new NotificationCollection($Notification);
     }
 
 
