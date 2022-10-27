@@ -37,7 +37,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
 });
 
 //Seller
-Route::group(['prefix' =>'seller', 'middleware' => ['seller', 'verified']], function(){
-    //pos
-	Route::get('/pos', [PosController::class, 'index'])->name('poin-of-sales.seller_index');
-});
+//Route::group(['prefix' =>'seller', 'middleware' => ['seller', 'verified']], function(){
+//    //pos
+//	Route::get('/pos', [PosController::class, 'index'])->name('poin-of-sales.seller_index');
+//});

@@ -20,6 +20,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::post('user/update', 'App\Http\Controllers\Api\V2\AuthController@update');
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
+        Route::get('available-balances', 'App\Http\Controllers\Api\V2\AuthController@available_balances');
     });
     Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
     Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
@@ -361,20 +362,20 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
         Route::get('warranty_cards/search','App\Http\Controllers\Api\V2\WarrantyCardController@search');
     }));
 
-    Route::group(['prefix' => 'customer-groups', 'middleware' => []], (function () {
+    Route::group(['prefix' => 'customer-groups', 'middleware' => ['auth:sanctum']], (function () {
         Route::get('', '\App\Http\Controllers\Api\V2\CustomerPackageController@index');
         Route::get('{id}', '\App\Http\Controllers\Api\V2\CustomerPackageController@show');
     }));
 
-    Route::group(['prefix' => 'common-config', 'middleware' => []], (function () {
+    Route::group(['prefix' => 'common-config', 'middleware' => ['auth:sanctum']], (function () {
         Route::get('', '\App\Http\Controllers\Api\V2\CommonConfigController@index');
     }));
 
-    Route::group(['prefix' => 'statistical', 'middleware' => []], (function () {
+    Route::group(['prefix' => 'statistical', 'middleware' => ['auth:sanctum']], (function () {
         Route::get('', '\App\Http\Controllers\Api\V2\StatisticalController@index');
     }));
 
-    Route::group(['prefix' => 'pages', 'middleware' => []], (function () {
+    Route::group(['prefix' => 'pages', 'middleware' => ['auth:sanctum']], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\PageController@index');
         Route::get('{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
     }));

@@ -1249,6 +1249,7 @@
     }
 
     if (!function_exists('available_balances')) {
+
     function available_balances($user_id)
     {
         $wallet_user = Wallet::where('user_id', $user_id)->first();
@@ -1267,4 +1268,6 @@
 
         return $wallet_point - $wating_point;
     }
+
+
     }

@@ -92,81 +92,81 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
     // Products
-    Route::controller(ProductController::class)->group(function () {
-        Route::get('/products/admin', 'admin_products')->name('products.admin');
-        Route::get('/products/seller', 'seller_products')->name('products.seller');
-        Route::get('/products/all', 'all_products')->name('products.all');
-        Route::get('/products/create', 'create')->name('products.create');
-        Route::post('/products/store/', 'store')->name('products.store');
-        Route::get('/products/admin/{id}/edit', 'admin_product_edit')->name('products.admin.edit');
-        Route::get('/products/seller/{id}/edit', 'seller_product_edit')->name('products.seller.edit');
-        Route::post('/products/update/{product}', 'update')->name('products.update');
-        Route::post('/products/todays_deal', 'updateTodaysDeal')->name('products.todays_deal');
-        Route::post('/products/featured', 'updateFeatured')->name('products.featured');
-        Route::post('/products/published', 'updatePublished')->name('products.published');
-        Route::post('/products/approved', 'updateProductApproval')->name('products.approved');
-        Route::post('/products/get_products_by_subcategory', 'get_products_by_subcategory')->name('products.get_products_by_subcategory');
-        Route::get('/products/duplicate/{id}', 'duplicate')->name('products.duplicate');
-        Route::get('/products/destroy/{id}', 'destroy')->name('products.destroy');
-        Route::post('/bulk-product-delete', 'bulk_product_delete')->name('bulk-product-delete');
-
-        Route::post('/products/sku_combination', 'sku_combination')->name('products.sku_combination');
-        Route::post('/products/sku_combination_edit', 'sku_combination_edit')->name('products.sku_combination_edit');
-        Route::post('/products/add-more-choice-option', 'add_more_choice_option')->name('products.add-more-choice-option');
-    });
+//    Route::controller(ProductController::class)->group(function () {
+//        Route::get('/products/admin', 'admin_products')->name('products.admin');
+//        Route::get('/products/seller', 'seller_products')->name('products.seller');
+//        Route::get('/products/all', 'all_products')->name('products.all');
+//        Route::get('/products/create', 'create')->name('products.create');
+//        Route::post('/products/store/', 'store')->name('products.store');
+//        Route::get('/products/admin/{id}/edit', 'admin_product_edit')->name('products.admin.edit');
+//        Route::get('/products/seller/{id}/edit', 'seller_product_edit')->name('products.seller.edit');
+//        Route::post('/products/update/{product}', 'update')->name('products.update');
+//        Route::post('/products/todays_deal', 'updateTodaysDeal')->name('products.todays_deal');
+//        Route::post('/products/featured', 'updateFeatured')->name('products.featured');
+//        Route::post('/products/published', 'updatePublished')->name('products.published');
+//        Route::post('/products/approved', 'updateProductApproval')->name('products.approved');
+//        Route::post('/products/get_products_by_subcategory', 'get_products_by_subcategory')->name('products.get_products_by_subcategory');
+//        Route::get('/products/duplicate/{id}', 'duplicate')->name('products.duplicate');
+//        Route::get('/products/destroy/{id}', 'destroy')->name('products.destroy');
+//        Route::post('/bulk-product-delete', 'bulk_product_delete')->name('bulk-product-delete');
+//
+//        Route::post('/products/sku_combination', 'sku_combination')->name('products.sku_combination');
+//        Route::post('/products/sku_combination_edit', 'sku_combination_edit')->name('products.sku_combination_edit');
+//        Route::post('/products/add-more-choice-option', 'add_more_choice_option')->name('products.add-more-choice-option');
+//    });
 
     // Digital Product
-    Route::resource('digitalproducts', DigitalProductController::class);
-    Route::controller(DigitalProductController::class)->group(function () {
-        Route::get('/digitalproducts/edit/{id}', 'edit')->name('digitalproducts.edit');
-        Route::get('/digitalproducts/destroy/{id}', 'destroy')->name('digitalproducts.destroy');
-        Route::get('/digitalproducts/download/{id}', 'download')->name('digitalproducts.download');
-    });
+//    Route::resource('digitalproducts', DigitalProductController::class);
+//    Route::controller(DigitalProductController::class)->group(function () {
+//        Route::get('/digitalproducts/edit/{id}', 'edit')->name('digitalproducts.edit');
+//        Route::get('/digitalproducts/destroy/{id}', 'destroy')->name('digitalproducts.destroy');
+//        Route::get('/digitalproducts/download/{id}', 'download')->name('digitalproducts.download');
+//    });
 
-    Route::controller(ProductBulkUploadController::class)->group(function () {
-        //Product Export
-        Route::get('/product-bulk-export', 'export')->name('product_bulk_export.index');
-
-        //Product Bulk Upload
-        Route::get('/product-bulk-upload/index', 'index')->name('product_bulk_upload.index');
-        Route::post('/bulk-product-upload', 'bulk_upload')->name('bulk_product_upload');
-        Route::get('/product-csv-download/{type}', 'import_product')->name('product_csv.download');
-        Route::get('/vendor-product-csv-download/{id}', 'import_vendor_product')->name('import_vendor_product.download');
-        Route::group(['prefix' => 'bulk-upload/download'], function () {
-            Route::get('/category', 'pdf_download_category')->name('pdf.download_category');
-            Route::get('/brand', 'pdf_download_brand')->name('pdf.download_brand');
-            Route::get('/seller', 'pdf_download_seller')->name('pdf.download_seller');
-        });
-    });
+//    Route::controller(ProductBulkUploadController::class)->group(function () {
+//        //Product Export
+//        Route::get('/product-bulk-export', 'export')->name('product_bulk_export.index');
+//
+//        //Product Bulk Upload
+//        Route::get('/product-bulk-upload/index', 'index')->name('product_bulk_upload.index');
+//        Route::post('/bulk-product-upload', 'bulk_upload')->name('bulk_product_upload');
+//        Route::get('/product-csv-download/{type}', 'import_product')->name('product_csv.download');
+//        Route::get('/vendor-product-csv-download/{id}', 'import_vendor_product')->name('import_vendor_product.download');
+//        Route::group(['prefix' => 'bulk-upload/download'], function () {
+//            Route::get('/category', 'pdf_download_category')->name('pdf.download_category');
+//            Route::get('/brand', 'pdf_download_brand')->name('pdf.download_brand');
+//            Route::get('/seller', 'pdf_download_seller')->name('pdf.download_seller');
+//        });
+//    });
 
     // Seller
-    Route::resource('sellers', SellerController::class);
-    Route::controller(SellerController::class)->group(function () {
-        Route::get('sellers_ban/{id}', 'ban')->name('sellers.ban');
-        Route::get('/sellers/destroy/{id}', 'destroy')->name('sellers.destroy');
-        Route::post('/bulk-seller-delete', 'bulk_seller_delete')->name('bulk-seller-delete');
-        Route::get('/sellers/view/{id}/verification', 'show_verification_request')->name('sellers.show_verification_request');
-        Route::get('/sellers/approve/{id}', 'approve_seller')->name('sellers.approve');
-        Route::get('/sellers/reject/{id}', 'reject_seller')->name('sellers.reject');
-        Route::get('/sellers/login/{id}', 'login')->name('sellers.login');
-        Route::post('/sellers/payment_modal', 'payment_modal')->name('sellers.payment_modal');
-        Route::post('/sellers/profile_modal', 'profile_modal')->name('sellers.profile_modal');
-        Route::post('/sellers/approved', 'updateApproved')->name('sellers.approved');
-    });
+//    Route::resource('sellers', SellerController::class);
+//    Route::controller(SellerController::class)->group(function () {
+//        Route::get('sellers_ban/{id}', 'ban')->name('sellers.ban');
+//        Route::get('/sellers/destroy/{id}', 'destroy')->name('sellers.destroy');
+//        Route::post('/bulk-seller-delete', 'bulk_seller_delete')->name('bulk-seller-delete');
+//        Route::get('/sellers/view/{id}/verification', 'show_verification_request')->name('sellers.show_verification_request');
+//        Route::get('/sellers/approve/{id}', 'approve_seller')->name('sellers.approve');
+//        Route::get('/sellers/reject/{id}', 'reject_seller')->name('sellers.reject');
+//        Route::get('/sellers/login/{id}', 'login')->name('sellers.login');
+//        Route::post('/sellers/payment_modal', 'payment_modal')->name('sellers.payment_modal');
+//        Route::post('/sellers/profile_modal', 'profile_modal')->name('sellers.profile_modal');
+//        Route::post('/sellers/approved', 'updateApproved')->name('sellers.approved');
+//    });
 
     // Seller Payment
-    Route::controller(PaymentController::class)->group(function () {
-        Route::get('/seller/payments', 'payment_histories')->name('sellers.payment_histories');
-        Route::get('/seller/payments/show/{id}', 'show')->name('sellers.payment_history');
-    });
+//    Route::controller(PaymentController::class)->group(function () {
+//        Route::get('/seller/payments', 'payment_histories')->name('sellers.payment_histories');
+//        Route::get('/seller/payments/show/{id}', 'show')->name('sellers.payment_history');
+//    });
 
     // Seller Withdraw Request
-    Route::resource('/withdraw_requests', SellerWithdrawRequestController::class);
-    Route::controller(SellerWithdrawRequestController::class)->group(function () {
-        Route::get('/withdraw_requests_all', 'index')->name('withdraw_requests_all');
-        Route::post('/withdraw_request/payment_modal', 'payment_modal')->name('withdraw_request.payment_modal');
-        Route::post('/withdraw_request/message_modal', 'message_modal')->name('withdraw_request.message_modal');
-    });
+//    Route::resource('/withdraw_requests', SellerWithdrawRequestController::class);
+//    Route::controller(SellerWithdrawRequestController::class)->group(function () {
+//        Route::get('/withdraw_requests_all', 'index')->name('withdraw_requests_all');
+//        Route::post('/withdraw_request/payment_modal', 'payment_modal')->name('withdraw_request.payment_modal');
+//        Route::post('/withdraw_request/message_modal', 'message_modal')->name('withdraw_request.message_modal');
+//    });
 
     // Customer
     Route::resource('customers', CustomerController::class);
@@ -270,11 +270,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/vendor_commission_update', 'vendor_commission_update')->name('business_settings.vendor_commission.update');
 
         //Shipping Configuration
-        Route::get('/shipping_configuration', 'shipping_configuration')->name('shipping_configuration.index');
-        Route::post('/shipping_configuration/update', 'shipping_configuration_update')->name('shipping_configuration.update');
+//        Route::get('/shipping_configuration', 'shipping_configuration')->name('shipping_configuration.index');
+//        Route::post('/shipping_configuration/update', 'shipping_configuration_update')->name('shipping_configuration.update');
 
         // Order Configuration
-        Route::get('/order-configuration', 'order_configuration')->name('order_configuration.index');
+//        Route::get('/order-configuration', 'order_configuration')->name('order_configuration.index');
     });
 
 
@@ -304,20 +304,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
     // Language
-    Route::resource('/languages', LanguageController::class);
-    Route::controller(LanguageController::class)->group(function () {
-        Route::post('/languages/{id}/update', 'update')->name('languages.update');
-        Route::get('/languages/destroy/{id}', 'destroy')->name('languages.destroy');
-        Route::post('/languages/update_rtl_status', 'update_rtl_status')->name('languages.update_rtl_status');
-        Route::post('/languages/update-status', 'update_status')->name('languages.update-status');
-        Route::post('/languages/key_value_store', 'key_value_store')->name('languages.key_value_store');
-
-        //App Trasnlation
-        Route::post('/languages/app-translations/import', 'importEnglishFile')->name('app-translations.import');
-        Route::get('/languages/app-translations/show/{id}', 'showAppTranlsationView')->name('app-translations.show');
-        Route::post('/languages/app-translations/key_value_store', 'storeAppTranlsation')->name('app-translations.store');
-        Route::get('/languages/app-translations/export/{id}', 'exportARBFile')->name('app-translations.export');
-    });
+//    Route::resource('/languages', LanguageController::class);
+//    Route::controller(LanguageController::class)->group(function () {
+//        Route::post('/languages/{id}/update', 'update')->name('languages.update');
+//        Route::get('/languages/destroy/{id}', 'destroy')->name('languages.destroy');
+//        Route::post('/languages/update_rtl_status', 'update_rtl_status')->name('languages.update_rtl_status');
+//        Route::post('/languages/update-status', 'update_status')->name('languages.update-status');
+//        Route::post('/languages/key_value_store', 'key_value_store')->name('languages.key_value_store');
+//
+//        //App Trasnlation
+//        Route::post('/languages/app-translations/import', 'importEnglishFile')->name('app-translations.import');
+//        Route::get('/languages/app-translations/show/{id}', 'showAppTranlsationView')->name('app-translations.show');
+//        Route::post('/languages/app-translations/key_value_store', 'storeAppTranlsation')->name('app-translations.store');
+//        Route::get('/languages/app-translations/export/{id}', 'exportARBFile')->name('app-translations.export');
+//    });
 
 
     // website setting
@@ -377,51 +377,51 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
 //    });
 
     //Subscribers
-    Route::controller(SubscriberController::class)->group(function () {
-        Route::get('/subscribers', 'index')->name('subscribers.index');
-        Route::get('/subscribers/destroy/{id}', 'destroy')->name('subscriber.destroy');
-    });
+//    Route::controller(SubscriberController::class)->group(function () {
+//        Route::get('/subscribers', 'index')->name('subscribers.index');
+//        Route::get('/subscribers/destroy/{id}', 'destroy')->name('subscriber.destroy');
+//    });
 
     // Order
-    Route::resource('orders', OrderController::class);
-    Route::controller(OrderController::class)->group(function () {
-        // All Orders
-        Route::get('/all_orders', 'all_orders')->name('all_orders.index');
-        Route::get('/all_orders/{id}/show', 'all_orders_show')->name('all_orders.show');
-
-        // Inhouse Orders
-        Route::get('/inhouse-orders', 'admin_orders')->name('inhouse_orders.index');
-        Route::get('/inhouse-orders/{id}/show', 'show')->name('inhouse_orders.show');
-
-        // Seller Orders
-        Route::get('/seller_orders', 'seller_orders')->name('seller_orders.index');
-        Route::get('/seller_orders/{id}/show', 'seller_orders_show')->name('seller_orders.show');
-
-        Route::post('/bulk-order-status', 'bulk_order_status')->name('bulk-order-status');
-
-        // Pickup point orders
-        Route::get('orders_by_pickup_point', 'pickup_point_order_index')->name('pick_up_point.order_index');
-        Route::get('/orders_by_pickup_point/{id}/show', 'pickup_point_order_sales_show')->name('pick_up_point.order_show');
-
-        Route::get('/orders/destroy/{id}', 'destroy')->name('orders.destroy');
-        Route::post('/bulk-order-delete', 'bulk_order_delete')->name('bulk-order-delete');
-
-        Route::get('/orders/destroy/{id}', 'destroy')->name('orders.destroy');
-        Route::post('/orders/details', 'order_details')->name('orders.details');
-        Route::post('/orders/update_delivery_status', 'update_delivery_status')->name('orders.update_delivery_status');
-        Route::post('/orders/update_payment_status', 'update_payment_status')->name('orders.update_payment_status');
-        Route::post('/orders/update_tracking_code', 'update_tracking_code')->name('orders.update_tracking_code');
-
-        //Delivery Boy Assign
-        Route::post('/orders/delivery-boy-assign', 'assign_delivery_boy')->name('orders.delivery-boy-assign');
-    });
+//    Route::resource('orders', OrderController::class);
+//    Route::controller(OrderController::class)->group(function () {
+//        // All Orders
+//        Route::get('/all_orders', 'all_orders')->name('all_orders.index');
+//        Route::get('/all_orders/{id}/show', 'all_orders_show')->name('all_orders.show');
+//
+//        // Inhouse Orders
+//        Route::get('/inhouse-orders', 'admin_orders')->name('inhouse_orders.index');
+//        Route::get('/inhouse-orders/{id}/show', 'show')->name('inhouse_orders.show');
+//
+//        // Seller Orders
+//        Route::get('/seller_orders', 'seller_orders')->name('seller_orders.index');
+//        Route::get('/seller_orders/{id}/show', 'seller_orders_show')->name('seller_orders.show');
+//
+//        Route::post('/bulk-order-status', 'bulk_order_status')->name('bulk-order-status');
+//
+//        // Pickup point orders
+//        Route::get('orders_by_pickup_point', 'pickup_point_order_index')->name('pick_up_point.order_index');
+//        Route::get('/orders_by_pickup_point/{id}/show', 'pickup_point_order_sales_show')->name('pick_up_point.order_show');
+//
+//        Route::get('/orders/destroy/{id}', 'destroy')->name('orders.destroy');
+//        Route::post('/bulk-order-delete', 'bulk_order_delete')->name('bulk-order-delete');
+//
+//        Route::get('/orders/destroy/{id}', 'destroy')->name('orders.destroy');
+//        Route::post('/orders/details', 'order_details')->name('orders.details');
+//        Route::post('/orders/update_delivery_status', 'update_delivery_status')->name('orders.update_delivery_status');
+//        Route::post('/orders/update_payment_status', 'update_payment_status')->name('orders.update_payment_status');
+//        Route::post('/orders/update_tracking_code', 'update_tracking_code')->name('orders.update_tracking_code');
+//
+//        //Delivery Boy Assign
+//        Route::post('/orders/delivery-boy-assign', 'assign_delivery_boy')->name('orders.delivery-boy-assign');
+//    });
 
     Route::controller(OrderDeliveryController::class)->group(function () {
         Route::get('/order_delivery', 'index')->name('order_delivery.index');
         Route::get('/order_delivery/{id}/show', 'show')->name('order_delivery.show');
     });
-
-    Route::post('/pay_to_seller', [CommissionController::class, 'pay_to_seller'])->name('commissions.pay_to_seller');
+//
+//    Route::post('/pay_to_seller', [CommissionController::class, 'pay_to_seller'])->name('commissions.pay_to_seller');
 
     //Reports
     Route::controller(ReportController::class)->group(function () {
@@ -438,15 +438,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
 
     //Blog Section
     //Blog cateory
-    Route::resource('blog-category', BlogCategoryController::class);
-    Route::get('/blog-category/destroy/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.destroy');
+//    Route::resource('blog-category', BlogCategoryController::class);
+//    Route::get('/blog-category/destroy/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.destroy');
 
     // Blog
-    Route::resource('blog', BlogController::class);
-    Route::controller(BlogController::class)->group(function () {
-        Route::get('/blog/destroy/{id}', 'destroy')->name('blog.destroy');
-        Route::post('/blog/change-status', 'change_status')->name('blog.change-status');
-    });
+//    Route::resource('blog', BlogController::class);
+//    Route::controller(BlogController::class)->group(function () {
+//        Route::get('/blog/destroy/{id}', 'destroy')->name('blog.destroy');
+//        Route::post('/blog/change-status', 'change_status')->name('blog.change-status');
+//    });
 
 //    Route::resource('banner', BannerController::class);
 //    Route::controller(BannerController::class)->group(function () {
@@ -477,45 +477,45 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::post('/reviews/published', 'updatePublished')->name('reviews.published');
     });
 
-    //Support_Ticket
-    Route::controller(SupportTicketController::class)->group(function () {
-        Route::get('support_ticket/', 'admin_index')->name('support_ticket.admin_index');
-        Route::get('support_ticket/{id}/show', 'admin_show')->name('support_ticket.admin_show');
-        Route::post('support_ticket/reply', 'admin_store')->name('support_ticket.admin_store');
-    });
+//    Support_Ticket
+//    Route::controller(SupportTicketController::class)->group(function () {
+//        Route::get('support_ticket/', 'admin_index')->name('support_ticket.admin_index');
+//        Route::get('support_ticket/{id}/show', 'admin_show')->name('support_ticket.admin_show');
+//        Route::post('support_ticket/reply', 'admin_store')->name('support_ticket.admin_store');
+//    });
 
     //Pickup_Points
-    Route::resource('pick_up_points', PickupPointController::class);
-    Route::controller(PickupPointController::class)->group(function () {
-        Route::get('/pick_up_points/edit/{id}', 'edit')->name('pick_up_points.edit');
-        Route::get('/pick_up_points/destroy/{id}', 'destroy')->name('pick_up_points.destroy');
-    });
+//    Route::resource('pick_up_points', PickupPointController::class);
+//    Route::controller(PickupPointController::class)->group(function () {
+//        Route::get('/pick_up_points/edit/{id}', 'edit')->name('pick_up_points.edit');
+//        Route::get('/pick_up_points/destroy/{id}', 'destroy')->name('pick_up_points.destroy');
+//    });
 
     //conversation of seller customer
-    Route::controller(ConversationController::class)->group(function () {
-        Route::get('conversations', 'admin_index')->name('conversations.admin_index');
-        Route::get('conversations/{id}/show', 'admin_show')->name('conversations.admin_show');
-    });
+//    Route::controller(ConversationController::class)->group(function () {
+//        Route::get('conversations', 'admin_index')->name('conversations.admin_index');
+//        Route::get('conversations/{id}/show', 'admin_show')->name('conversations.admin_show');
+//    });
 
     // Product Attribute
-    Route::resource('attributes', AttributeController::class);
-    Route::controller(AttributeController::class)->group(function () {
-        Route::get('/attributes/edit/{id}', 'edit')->name('attributes.edit');
-        Route::get('/attributes/destroy/{id}', 'destroy')->name('attributes.destroy');
-
-        //Attribute Value
-        Route::post('/store-attribute-value', 'store_attribute_value')->name('store-attribute-value');
-        Route::get('/edit-attribute-value/{id}', 'edit_attribute_value')->name('edit-attribute-value');
-        Route::post('/update-attribute-value/{id}', 'update_attribute_value')->name('update-attribute-value');
-        Route::get('/destroy-attribute-value/{id}', 'destroy_attribute_value')->name('destroy-attribute-value');
-
-        //Colors
-        Route::get('/colors', 'colors')->name('colors');
-        Route::post('/colors/store', 'store_color')->name('colors.store');
-        Route::get('/colors/edit/{id}', 'edit_color')->name('colors.edit');
-        Route::post('/colors/update/{id}', 'update_color')->name('colors.update');
-        Route::get('/colors/destroy/{id}', 'destroy_color')->name('colors.destroy');
-    });
+//    Route::resource('attributes', AttributeController::class);
+//    Route::controller(AttributeController::class)->group(function () {
+//        Route::get('/attributes/edit/{id}', 'edit')->name('attributes.edit');
+//        Route::get('/attributes/destroy/{id}', 'destroy')->name('attributes.destroy');
+//
+//        //Attribute Value
+//        Route::post('/store-attribute-value', 'store_attribute_value')->name('store-attribute-value');
+//        Route::get('/edit-attribute-value/{id}', 'edit_attribute_value')->name('edit-attribute-value');
+//        Route::post('/update-attribute-value/{id}', 'update_attribute_value')->name('update-attribute-value');
+//        Route::get('/destroy-attribute-value/{id}', 'destroy_attribute_value')->name('destroy-attribute-value');
+//
+//        //Colors
+//        Route::get('/colors', 'colors')->name('colors');
+//        Route::post('/colors/store', 'store_color')->name('colors.store');
+//        Route::get('/colors/edit/{id}', 'edit_color')->name('colors.edit');
+//        Route::post('/colors/update/{id}', 'update_color')->name('colors.update');
+//        Route::get('/colors/destroy/{id}', 'destroy_color')->name('colors.destroy');
+//    });
 
     // Addon
     Route::resource('addons', AddonController::class);
@@ -532,10 +532,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
     //Classified Products
-    Route::controller(CustomerProductController::class)->group(function () {
-        Route::get('/classified_products', 'customer_product_index')->name('classified_products');
-        Route::post('/classified_products/published', 'updatePublished')->name('classified_products.published');
-    });
+//    Route::controller(CustomerProductController::class)->group(function () {
+//        Route::get('/classified_products', 'customer_product_index')->name('classified_products');
+//        Route::post('/classified_products/published', 'updatePublished')->name('classified_products.published');
+//    });
 
     // Countries
     Route::resource('countries', CountryController::class);

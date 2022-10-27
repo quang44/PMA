@@ -21,7 +21,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0 h6">{{translate('Common Config')}}</h5>
+            <h5 class="mb-0 h6">{{translate('Cấu hình chung')}}</h5>
         </div>
         <div class="card-body">
             <table class="table aiz-table mb-0">
@@ -32,14 +32,9 @@
                     <th data-breakpoints="lg">{{translate('Đơn vị tiền')}}</th>
                     <th data-breakpoints="lg">{{translate('Point cho người giới thiệu')}}</th>
                     <th data-breakpoints="lg">{{translate('Point cho người kích hoạt bảo hiểm')}}</th>
-                    <th data-breakpoints="lg">{{translate('Chuyển point (1đ=1000vnd)')}}</th>
+                    <th data-breakpoints="lg">{{translate('Chuyển point (1point=1000vnđ)')}}</th>
                     <th data-breakpoints="lg">{{translate('Thông tin liên hệ')}}</th>
-                    <th data-breakpoints="lg">{{translate('Currency unit')}}</th>
-                    <th data-breakpoints="lg">{{translate('Points for referrers')}}</th>
-                    <th data-breakpoints="lg">{{translate('Point for activator insurance')}}</th>
-                    <th data-breakpoints="lg">{{translate('Convert points to cash')}}</th>
-                    <th data-breakpoints="lg">{{translate('Contact Info')}}</th>
-                    <th width="10%">{{translate('Options')}}</th>
+                    <th width="10%">{{translate('Tùy chọn')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,7 +51,7 @@
                             <td class="text-right">
                                 <a class="btn btn-soft-primary btn-icon btn-circle btn-sm"
                                    href="{{route('common_configs.edit', encrypt($common_config->id))}}"
-                                   title="{{ translate('Edit') }}">
+                                   title="{{ translate('Cập nhật') }}">
                                     <i class="las la-edit"></i>
                                 </a>
                             </td>
