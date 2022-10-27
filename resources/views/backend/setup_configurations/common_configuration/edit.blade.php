@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-lg-6 mx-auto">
+        <div class="col-lg-12 mx-auto">
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0 h6">{{translate('Cập nhật cấu hình chung')}}</h5>
@@ -72,6 +72,19 @@
                             <label class="col-sm-2 col-from-label" for="name">{{translate('Contact Info')}}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('contact_info') ? old('contact_info') : $common_config->contact_info }}"  name="contact_info" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name"> điều khoản <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+					<textarea
+                        class="aiz-text-editor form-control"
+                        data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]'
+                        placeholder="Content.."
+                        data-min-height="300"
+                        name="rules"
+                        required
+                    > {{$common_config->rules}}</textarea>
                             </div>
                         </div>
                         <div class="form-group mb-0 text-right">

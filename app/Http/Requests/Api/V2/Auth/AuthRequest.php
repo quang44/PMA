@@ -28,13 +28,16 @@ class AuthRequest extends FormRequest
         return [
             'name'=>'required',
             'phone'=>'required|numeric|unique:users',
-            'password'=>'required|min:6|confirmed'
+            'password'=>'required|min:6|confirmed',
+            'rules_accept'=>'required'
         ];
     }
 
     function messages()
     {
-        return [];
+        return [
+            'rules_accept.required'=>'The rule accept field is required'
+        ];
     }
 
 

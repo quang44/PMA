@@ -6,11 +6,11 @@
         <div class=" col-md-6 align-items-center">
             <h1 class="h3">{{translate('List of warranty cards')}}</h1>
         </div>
-{{--        <div class="col-md-6 text-md-right">--}}
-{{--            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
-{{--                <span>Add New Card</span>--}}
-{{--            </a>--}}
-{{--        </div>--}}
+        {{--        <div class="col-md-6 text-md-right">--}}
+        {{--            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
+        {{--                <span>Add New Card</span>--}}
+        {{--            </a>--}}
+        {{--        </div>--}}
     </div>
 
     <div class="card">
@@ -21,11 +21,10 @@
                 </div>
 
 
-
                 <div class="col-md-3">
                     <div class="form-group mb-0">
                         <select name="sort_status" id="sort_selectCart" class="form-control">
-                            <option value="-1">Trạng thái của thẻ</option>
+                            <option value="-1">Trạng thái của thẻ....</option>
                             <option value="0"
                                     @if(request('sort_status',-1)==0) selected @endif>{{translate('Pending')}}</option>
                             <option value="1"
@@ -73,24 +72,31 @@
                                     <td> @if($warranty_card->active_time>0)
                                             {{date('d/m/Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Not activated') }}</span>
+                                            <span
+                                                class="badge badge-inline badge-secondary">{{ trans('Not activated') }}</span>
                                         @endif
                                     </td>
                                     <td>
 
                                         @foreach($warranty_card->uploads as $img)
-                                        <img class="h-50px" src="{{ get_image_asset($img->id,$img->object_id) }}" alt="image">
+                                            <a href="javascript:;"  class="a-exampleModal">
+                                                <img class="h-50px image"
+                                                     src="{{ get_image_asset($img->id,$img->object_id) }}" alt="image">
+                                            </a>
                                         @endforeach
                                     </td>
 
                                     <td>
                                         @if($warranty_card->status == 0)
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Pending') }}</span>
+                                            <span
+                                                class="badge badge-inline badge-secondary">{{ translate('Pending') }}</span>
                                         @else
                                             @if($warranty_card->status == 1)
-                                                <span class="badge badge-inline badge-success">{{ trans('Approved') }}</span>
+                                                <span
+                                                    class="badge badge-inline badge-success">{{ translate('Approved') }}</span>
                                             @else
-                                                <span class="badge badge-inline badge-danger">{{ trans('Cancelled') }}</span>
+                                                <span
+                                                    class="badge badge-inline badge-danger">{{ translate('Cancelled') }}</span>
                                             @endif
                                         @endif
                                     </td>
@@ -120,11 +126,11 @@
                                                 <i class="las la-user-alt-slash"></i>
                                             </a>
                                         @endif
-{{--                                        <a href="{{ route('warranty_card.edit', [ encrypt($warranty_card->id) ]) }}"--}}
-{{--                                           class="btn btn-soft-warning btn-icon btn-circle btn-sm"--}}
-{{--                                           title="{{ translate('Cập nhật thông tin thẻ') }}">--}}
-{{--                                            <i class="las la-edit"></i>--}}
-{{--                                        </a>--}}
+                                        {{--                                        <a href="{{ route('warranty_card.edit', [ encrypt($warranty_card->id) ]) }}"--}}
+                                        {{--                                           class="btn btn-soft-warning btn-icon btn-circle btn-sm"--}}
+                                        {{--                                           title="{{ translate('Cập nhật thông tin thẻ') }}">--}}
+                                        {{--                                            <i class="las la-edit"></i>--}}
+                                        {{--                                        </a>--}}
                                         <a href="#"
                                            class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                            data-href="{{route('warranty_card.destroy', encrypt($warranty_card->id))}}"
@@ -144,6 +150,12 @@
                 {{--                </div>--}}
             </div>
         </form>
+    </div>
+
+    <div class="modal fade" id="modal-image">
+        <div class="modal-dialog">
+            <img id="image" style="width: 100%; height: 100% ;object-fit: contain" src="" alt="">
+        </div>
     </div>
 
     <div class="modal fade" id="confirm-update-bank">
@@ -186,6 +198,7 @@
         </form>
     </div>
 
+
 @endsection
 
 @section('modal')
@@ -193,43 +206,31 @@
 @endsection
 
 @section('script')
-    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
     <script type="text/javascript">
+        $(document).on('click','.a-exampleModal', function () {
+            console.log(  $('#modal-image'))
+            $('#modal-image').modal('show', {backdrop: 'static'})
+        })
 
 
-        {{--$('#form-api').on('submit',function (e) {--}}
-        {{--    e.preventDefault()--}}
-        {{--    let formData = new FormData(this);--}}
-        {{--    $.ajax({--}}
-        {{--        headers: {--}}
-        {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-        {{--        },--}}
-        {{--        url: "{{route('warrantyCard.store')}}",--}}
-        {{--        type: 'POST',--}}
-        {{--        data: formData,--}}
-        {{--        cache: false,--}}
-        {{--        contentType: false,--}}
-        {{--        processData: false,--}}
-        {{--        success: function (response) {--}}
-        {{--            console.log(response)--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--})--}}
-
+        $(document).on('click', '.image', function () {
+            let img = $(this).attr('src');
+            $('#image').attr('src', img)
+        })
 
 
         $('#sort_selectCart').on('change', function () {
             $('#sort_Card').submit();
         })
 
-        function confirm_ban(url,status) {
+        function confirm_ban(url, status) {
             $('#confirm-ban').modal('show', {backdrop: 'static'});
-            document.getElementById('confirmation').setAttribute('action', url+'?status='+status);
+            document.getElementById('confirmation').setAttribute('action', url + '?status=' + status);
         }
 
-        function updateCard(url,status) {
+        function updateCard(url, status) {
             $('#confirm-update-bank').modal('show', {backdrop: 'static'});
-            document.getElementById('updateCard').setAttribute('href', url+'?status='+status);
+            document.getElementById('updateCard').setAttribute('href', url + '?status=' + status);
         }
 
 

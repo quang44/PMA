@@ -14,6 +14,8 @@ use App\Models\CustomerPackage;
 use App\Models\NoticeUser;
 use App\Models\OrderDelivery;
 use App\Models\User;
+use App\Models\Wallet;
+use App\Utility\CustomerBillUtility;
 use App\Utility\NotificationUtility;
 use App\Utility\OrderDeliveryUtility;
 use Illuminate\Http\Request;
@@ -212,7 +214,13 @@ class AffiliateController extends Controller
 
     public function historyPaymentDetail($id)
     {
-        $payment = AffiliatePayment::findOrFail($id);
+        $payment = AffiliatePayment::find($id);
+        if(!$payment){
+            return [
+                'result'=>false,
+                'message'=>'Không tìm thấy thông tin tìm kiếm'
+            ];
+        }
         return ['data'=>$payment];
     }
 
@@ -247,7 +255,6 @@ class AffiliateController extends Controller
         }
 
             $balance=available_balances($user->id);
-//return  ['data'=>$balance];
         if ($point > $balance) {
             return response([
                 'result' => false,
@@ -315,6 +322,8 @@ class AffiliateController extends Controller
             }
             $payment->save();
         });
+
+
         return response([
             'result' => true,
             'messages'=>'Gửi yêu cầu hủy rút tiền thành công'

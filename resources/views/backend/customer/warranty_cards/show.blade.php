@@ -63,11 +63,11 @@
                         <div class="col-sm-9">
                                 <span>
                                     @if($warranty_card->status==0)
-                                        {{translate('Pendding')}}
+                                       đang chờ xử lý
                                     @elseif($warranty_card->status==1)
-                                        {{translate('Approved')}}
+                                     đã được duyệt
                                     @else
-                                        {{translate('Cancelled')}}  / lý do :  {{$warranty_card->reason}}
+                                        đã hủy  / lý do :  {{$warranty_card->reason}}
                                     @endif
                                 </span>
 
@@ -93,6 +93,21 @@
                         <span>{{$warranty_card->note}}</span>
                     </div>
                 </div>
+
+                    @if($warranty_card->status==0 )
+                        <a href="javascript:void(0)"
+                           class="btn btn-soft-info btn-icon btn-circle btn-sm"
+                           onclick="updateCard('{{route('warranty_card.ban', encrypt($warranty_card->id))}}',1);"
+                           title="{{ translate('Activate Cards') }}">
+                            <i class="las la-credit-card"></i>
+                        </a>
+                        <a href="javascript:void(0)"
+                           class="btn btn-soft-danger btn-icon btn-circle btn-sm"
+                           onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}' ,2);"
+                           title="{{ translate('Cancel the card') }}">
+                            <i class="las la-user-alt-slash"></i>
+                        </a>
+                    @endif
             </div>
 
         </div>
@@ -106,6 +121,47 @@
             </div>
     </div>
 
+    <div class="modal fade" id="confirm-update-bank">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title h6">{{translate('Xác nhận kích hoạt thẻ')}}</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{translate('Bạn muốn xác nhận kích hoạt thẻ không')}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{translate('Hủy')}}</button>
+                    <a type="button" id="updateCard" class="btn btn-primary">{{translate('Xác nhận')}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="confirm-ban">
+        <form action="" id="confirmation" method="GET">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title h6">{{translate('Nhập lý do hủy')}}</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" name="reason" placeholder="Lý do hủy">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light"
+                                data-bs-dismiss="modal">{{translate('Cancel')}}</button>
+                        <button type="submit" class="btn btn-primary">{{translate('Proceed!')}}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
 
 @endsection
 
@@ -118,5 +174,17 @@
             let img=$(this).attr('src');
             $('#image').attr('src',img)
         })
+
+        function confirm_ban(url,status) {
+            $('#confirm-ban').modal('show', {backdrop: 'static'});
+            document.getElementById('confirmation').setAttribute('action', url+'?status='+status);
+        }
+
+
+        function updateCard(url,status) {
+            $('#confirm-update-bank').modal('show', {backdrop: 'static'});
+            document.getElementById('updateCard').setAttribute('href', url+'?status='+status);
+        }
+
     </script>
 @endsection

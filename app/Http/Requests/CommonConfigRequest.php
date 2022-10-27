@@ -28,6 +28,7 @@ class CommonConfigRequest extends FormRequest
             'for_referrer' => 'required|numeric',
             'for_activator' => 'required|numeric',
             'exchange' => 'required|numeric',
+            'rules'=> 'required'
         ];
     }
 

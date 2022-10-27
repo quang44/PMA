@@ -50,6 +50,7 @@ class CommonConfigController extends Controller
         $common_config->for_activator = $request->for_activator;
         $common_config->contact_info = $request->contact_info;
         $common_config ->exchange = $request->exchange;
+        $common_config ->rules = $request->rules;
         $common_config->save();
         flash(translate('Cấu hình chung đã được thiết lập !'))->success();
         return redirect()->route('common_configs.index');
@@ -94,6 +95,7 @@ class CommonConfigController extends Controller
         $common_config->for_activator = $request->for_activator;
         $common_config->contact_info = $request->contact_info;
         $common_config ->exchange = $request->exchange;
+        $common_config ->rules = $request->rules;
         $common_config->save();
         flash(translate('Cấu hình chung đã được thiết lập !'))->success();
         return redirect()->route('common_configs.index');

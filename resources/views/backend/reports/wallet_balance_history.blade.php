@@ -40,8 +40,8 @@
                             <th>{{translate('Customer')}}</th>
                             <th> {{translate('Point')}}</th>
                             <th>{{translate('Date')}}</th>
-                            <th>Số điểm trước</th>
-                            <th>Số điểm sau</th>
+                            <th> Điểm trước</th>
+                            <th> Điểm hiện tại</th>
                             <th>Người xác nhận</th>
                             <th>{{translate('Content')}}</th>
                         </thead>

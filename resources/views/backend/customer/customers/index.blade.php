@@ -47,9 +47,9 @@
                 <div class="form-group mb-0">
                     <select name="banned" id="banned" class="form-control">
                         <option value="-1">Trạng thái tài khoản</option>
-                        <option value="1" @if(request('banned', -1) == 1) selected @endif>Khóa</option>
-                        <option value="0" @if(request('banned', -1) == 0) selected @endif>Đang hoạt động</option>
-                        <option value="2" @if(request('banned', -1) == 2) selected @endif>Chưa kích hoạt</option>
+                        <option value="2" @if(request('banned', -1) == 2) selected @endif>Khóa</option>
+                        <option value="1" @if(request('banned', -1) == 1) selected @endif>Đang hoạt động</option>
+                        <option value="0" @if(request('banned', -1) == 0) selected @endif>Chưa kích hoạt</option>
                     </select>
                 </div>
             </div>
@@ -63,15 +63,15 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-2">
-                <div class="form-group mb-0">
-                    <select name="has_best_api" id="has_best_api" class="form-control">
-                        <option value="0">Trạng thái best api</option>
-                        <option value="1" @if(request('has_best_api') == 1) selected @endif>Chưa có tài khoản</option>
-                        <option value="2" @if(request('has_best_api') == 2) selected @endif>Đã có tài khoản</option>
-                    </select>
-                </div>
-            </div>
+{{--            <div class="col-md-2">--}}
+{{--                <div class="form-group mb-0">--}}
+{{--                    <select name="has_best_api" id="has_best_api" class="form-control">--}}
+{{--                        <option value="0">Trạng thái best api</option>--}}
+{{--                        <option value="1" @if(request('has_best_api') == 1) selected @endif>Chưa có tài khoản</option>--}}
+{{--                        <option value="2" @if(request('has_best_api') == 2) selected @endif>Đã có tài khoản</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <div class="col-md-3">
                 <div class="form-group mb-0">
 
@@ -100,7 +100,7 @@
                         <th data-breakpoints="lg">{{translate('Email')}}</th>
                         <th data-breakpoints="lg">{{translate('Số điện thoại')}}</th>
                         <th data-breakpoints="lg">{{translate('Tài khoản ngân hàng')}}</th>
-                        <th data-breakpoints="lg">{{translate('Tài khoản best')}}</th>
+{{--                        <th data-breakpoints="lg">{{translate('Tài khoản best')}}</th>--}}
                         <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
                         <th data-breakpoints="lg">{{translate('Kol giới thiệu')}}</th>
                         <th data-breakpoints="lg">{{translate('Thuộc nhóm')}}</th>
@@ -144,28 +144,26 @@
                                         <span style="color: #ff0000">Chưa có tài khoản</span>
                                     @endif
                                 </td>
+{{--                                <td>--}}
+{{--                                    @if($user->best_api_user)--}}
+{{--                                        <span style="color: green" >--}}
+{{--                                        TK : {{ $user->best_api_user }}--}}
+{{--                                        </span>--}}
+{{--                                        <br>--}}
+{{--                                        <span style="color: green" >--}}
+{{--                                        MK : {{ $user->best_api_password }}--}}
+{{--                                        </span>--}}
+{{--                                    @else--}}
+{{--                                        <span style="color: red">Chưa có tài khoản</span>--}}
+{{--                                    @endif--}}
+{{--                                </td>--}}
                                 <td>
-                                    @if($user->best_api_user)
-                                        <span style="color: green" >
-                                        TK : {{ $user->best_api_user }}
-                                        </span>
-                                        <br>
-                                        <span style="color: green" >
-                                        MK : {{ $user->best_api_password }}
-                                        </span>
-                                    @else
-                                        <span style="color: red">Chưa có tài khoản</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($user->banned == 1)
+                                    @if($user->banned == 2)
                                         <span class="badge badge-inline badge-danger">{{ trans('Khóa') }}</span>
-                                    @else
-                                        @if(empty($user->best_api_user))
+                                    @elseif($user->banned==0)
                                             <span class="badge badge-inline badge-warning">{{ trans('Chưa kích hoạt') }}</span>
                                         @else
                                             <span class="badge badge-inline badge-success">{{ trans('Hoạt động') }}</span>
-                                        @endif
                                     @endif
                                 </td>
                                 <td>{{$kols[$user->referred_by] ?? ''}}</td>
@@ -178,16 +176,16 @@
                                 <td>{{ $user->updated_at }}</td>
                                 <td>{{ $user->user_updated->name ?? ''}}</td>
                                 <td class="text-right">
-                                    @if($user->bank_updated == 1)
-                                        <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="updateBank('{{route('customers.bank', encrypt($user->id))}}');" title="{{ translate('Xác nhận cập nhật tài khoản ngân hàng bên Best') }}">
-                                            <i class="las la-credit-card"></i>
-                                        </a>
-                                    @endif
+{{--                                    @if($user->bank_updated == 1)--}}
+{{--                                        <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="updateBank('{{route('customers.bank', encrypt($user->id))}}');" title="{{ translate('Xác nhận cập nhật tài khoản ngân hàng bên Best') }}">--}}
+{{--                                            <i class="las la-credit-card"></i>--}}
+{{--                                        </a>--}}
+{{--                                    @endif--}}
                                 <!--                                    onclick="openUpdatePackage(`{{ $user->id }}`, `{{ $user->customer_package_id }}`)"-->
                                     <a href="{{ route('customers.edit', [encrypt($user->id)]) }}" class="btn btn-soft-primary btn-icon btn-circle btn-sm" title="{{ translate('Cập nhật thông tin khách hàng') }}" >
                                         <i class="las la-edit"></i>
                                     </a>
-                                    @if($user->banned != 1)
+                                    @if($user->banned != 2)
                                         <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_ban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Khóa tài khoản') }}">
                                             <i class="las la-user-slash"></i>
                                         </a>

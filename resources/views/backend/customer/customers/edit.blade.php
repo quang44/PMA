@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Gói')}}</label>
+                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Nhóm')}}</label>
                         <div class="col-sm-9">
                             <select name="customer_package_id" id="" class="form-control" required>
                                 @foreach($packages as $package)
@@ -53,19 +53,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Nhóm')}}</label>
-                        <div class="col-sm-9">
-                            <select name="customer_group_id" id="" class="form-control" required>
-                                @foreach($groups as $group)
-                                    <option value="{{ $group->id }}" @if(old('customer_group_id', $user->customer_group_id) == $group->id) selected @endif>{{ $group->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('group_id')
-                            <div class="" style="color: red">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="email">{{translate('Mật khẩu khách hàng')}}</label>
                         <div class="col-sm-9">

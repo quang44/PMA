@@ -20,7 +20,6 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::post('user/update', 'App\Http\Controllers\Api\V2\AuthController@update');
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
-        Route::get('history-point', 'App\Http\Controllers\Api\V2\LogController@index');
     });
     Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
     Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
@@ -105,7 +104,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
 
         Route::get('list-sub', 'App\Http\Controllers\Api\V2\AffiliateController@listSub');
         Route::get('history-payment', 'App\Http\Controllers\Api\V2\AffiliateController@historyPayment');
-        Route::get('history-payment-detail/{id}', 'App\Http\Controllers\Api\V2\AffiliateController@historyPaymentDetail');
+        Route::get('history-payment/{id}', 'App\Http\Controllers\Api\V2\AffiliateController@historyPaymentDetail');
         Route::post('request-payment', 'App\Http\Controllers\Api\V2\AffiliateController@requestPayment');
         Route::post('cancel-payment', 'App\Http\Controllers\Api\V2\AffiliateController@cancelPayment');
         Route::get('report', 'App\Http\Controllers\Api\V2\AffiliateController@report');

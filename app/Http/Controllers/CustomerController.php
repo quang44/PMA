@@ -35,31 +35,31 @@ class CustomerController extends Controller
             $users = $users->where('referred_by', $request->referred_by);
         }
         if ((isset($request->banned) ? $request->banned : -1) >= 0) {
-            switch ($request->banned) {
-                case 1:
+//            switch ($request->banned) {
+//                case 1:
                     $users = $users->where('banned', $request->banned);
-                    break;
-                case 0:
-                    $users = $users->where('banned', 0)->whereNotNull('best_api_user');
-                    break;
-                case 2:
-                    $users = $users->where('banned', 0)->whereNull('best_api_user');
-                    break;
-            }
+//                    break;
+//                case 0:
+//                    $users = $users->where('banned', 0)->whereNotNull('best_api_user');
+//                    break;
+//                case 2:
+//                    $users = $users->where('banned', 0)->whereNull('best_api_user');
+//                    break;
+//            }
 
         } else {
-            $users = $users->whereIn('banned', [0, 2]);
+            $users = $users->whereIn('banned', [0, 1]);
         }
         if ((isset($request->bank_updated) ? $request->bank_updated : -1) >= 0) {
             $users = $users->where('bank_updated', $request->bank_updated);
         }
-        if ($request->has_best_api > 0) {
-            if ($request->has_best_api == 1) {
-                $users = $users->whereNull('best_api_user');
-            } elseif ($request->has_best_api == 2) {
-                $users = $users->whereNotNull('best_api_user');
-            }
-        }
+//        if ($request->has_best_api > 0) {
+//            if ($request->has_best_api == 1) {
+//                $users = $users->whereNull('best_api_user');
+//            } elseif ($request->has_best_api == 2) {
+//                $users = $users->whereNotNull('best_api_user');
+//            }
+//        }
         $users->with('customer_bank', 'user_updated');
         $users = $users->paginate(15);
         $packages = CustomerPackage::all();
@@ -171,10 +171,9 @@ class CustomerController extends Controller
     {
         $user = User::findOrFail(decrypt($id));
         $packages = CustomerPackage::all();
-        $groups = CustomerGroup::all();
 
         //$kols = User::where('user_type', 'kol')->pluck('name', 'id');
-        return view('backend.customer.customers.edit', compact('user', 'packages', 'groups'));
+        return view('backend.customer.customers.edit', compact('user', 'packages'));
     }
 
     /**
@@ -282,11 +281,11 @@ class CustomerController extends Controller
     {
         $user = User::findOrFail(decrypt($id));
 
-        if ($user->banned == 1) {
-            $user->banned = 0;
+        if ($user->banned == 2) {
+            $user->banned = 1;
             flash(translate('Customer UnBanned Successfully'))->success();
         } else {
-            $user->banned = 1;
+            $user->banned = 2;
             flash(translate('Customer Banned Successfully'))->success();
         }
 

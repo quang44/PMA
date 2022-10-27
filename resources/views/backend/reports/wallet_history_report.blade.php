@@ -47,7 +47,7 @@
                         <tr>
                             <th>#</th>
                             <th>{{ translate('Customer')}}</th>
-                            <th data-breakpoints="lg">Vai trò</th>
+{{--                            <th data-breakpoints="lg">Vai trò</th>--}}
                             <th>Số dư hiện tại </th>
                             <th>Cập nhật gần nhất </th>
                             <th data-breakpoints="lg" class="text-right">{{ translate('action')}}</th>
@@ -62,13 +62,16 @@
                                 @else
                                     <td>{{ translate('User Not found') }}</td>
                                 @endif
-                                <td>
-                                    @if($wallet->user->user_type == 'employee')
-                                        <span class="badge badge-inline badge-success">Nhân viên</span>
-                                    @endif
-                                    @if($wallet->user->user_type == 'kol')
-                                        <span class="badge badge-inline badge-info">CTV</span>
-                                    @endif</td>
+{{--                                <td>--}}
+{{--                                    @if($wallet->user!=null)--}}
+{{--                                    @if($wallet->user->user_type == 'employee')--}}
+{{--                                        <span class="badge badge-inline badge-success">Nhân viên</span>--}}
+{{--                                    @endif--}}
+{{--                                    @if($wallet->user->user_type == 'kol')--}}
+{{--                                        <span class="badge badge-inline badge-info">CTV</span>--}}
+{{--                                    @endif--}}
+{{--                                        @endif--}}
+{{--                                </td>--}}
                                 <td>{{ single_price((int)config_base64_decode($wallet->amount)) }}</td>
                                 <td>{{date('d/m/Y H:i',strtotime($wallet->created_at)) }}</td>
 

@@ -40,18 +40,17 @@ class WarrantyCardController extends Controller
     {
 
             $WarrantyCard = WarrantyCard::with('brand')->findOrFail(decrypt($id));
-
             $commonConfig=CommonConfig::first();
             $user=User::find($WarrantyCard->user_id);
             $content="";
+            $wallet= Wallet::where('user_id',$WarrantyCard->user_id)->first();
+            $amount=$wallet->amount;
         if ($request->status==1) {
             $WarrantyCard->status = 1;
             $WarrantyCard->active_time=date('H:i:s');
+            $amount=config_base64_decode($wallet->amount);
 
-            $wallet= Wallet::where('user_id',$WarrantyCard->user_id)->first();
-            $amount=config_base64_decode( $wallet->amount);
-
-            $wallet->amount=config_base64_encode($amount+(int)$commonConfig->for_activator);
+            $wallet->amount=config_base64_encode((int)$amount+(int)$commonConfig->for_activator);
             $wallet->save();
 
             $user->balance=$user->balance+(int)$commonConfig->for_activator;
@@ -65,6 +64,7 @@ class WarrantyCardController extends Controller
                 'amount_first'=>(int)$amount,
                 'amount_later'=>(int)config_base64_decode($wallet->amount),
                 'user_id'=>$user->id,
+                'accept_by'=>auth()->id(),
                 'content'=>"Thẻ bảo hành của khách hàng $WarrantyCard->user_name được kích hoạt"
             ]);
 
@@ -81,8 +81,8 @@ class WarrantyCardController extends Controller
             'data'=>$content,
             'user_id'=>$user->id,
             'amount_first'=>$amount,
-            'accept_by'=>auth()->id(),
             'amount_later'=>config_base64_decode($wallet->amount),
+            'accept_by'=>auth()->id(),
             'notifiable_type'=>CustomerBillUtility::TYPE_NOTIFICATION_USER,
         ]);
 

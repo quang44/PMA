@@ -48,7 +48,7 @@ class AuthController extends Controller
 
         $package = CustomerPackage::where('default', 1)->first();
 
-        $user_type = $request->user_type ?? 'employee';
+        $user_type = $request->user_type ?? 'customer';
         $referral_code = $request->referral_code;
         $referred_by = "";
         if ($user_type == 'kol') {
@@ -66,7 +66,7 @@ class AuthController extends Controller
             }
         }
 
-        if ($user_type == 'customer' || $user_type == 'employer') {
+        if ($user_type == 'customer' ) {
             if (!empty($referral_code)) {
                 $kol = User::with('customer_group')->where('referral_code', $referral_code)->first();
                 if (!$kol) {
@@ -198,6 +198,7 @@ class AuthController extends Controller
         return response()->json([
             'result' => true,
             'message' => translate('Verification code is sent again'),
+            'data' => ['id'=>$user->id,'verification_code'=>$user->verification_code]
         ], 200);
     }
 
@@ -209,6 +210,7 @@ class AuthController extends Controller
         if ($user!=null && $user->verification_code == $request->verification_code) {
             $user->email_verified_at = date('Y-m-d H:i:s');
             $user->verification_code = null;
+            $user->banned=1;
             $user->save();
             return response()->json([
                 'result' => true,
@@ -251,7 +253,7 @@ class AuthController extends Controller
                 /* if ($user->email_verified_at == null) {
                      return response()->json(['result' => false, 'message' => translate('Please verify your account'), 'data' => null], 401);
                  }*/
-                if ($user->banned == 1) {
+                if ($user->banned == 2) {
                     return response()->json(['result' => false, 'message' => translate('Tài khoản đã bị khóa'), 'data' => null], 401);
 
                 }
@@ -391,7 +393,7 @@ class AuthController extends Controller
         if (!$user) {
             return response(['result' => false, 'message' => translate('Không tìm thấy thông tin tài khoản')]);
         }
-        $user->banned = 1;
+        $user->banned = 2;
         $user->save();
         return response([
             'result' => true,
@@ -482,7 +484,7 @@ class AuthController extends Controller
     }
 
     public function balances(){
-        $available_balances = available_balances();
+        $available_balances = available_balances(auth()->id());
         return response()->json([
             'status'=>200,
             'available_balances'=>$available_balances
