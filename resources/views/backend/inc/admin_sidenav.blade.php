@@ -2,11 +2,11 @@
     <div class="aiz-sidebar left c-scrollbar">
         <div class="aiz-side-nav-logo-wrap">
             <a href="{{ route('admin.dashboard') }}" class="d-block text-left">
-                @if(get_setting('system_logo_white') != null)
-                    <img class="mw-100" src="{{ uploaded_asset(get_setting('system_logo_white')) }}" class="brand-icon" alt="{{ get_setting('site_name') }}">
-                @else
+{{--                @if(get_setting('system_logo_white') != null)--}}
+{{--                    <img class="mw-100" src="{{ uploaded_asset(get_setting('system_logo_white')) }}" class="brand-icon" alt="{{ get_setting('site_name') }}">--}}
+{{--                @else--}}
                     <img class="mw-100" src="{{ static_asset('assets/img/logo.png') }}" class="brand-icon" alt="{{ get_setting('site_name') }}">
-                @endif
+{{--                @endif--}}
             </a>
         </div>
         <div class="aiz-side-nav-wrap">
@@ -559,19 +559,19 @@
 {{--                                    <span class="aiz-side-nav-text">{{ translate('Sản phẩm mong muốn') }}</span>--}}
 {{--                                </a>--}}
 {{--                            </li>--}}
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('user_search_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_search_report.index'])}}">
-                                    <span class="aiz-side-nav-text">{{ translate('Tìm kiếm của Người dùng') }}</span>
-                                </a>
-                            </li>
-                            <li class="aiz-side-nav-item">
-                                <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate(' Lịch sử nhận hoa hồng') }}</span>
-                                </a>
-                            </li>
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('user_search_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user_search_report.index'])}}">--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate('Tìm kiếm của Người dùng') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="aiz-side-nav-item">--}}
+{{--                                <a href="{{ route('commission-log.index') }}" class="aiz-side-nav-link">--}}
+{{--                                    <span class="aiz-side-nav-text">{{ translate(' Lịch sử nhận hoa hồng') }}</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wallet-history.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử nạp tiền vào ví') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử biến động ví') }}</span>
                                 </a>
                             </li>
                         </ul>

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api\V2;
 use App\Http\Controllers\OTPVerificationController;
 use App\Http\Requests\Api\V2\Auth\AuthRequest;
 use App\Http\Resources\V2\LogCollection;
+use App\Http\Resources\V2\NotificationCollection;
 use App\Models\BusinessSetting;
 use App\Models\Customer;
 use App\Models\CustomerPackage;
@@ -65,7 +66,7 @@ class AuthController extends Controller
             }
         }
 
-        if ($user_type == 'customer') {
+        if ($user_type == 'customer' ) {
             if (!empty($referral_code)) {
                 $kol = User::with('customer_group')->where('referral_code', $referral_code)->first();
                 if (!$kol) {
@@ -197,6 +198,7 @@ class AuthController extends Controller
         return response()->json([
             'result' => true,
             'message' => translate('Verification code is sent again'),
+            'data' => ['id'=>$user->id,'verification_code'=>$user->verification_code]
         ], 200);
     }
 
@@ -208,6 +210,7 @@ class AuthController extends Controller
         if ($user!=null && $user->verification_code == $request->verification_code) {
             $user->email_verified_at = date('Y-m-d H:i:s');
             $user->verification_code = null;
+            $user->banned=1;
             $user->save();
             return response()->json([
                 'result' => true,
@@ -250,7 +253,7 @@ class AuthController extends Controller
                 /* if ($user->email_verified_at == null) {
                      return response()->json(['result' => false, 'message' => translate('Please verify your account'), 'data' => null], 401);
                  }*/
-                if ($user->banned == 1) {
+                if ($user->banned == 2) {
                     return response()->json(['result' => false, 'message' => translate('Tài khoản đã bị khóa'), 'data' => null], 401);
 
                 }
@@ -322,30 +325,30 @@ class AuthController extends Controller
         ]);
     }
 
-    public function notification()
+//    public function notification()
+//    {
+//        $user = auth()->user();
+//        if (!empty($user->device_token)) {
+//            $req = new \stdClass();
+//            $req->device_token = $user->device_token;
+//            $req->title = "Kích hoạt tài khoản !";
+//            $req->text = "Tài khoản của bạn đã được kích hoạt";
+//
+//            $req->type = "active_user";
+//            $req->id = $user->id;
+//            $req->best_api_user = $user->best_api_user;
+//            $result = NotificationUtility::sendFirebaseNotification($req);
+//            return response(['result' => true, 'data' => $result]);
+//        } else {
+//            return response(['result' => false]);
+//        }
+//    }
+
+    public function AuthNotification()
     {
         $user = auth()->user();
-        if (!empty($user->device_token)) {
-            $req = new \stdClass();
-            $req->device_token = $user->device_token;
-            $req->title = "Kích hoạt tài khoản !";
-            $req->text = "Tài khoản của bạn đã được kích hoạt";
-
-            $req->type = "active_user";
-            $req->id = $user->id;
-            $req->best_api_user = $user->best_api_user;
-            $result = NotificationUtility::sendFirebaseNotification($req);
-            return response(['result' => true, 'data' => $result]);
-        } else {
-            return response(['result' => false]);
-        }
-    }
-
-    public function notificationWarranty()
-    {
-        $user = auth()->user();
-        $Notification=Notification::where('user_id',$user->id)->where('type','warranty')->get();
-            return response(['data' => $Notification]);
+        $Notification=Notification::where('user_id',$user->id)->orderBy('created_at','DESC')->get();
+            return new NotificationCollection($Notification);
     }
 
 
@@ -390,7 +393,7 @@ class AuthController extends Controller
         if (!$user) {
             return response(['result' => false, 'message' => translate('Không tìm thấy thông tin tài khoản')]);
         }
-        $user->banned = 1;
+        $user->banned = 2;
         $user->save();
         return response([
             'result' => true,
@@ -481,7 +484,7 @@ class AuthController extends Controller
     }
 
     public function balances(){
-        $available_balances = available_balances();
+        $available_balances = available_balances(auth()->id());
         return response()->json([
             'status'=>200,
             'available_balances'=>$available_balances

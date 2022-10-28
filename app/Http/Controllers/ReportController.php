@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CommissionHistory;
@@ -115,7 +116,7 @@ class ReportController extends Controller
         })->get();
 
 
-        $wallet_history = Wallet::orderBy('created_at', 'desc');
+        $wallet_history = Wallet::orderBy('created_at', 'desc')->with('user');
 
         if ($request->date_range) {
             $date_range = $request->date_range;
@@ -131,4 +132,21 @@ class ReportController extends Controller
 
         return view('backend.reports.wallet_history_report', compact('wallets', 'users_with_wallet', 'user_id', 'date_range'));
     }
+
+    public function wallet_balance_history(Request $request,$user_id ) {
+       $logs=Log::where('user_id',decrypt($user_id))->with('user','acceptor');
+          $date_range=null;
+              if ($request->date_range) {
+                  $date_range = $request->date_range;
+                  $date_range1 = explode(" / ", $request->date_range);
+                  $logs = $logs->where('created_at', '>=', $date_range1[0]);
+                  $logs = $logs->where('created_at', '<=', $date_range1[1]);
+              }
+               $logs=$logs->orderBy('created_at','DESC')->paginate(15);
+              return view('backend.reports.wallet_balance_history',compact('logs','date_range','user_id'));
+    }
+
+
+
+
 }

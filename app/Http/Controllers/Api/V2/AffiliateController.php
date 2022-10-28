@@ -14,6 +14,8 @@ use App\Models\CustomerPackage;
 use App\Models\NoticeUser;
 use App\Models\OrderDelivery;
 use App\Models\User;
+use App\Models\Wallet;
+use App\Utility\CustomerBillUtility;
 use App\Utility\NotificationUtility;
 use App\Utility\OrderDeliveryUtility;
 use Illuminate\Http\Request;
@@ -210,6 +212,17 @@ class AffiliateController extends Controller
         return new AffiliatePaymentCollection($payment);
     }
 
+    public function historyPaymentDetail($id)
+    {
+        $payment = AffiliatePayment::find($id);
+        if(!$payment){
+            return [
+                'result'=>false,
+                'message'=>'Không tìm thấy thông tin tìm kiếm'
+            ];
+        }
+        return ['data'=>$payment];
+    }
 
     public function requestPayment(Request $request)
     {
@@ -222,7 +235,7 @@ class AffiliateController extends Controller
 
         if ($value < 10000) {
             return response([
-                'result' => $user->customer_package,
+                'result' => false,
                 'message' =>'Số tiền cần thanh toán phải từ 10.000 vnđ trở lên'
             ]);
         }
@@ -230,7 +243,7 @@ class AffiliateController extends Controller
         if (!is_int($point)) {
             return response([
                 'result' => false,
-                'message' => 'Số tiền không hợp lệ'
+                'message' => 'Số tiền không hợp lệ vui lòng nhập lại, vd:10.000,15.000,20.000 ....'
             ]);
         }
 
@@ -242,9 +255,6 @@ class AffiliateController extends Controller
         }
 
             $balance=available_balances($user->id);
-//return response([
-//    'data'=>$balance
-//]);
         if ($point > $balance) {
             return response([
                 'result' => false,
@@ -276,12 +286,14 @@ class AffiliateController extends Controller
         });
         return response([
             'result' => true,
+            'message' => 'Yêu cầu rút tiền của bạn đã được gửi thành công ',
         ]);
     }
 
     public function cancelPayment(Request $request)
     {
         $user = User::find(auth()->id());
+
         $payment = AffiliatePayment::where('id', $request->id)->where('user_id', $user->id)->first();
         if (!$payment) {
             return response([
@@ -310,6 +322,8 @@ class AffiliateController extends Controller
             }
             $payment->save();
         });
+
+
         return response([
             'result' => true,
             'messages'=>'Gửi yêu cầu hủy rút tiền thành công'

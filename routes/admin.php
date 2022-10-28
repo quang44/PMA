@@ -81,6 +81,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/categories/edit/{id}', 'edit')->name('categories.edit');
         Route::get('/categories/destroy/{id}', 'destroy')->name('categories.destroy');
         Route::post('/categories/featured', 'updateFeatured')->name('categories.featured');
+
     });
 
     // Brand
@@ -429,9 +430,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/in_house_sale_report', 'in_house_sale_report')->name('in_house_sale_report.index');
         Route::get('/seller_sale_report', 'seller_sale_report')->name('seller_sale_report.index');
         Route::get('/wish_report', 'wish_report')->name('wish_report.index');
-        Route::get('/user_search_report', 'user_search_report')->name('user_search_report.index');
+//        Route::get('/user_search_report', 'user_search_report')->name('user_search_report.index');
         Route::get('/wallet-history', 'wallet_transaction_history')->name('wallet-history.index');
-        Route::get('/commission-log', 'commission_history')->name('commission-log.index');
+        Route::get('/wallet_balance_history/{id}', 'wallet_balance_history')->name('wallet-balance.balance');
+//        Route::get('/commission-log', 'commission_history')->name('commission-log.index');
 //        Route::get('/', 'commission_history')->name('commission-log.index');
 
     });

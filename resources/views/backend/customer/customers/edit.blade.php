@@ -14,9 +14,9 @@
             	@csrf
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="name">{{translate('Name')}}</label>
+                        <label class="col-sm-3 col-from-label" for="name">{{translate('Tên')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" value="{{ old('name', $user->name) }}" class="form-control" required>
+                            <input type="text" placeholder="{{translate('Tên')}}" id="name" name="name" value="{{ old('name', $user->name) }}" class="form-control" required>
                             @error('name')
                             <div class="" style="color: red">{{ $message }}</div>
                             @enderror
@@ -32,16 +32,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="mobile">{{translate('Phone')}}</label>
+                        <label class="col-sm-3 col-from-label" for="mobile">{{translate('Số điện thoại')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Phone')}}" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control" required>
+                            <input type="text" placeholder="{{translate('Số điện thoại')}}" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control" required>
                             @error('phone')
                             <div class="" style="color: red">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Gói')}}</label>
+                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Nhóm')}}</label>
                         <div class="col-sm-9">
                             <select name="customer_package_id" id="" class="form-control" required>
                                 @foreach($packages as $package)
@@ -53,19 +53,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Nhóm')}}</label>
-                        <div class="col-sm-9">
-                            <select name="customer_group_id" id="" class="form-control" required>
-                                @foreach($groups as $group)
-                                    <option value="{{ $group->id }}" @if(old('customer_group_id', $user->customer_group_id) == $group->id) selected @endif>{{ $group->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('group_id')
-                            <div class="" style="color: red">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="email">{{translate('Mật khẩu khách hàng')}}</label>
                         <div class="col-sm-9">
@@ -100,7 +88,7 @@
 {{--                    </div>--}}
 
                     <div class="form-group mb-0 text-right">
-                        <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                        <button type="submit" class="btn btn-sm btn-primary">{{translate('Lưu')}}</button>
                     </div>
                 </div>
             </form>

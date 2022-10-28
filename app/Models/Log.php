@@ -15,4 +15,9 @@
         {
             return $this->belongsTo(User::class);
         }
+
+        function acceptor()
+        {
+            return $this->belongsTo(User::class,'accept_by','id');
+        }
     }

@@ -16,6 +16,7 @@ class CustomerBillUtility
         self::STATUS_CANCEL => 'Hủy thanh toán',
     ];
 
+    //    type history
     const TYPE_LOG_RECHARGE = 0;
     const TYPE_LOG_WITHDRAW = 1;
     const TYPE_LOG_ADDITION=2;
@@ -26,6 +27,20 @@ class CustomerBillUtility
         self::TYPE_LOG_WITHDRAW => 'Rút tiền',
         self::TYPE_LOG_ADDITION => 'Cộng tiền',
         self::TYPE_LOG_DEDUCTION => 'Trừ tiền',
+    ];
+
+//    type notification
+    const TYPE_NOTIFICATION_PAYMENT = 0;
+    const TYPE_NOTIFICATION_WARRANTY = 1;
+    const TYPE_NOTIFICATION_MAINTAIN = 2;
+
+    const TYPE_NOTIFICATION_USER = 0;
+    const TYPE_NOTIFICATION_ADMIN = 1;
+
+    public static $arrayTypeNotification = [
+        self::TYPE_NOTIFICATION_PAYMENT =>  'Thông báo rút tiền',
+        self::TYPE_NOTIFICATION_WARRANTY => 'Thông báo bảo hành',
+        self::TYPE_NOTIFICATION_MAINTAIN => 'Cập nhật hệ thống',
     ];
 
 }

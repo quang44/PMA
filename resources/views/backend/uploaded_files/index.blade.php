@@ -4,11 +4,11 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{translate('All uploaded files')}}</h1>
+			<h1 class="h3">{{translate('Tất cả file tả lên')}}</h1>
 		</div>
 		<div class="col-md-6 text-md-right">
 			<a href="{{ route('uploaded-files.create') }}" class="btn btn-primary">
-				<span>{{translate('Upload New File')}}</span>
+				<span>{{translate('Tải file mới')}}</span>
 			</a>
 		</div>
 	</div>
@@ -18,21 +18,21 @@
     <form id="sort_uploads" action="">
         <div class="card-header row gutters-5">
             <div class="col-md-3">
-                <h5 class="mb-0 h6">{{translate('All files')}}</h5>
+                <h5 class="mb-0 h6">{{translate('Tất cả file')}}</h5>
             </div>
             <div class="col-md-3 ml-auto mr-0">
                 <select class="form-control form-control-xs aiz-selectpicker" name="sort" onchange="sort_uploads()">
-                    <option value="newest" @if($sort_by == 'newest') selected="" @endif>{{ translate('Sort by newest') }}</option>
-                    <option value="oldest" @if($sort_by == 'oldest') selected="" @endif>{{ translate('Sort by oldest') }}</option>
-                    <option value="smallest" @if($sort_by == 'smallest') selected="" @endif>{{ translate('Sort by smallest') }}</option>
-                    <option value="largest" @if($sort_by == 'largest') selected="" @endif>{{ translate('Sort by largest') }}</option>
+                    <option value="newest" @if($sort_by == 'newest') selected="" @endif>{{ translate('Sắp xếp theo mới nhất') }}</option>
+                    <option value="oldest" @if($sort_by == 'oldest') selected="" @endif>{{ translate('Sắp xếp theo cũ nhất') }}</option>
+                    <option value="smallest" @if($sort_by == 'smallest') selected="" @endif>{{ translate('Sắp xếp theo size nhỏ nhất') }}</option>
+                    <option value="largest" @if($sort_by == 'largest') selected="" @endif>{{ translate('Sắp xếp theo size lớn nhất') }}</option>
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control form-control-xs" name="search" placeholder="{{ translate('Search your files') }}" value="{{ $search }}">
+                <input type="text" class="form-control form-control-xs" name="search" placeholder="{{ translate('Tìm kiếm file') }}" value="{{ $search }}">
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary">{{ translate('Search') }}</button>
+                <button type="submit" class="btn btn-primary">{{ translate('Tìm kiếm') }}</button>
             </div>
         </div>
     </form>
@@ -49,7 +49,7 @@
                     if($file->external_link) {
                         $file_path = $file->external_link;
                     }
-                    
+
     			@endphp
     			<div class="col-auto w-140px w-lg-220px">
     				<div class="aiz-file-box">
@@ -60,11 +60,11 @@
     						<div class="dropdown-menu dropdown-menu-right">
     							<a href="javascript:void(0)" class="dropdown-item" onclick="detailsInfo(this)" data-id="{{ $file->id }}">
     								<i class="las la-info-circle mr-2"></i>
-    								<span>{{ translate('Details Info') }}</span>
+    								<span>{{ translate('Thông tin chi tiết') }}</span>
     							</a>
     							<a href="{{ my_asset($file->file_name) }}" target="_blank" download="{{ $file_name }}.{{ $file->extension }}" class="dropdown-item">
     								<i class="la la-download mr-2"></i>
-    								<span>{{ translate('Download') }}</span>
+    								<span>{{ translate('Tải') }}</span>
     							</a>
     							<a href="javascript:void(0)" class="dropdown-item" onclick="copyUrl(this)" data-url="{{ my_asset($file->file_name) }}">
     								<i class="las la-clipboard mr-2"></i>
@@ -72,7 +72,7 @@
     							</a>
     							<a href="javascript:void(0)" class="dropdown-item confirm-alert" data-href="{{ route('uploaded-files.destroy', $file->id ) }}" data-target="#delete-modal">
     								<i class="las la-trash mr-2"></i>
-    								<span>{{ translate('Delete') }}</span>
+    								<span>{{ translate('Xoa') }}</span>
     							</a>
     						</div>
     					</div>
@@ -109,13 +109,13 @@
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title h6">{{ translate('Delete Confirmation') }}</h4>
+                <h4 class="modal-title h6">{{ translate('Xác nhận xóa') }}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body text-center">
-                <p class="mt-1">{{ translate('Are you sure to delete this file?') }}</p>
-                <button type="button" class="btn btn-link mt-2" data-dismiss="modal">{{ translate('Cancel') }}</button>
-                <a href="" class="btn btn-primary mt-2 comfirm-link">{{ translate('Delete') }}</a>
+                <p class="mt-1">{{ translate('Bạn có chắc chắn xóa tệp này không ?') }}</p>
+                <button type="button" class="btn btn-link mt-2" data-dismiss="modal">{{ translate('Hủy') }}</button>
+                <a href="" class="btn btn-primary mt-2 comfirm-link">{{ translate('Xóa') }}</a>
             </div>
         </div>
     </div>
@@ -124,7 +124,7 @@
 	<div class="modal-dialog modal-dialog-right">
 			<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title h6">{{ translate('File Info') }}</h5>
+				<h5 class="modal-title h6">{{ translate('Thông tin file') }}</h5>
 				<button type="button" class="close" data-dismiss="modal">
 				</button>
 			</div>

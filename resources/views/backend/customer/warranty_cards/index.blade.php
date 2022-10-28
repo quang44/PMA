@@ -4,34 +4,33 @@
 
     <div class="aiz-titlebar text-left mt-2 mb-3 row">
         <div class=" col-md-6 align-items-center">
-            <h1 class="h3">{{translate('List of warranty cards')}}</h1>
+            <h1 class="h3">{{translate('Danh sách thẻ bảo hành')}}</h1>
         </div>
-{{--        <div class="col-md-6 text-md-right">--}}
-{{--            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
-{{--                <span>Add New Card</span>--}}
-{{--            </a>--}}
-{{--        </div>--}}
+        {{--        <div class="col-md-6 text-md-right">--}}
+        {{--            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
+        {{--                <span>Add New Card</span>--}}
+        {{--            </a>--}}
+        {{--        </div>--}}
     </div>
 
     <div class="card">
         <form class="" id="sort_Card" action="" method="GET">
             <div class="card-header row gutters-5">
                 <div class="col">
-                    <h5 class="mb-0 h6">{{translate('Insurance card')}}</h5>
+                    <h5 class="mb-0 h6">{{translate('Thẻ bảo hành')}}</h5>
                 </div>
-
 
 
                 <div class="col-md-3">
                     <div class="form-group mb-0">
                         <select name="sort_status" id="sort_selectCart" class="form-control">
-                            <option value="-1">Trạng thái của thẻ</option>
+                            <option value="-1">Trạng thái của thẻ....</option>
                             <option value="0"
-                                    @if(request('sort_status',-1)==0) selected @endif>{{translate('Pending')}}</option>
+                                    @if(request('sort_status',-1)==0) selected @endif>{{translate('Chưa xét duyệt')}}</option>
                             <option value="1"
-                                    @if(request('sort_status',-1)==1) selected @endif>{{translate('Approved')}}</option>
+                                    @if(request('sort_status',-1)==1) selected @endif>{{translate('Đã xét duyệt')}}</option>
                             <option value="2"
-                                    @if(request('sort_status',-1)==2) selected @endif>{{translate('Cancelled')}}</option>
+                                    @if(request('sort_status',-1)==2) selected @endif>{{translate('Hủy')}}</option>
                         </select>
                     </div>
                 </div>
@@ -40,7 +39,7 @@
 
                         <input type="text" class="form-control" id="search" name="search"
                                @isset($search) value="{{ $search }}"
-                               @endisset placeholder="{{ translate('Enter customer name or serial number') }}">
+                               @endisset placeholder="{{ translate('Nhập tên khách hàng hoặc số sê-ri') }}">
                     </div>
                 </div>
             </div>
@@ -50,14 +49,14 @@
                     <table class="table aiz-table mb-0">
                         <thead>
                         <tr>
-                            <th>{{translate('Brand name')}}</th>
-                            <th data-breakpoints="lg">{{translate('Customer name')}}</th>
-                            <th data-breakpoints="lg">{{translate('Address')}}</th>
+                            <th>{{translate('Tên nhãn hiệu')}}</th>
+                            <th data-breakpoints="lg">{{translate('Tên khách hàng')}}</th>
+                            <th data-breakpoints="lg">{{translate('Địa chỉ')}}</th>
                             <th data-breakpoints="lg">{{translate('Seri')}}</th>
-                            <th data-breakpoints="lg">{{translate('Activation time')}}</th>
-                            <th data-breakpoints="lg">{{translate('Avatar')}}</th>
-                            <th data-breakpoints="lg">{{translate('Status')}}</th>
-                            <th class="text-right">{{translate('Options')}}</th>
+                            <th data-breakpoints="lg">{{translate('Thời gian kích hoạt')}}</th>
+                            <th data-breakpoints="lg">{{translate('Ảnh đại dện')}}</th>
+                            <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
+                            <th class="text-right">{{translate('Tùy chọn')}}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -73,24 +72,31 @@
                                     <td> @if($warranty_card->active_time>0)
                                             {{date('d/m/Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Not activated') }}</span>
+                                            <span
+                                                class="badge badge-inline badge-secondary">{{ trans('Not activated') }}</span>
                                         @endif
                                     </td>
                                     <td>
 
                                         @foreach($warranty_card->uploads as $img)
-                                        <img class="h-50px" src="{{ get_image_asset($img->id,$img->object_id) }}" alt="image">
+                                            <a href="javascript:;"  class="a-exampleModal">
+                                                <img class="h-50px image"
+                                                     src="{{ get_image_asset($img->id,$img->object_id) }}" alt="image">
+                                            </a>
                                         @endforeach
                                     </td>
 
                                     <td>
                                         @if($warranty_card->status == 0)
-                                            <span class="badge badge-inline badge-secondary">{{ trans('Pending') }}</span>
+                                            <span
+                                                class="badge badge-inline badge-secondary">{{ translate('Chưa xét duyệt') }}</span>
                                         @else
                                             @if($warranty_card->status == 1)
-                                                <span class="badge badge-inline badge-success">{{ trans('Approved') }}</span>
+                                                <span
+                                                    class="badge badge-inline badge-success">{{ translate('Đã xét duyệt') }}</span>
                                             @else
-                                                <span class="badge badge-inline badge-danger">{{ trans('Cancelled') }}</span>
+                                                <span
+                                                    class="badge badge-inline badge-danger">{{ translate('Hủy') }}</span>
                                             @endif
                                         @endif
                                     </td>
@@ -108,7 +114,7 @@
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-info btn-icon btn-circle btn-sm"
                                                onclick="updateCard('{{route('warranty_card.ban', encrypt($warranty_card->id))}}',1);"
-                                               title="{{ translate('Activate Cards') }}">
+                                               title="{{ translate('Kích hoạt thẻ') }}">
                                                 <i class="las la-credit-card"></i>
                                             </a>
 
@@ -116,19 +122,19 @@
                                             <a href="javascript:void(0)"
                                                class="btn btn-soft-danger btn-icon btn-circle btn-sm"
                                                onclick="confirm_ban('{{route('warranty_card.ban', encrypt($warranty_card->id))}}' ,2);"
-                                               title="{{ translate('Cancel the card') }}">
+                                               title="{{ translate('Hủy thẻ') }}">
                                                 <i class="las la-user-alt-slash"></i>
                                             </a>
                                         @endif
-{{--                                        <a href="{{ route('warranty_card.edit', [ encrypt($warranty_card->id) ]) }}"--}}
-{{--                                           class="btn btn-soft-warning btn-icon btn-circle btn-sm"--}}
-{{--                                           title="{{ translate('Cập nhật thông tin thẻ') }}">--}}
-{{--                                            <i class="las la-edit"></i>--}}
-{{--                                        </a>--}}
+                                        {{--                                        <a href="{{ route('warranty_card.edit', [ encrypt($warranty_card->id) ]) }}"--}}
+                                        {{--                                           class="btn btn-soft-warning btn-icon btn-circle btn-sm"--}}
+                                        {{--                                           title="{{ translate('Cập nhật thông tin thẻ') }}">--}}
+                                        {{--                                            <i class="las la-edit"></i>--}}
+                                        {{--                                        </a>--}}
                                         <a href="#"
                                            class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                            data-href="{{route('warranty_card.destroy', encrypt($warranty_card->id))}}"
-                                           title="{{ translate('Delete') }}">
+                                           title="{{ translate('Xóa') }}">
                                             <i class="las la-trash"></i>
                                         </a>
                                     </td>
@@ -144,6 +150,12 @@
                 {{--                </div>--}}
             </div>
         </form>
+    </div>
+
+    <div class="modal fade" id="modal-image">
+        <div class="modal-dialog">
+            <img id="image" style="width: 100%; height: 100% ;object-fit: contain" src="" alt="">
+        </div>
     </div>
 
     <div class="modal fade" id="confirm-update-bank">
@@ -178,13 +190,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light"
-                                data-dismiss="modal">{{translate('Cancel')}}</button>
-                        <button type="submit" class="btn btn-primary">{{translate('Proceed!')}}</button>
+                                data-dismiss="modal">{{translate('Hủy')}}</button>
+                        <button type="submit" class="btn btn-primary">{{translate('Tiếp tục')}}</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+
 
 @endsection
 
@@ -193,43 +206,31 @@
 @endsection
 
 @section('script')
-    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
     <script type="text/javascript">
+        $(document).on('click','.a-exampleModal', function () {
+            console.log(  $('#modal-image'))
+            $('#modal-image').modal('show', {backdrop: 'static'})
+        })
 
 
-        {{--$('#form-api').on('submit',function (e) {--}}
-        {{--    e.preventDefault()--}}
-        {{--    let formData = new FormData(this);--}}
-        {{--    $.ajax({--}}
-        {{--        headers: {--}}
-        {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-        {{--        },--}}
-        {{--        url: "{{route('warrantyCard.store')}}",--}}
-        {{--        type: 'POST',--}}
-        {{--        data: formData,--}}
-        {{--        cache: false,--}}
-        {{--        contentType: false,--}}
-        {{--        processData: false,--}}
-        {{--        success: function (response) {--}}
-        {{--            console.log(response)--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--})--}}
-
+        $(document).on('click', '.image', function () {
+            let img = $(this).attr('src');
+            $('#image').attr('src', img)
+        })
 
 
         $('#sort_selectCart').on('change', function () {
             $('#sort_Card').submit();
         })
 
-        function confirm_ban(url,status) {
+        function confirm_ban(url, status) {
             $('#confirm-ban').modal('show', {backdrop: 'static'});
-            document.getElementById('confirmation').setAttribute('action', url+'?status='+status);
+            document.getElementById('confirmation').setAttribute('action', url + '?status=' + status);
         }
 
-        function updateCard(url,status) {
+        function updateCard(url, status) {
             $('#confirm-update-bank').modal('show', {backdrop: 'static'});
-            document.getElementById('updateCard').setAttribute('href', url+'?status='+status);
+            document.getElementById('updateCard').setAttribute('href', url + '?status=' + status);
         }
 
 

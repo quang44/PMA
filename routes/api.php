@@ -16,11 +16,10 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::get('logout', 'App\Http\Controllers\Api\V2\AuthController@logout');
         Route::get('user', 'App\Http\Controllers\Api\V2\AuthController@user');
 //        Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@notification');
-        Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@notification');
+        Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@AuthNotification');
         Route::post('user/update', 'App\Http\Controllers\Api\V2\AuthController@update');
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
-        Route::get('available-balances', 'App\Http\Controllers\Api\V2\AuthController@available_balances');
     });
     Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
     Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
@@ -28,9 +27,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
 
     Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
 
-Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::get('historyPoint', 'App\Http\Controllers\Api\V2\LogController@index');
-});
+
 
     Route::get('convert', 'App\Http\Controllers\Api\V2\AddressController@convertAddress');
     Route::get('address/search', 'App\Http\Controllers\Api\V2\AddressController@search');
@@ -107,6 +104,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
         Route::get('list-sub', 'App\Http\Controllers\Api\V2\AffiliateController@listSub');
         Route::get('history-payment', 'App\Http\Controllers\Api\V2\AffiliateController@historyPayment');
+        Route::get('history-payment/{id}', 'App\Http\Controllers\Api\V2\AffiliateController@historyPaymentDetail');
         Route::post('request-payment', 'App\Http\Controllers\Api\V2\AffiliateController@requestPayment');
         Route::post('cancel-payment', 'App\Http\Controllers\Api\V2\AffiliateController@cancelPayment');
         Route::get('report', 'App\Http\Controllers\Api\V2\AffiliateController@report');
@@ -127,23 +125,23 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('user/shipping/delete/{address_id}', 'App\Http\Controllers\Api\V2\AddressController@deleteShippingAddress')->middleware('auth:sanctum');*/
 
 
-    Route::prefix('delivery-boy')->group(function () {
-        Route::get('dashboard-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@dashboard_summary')->middleware('auth:sanctum');
-        Route::get('deliveries/completed/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@completed_delivery')->middleware('auth:sanctum');
-        Route::get('deliveries/cancelled/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@cancelled_delivery')->middleware('auth:sanctum');
-        Route::get('deliveries/on_the_way/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@on_the_way_delivery')->middleware('auth:sanctum');
-        Route::get('deliveries/picked_up/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@picked_up_delivery')->middleware('auth:sanctum');
-        Route::get('deliveries/assigned/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@assigned_delivery')->middleware('auth:sanctum');
-        Route::get('collection-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@collection_summary')->middleware('auth:sanctum');
-        Route::get('earning-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@earning_summary')->middleware('auth:sanctum');
-        Route::get('collection/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@collection')->middleware('auth:sanctum');
-        Route::get('earning/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@earning')->middleware('auth:sanctum');
-        Route::get('cancel-request/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@cancel_request')->middleware('auth:sanctum');
-        Route::post('change-delivery-status', 'App\Http\Controllers\Api\V2\DeliveryBoyController@change_delivery_status')->middleware('auth:sanctum');
-        //Delivery Boy Order
-        Route::get('purchase-history-details/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@details')->middleware('auth:sanctum');
-        Route::get('purchase-history-items/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@items')->middleware('auth:sanctum');
-    });
+//    Route::prefix('delivery-boy')->group(function () {
+//        Route::get('dashboard-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@dashboard_summary')->middleware('auth:sanctum');
+//        Route::get('deliveries/completed/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@completed_delivery')->middleware('auth:sanctum');
+//        Route::get('deliveries/cancelled/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@cancelled_delivery')->middleware('auth:sanctum');
+//        Route::get('deliveries/on_the_way/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@on_the_way_delivery')->middleware('auth:sanctum');
+//        Route::get('deliveries/picked_up/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@picked_up_delivery')->middleware('auth:sanctum');
+//        Route::get('deliveries/assigned/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@assigned_delivery')->middleware('auth:sanctum');
+//        Route::get('collection-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@collection_summary')->middleware('auth:sanctum');
+//        Route::get('earning-summary/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@earning_summary')->middleware('auth:sanctum');
+//        Route::get('collection/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@collection')->middleware('auth:sanctum');
+//        Route::get('earning/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@earning')->middleware('auth:sanctum');
+//        Route::get('cancel-request/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@cancel_request')->middleware('auth:sanctum');
+//        Route::post('change-delivery-status', 'App\Http\Controllers\Api\V2\DeliveryBoyController@change_delivery_status')->middleware('auth:sanctum');
+//        //Delivery Boy Order
+//        Route::get('purchase-history-details/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@details')->middleware('auth:sanctum');
+//        Route::get('purchase-history-items/{id}', 'App\Http\Controllers\Api\V2\DeliveryBoyController@items')->middleware('auth:sanctum');
+//    });
 
     Route::prefix('seller')->group(function () {
         Route::get('orders', 'App\Http\Controllers\Api\V2\SellerController@getOrderList')->middleware('auth:sanctum');;

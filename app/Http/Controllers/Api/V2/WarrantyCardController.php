@@ -13,7 +13,9 @@ use Illuminate\Http\Request;
 class WarrantyCardController extends Controller
 {
     function  index(){
-        return new WarrantyCardCollection(WarrantyCard::with('brand','uploads')->get());
+        $warrantyCard=WarrantyCard::with('brand','uploads')
+            ->where('user_id',auth()->id())->latest()->paginate(15);
+        return new WarrantyCardCollection($warrantyCard);
     }
 
     function search(Request $request){
@@ -28,6 +30,14 @@ class WarrantyCardController extends Controller
         return new WarrantyCardCollection($warranty);
     }
 
+    function delete($id){
+        WarrantyCard::findOrFail($id)->delete();
+        return [
+            'result'=>true,
+            'message'=>"you have successfully deleted the warranty card"
+        ];
+    }
+
 
 // i test req from FormData in javascript
     function  store(WarrantyCardRequest $request){
@@ -40,11 +50,6 @@ class WarrantyCardController extends Controller
         $warrantyCard->brand_id=$request->brand;
         $warrantyCard->active_time=date('Y-m-d H:i:s');
 
-//        $warrantyCard->seri_image=$idUpload;
-//        if($request->qr_code_image!=null){
-//            $idUpload= uploadImageURL($request->qr_code_image);
-//            $warrantyCard->qr_code_image=$idUpload;
-//        }
         $warrantyCard->save();
         $id=$warrantyCard->id;
         uploadMultipleImage($request->image,$id,$path='uploads/warranty');
@@ -52,7 +57,37 @@ class WarrantyCardController extends Controller
 
         return response([
             'result'=>true,
-            'message'=>'Card added successfully, please wait about 24 hours for a response'
+            'message'=>'Card added successfully'
         ]);
     }
+
+
+    function  update(WarrantyCardRequest $request,$id){
+
+        $warrantyCard= WarrantyCard::with('uploads')->findOrFail($id);
+        $warrantyCard->user_id=auth()->user()->id;
+        $warrantyCard->user_name=$request->user_name;
+        $warrantyCard->address=$request->address;
+        $warrantyCard->seri=$request->seri;
+        $warrantyCard->brand_id=$request->brand;
+        $warrantyCard->active_time=date('Y-m-d H:i:s');
+        $warrantyCard->save();
+        $id=$warrantyCard->id;
+        if($request->image){
+            foreach ($warrantyCard->uploads as $upload){
+                if(file_exists(public_path('').$upload->file_name)){
+                    unlink(public_path('').$upload->file_name);
+                }
+            }
+                uploadMultipleImage($request->image,$id,$path='uploads/warranty');
+
+        }
+
+
+        return response([
+            'result'=>true,
+            'message'=>'Card added successfully'
+        ]);
+    }
+
 }

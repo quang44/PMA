@@ -4,7 +4,7 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col">
-			<h1 class="h3">{{ translate('Edit Page Information') }}</h1>
+			<h1 class="h3">{{ translate('Cập nhật trang nội dung') }}</h1>
 		</div>
 	</div>
 </div>
@@ -16,13 +16,13 @@
 		<input type="hidden" name="_method" value="PATCH">
 
 		<div class="card-header px-0">
-			<h6 class="fw-600 mb-0">{{ translate('Page Content') }}</h6>
+			<h6 class="fw-600 mb-0">{{ translate('Nội dung trang') }}</h6>
 		</div>
 		<div class="card-body px-0">
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Title')}} <span class="text-danger">*</span> <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
+				<label class="col-sm-2 col-from-label" for="name">{{translate('Tiêu đề')}} <span class="text-danger">*</span> <i class="las la-language text-danger" title="{{translate('Translatable')}}"></i></label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" placeholder="{{translate('Title')}}" name="title" value="{{ $page->title }}" required>
+					<input type="text" class="form-control" placeholder="{{translate('Tiêu đề')}}" name="title" value="{{ $page->title }}" required>
 				</div>
 			</div>
             <div class="form-group row">
@@ -45,11 +45,11 @@
                 </div>
             </div>
 			<div class="form-group row">
-				<label class="col-sm-2 col-from-label" for="name">{{translate('Add Content')}} <span class="text-danger">*</span></label>
+				<label class="col-sm-2 col-from-label" for="name">{{translate('Nội dung')}} <span class="text-danger">*</span></label>
 				<div class="col-sm-10">
 					<textarea
 						class="aiz-text-editor form-control"
-						placeholder="{{translate('Content..')}}"
+						placeholder="{{translate('Nội dung ..')}}"
 						data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]'
 						data-min-height="300"
 						name="content"
@@ -101,7 +101,7 @@
 			</div>-->
 
 			<div class="text-right">
-				<button type="submit" class="btn btn-primary">{{ translate('Update Page') }}</button>
+				<button type="submit" class="btn btn-primary">{{ translate('Lưu') }}</button>
 			</div>
 		</div>
 	</form>

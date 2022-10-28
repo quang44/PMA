@@ -5,11 +5,11 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col-md-6">
-			<h1 class="h3">{{translate('All Staffs')}}</h1>
+			<h1 class="h3">{{translate('Tất cả nhân viên')}}</h1>
 		</div>
 		<div class="col-md-6 text-md-right">
 			<a href="{{ route('staffs.create') }}" class="btn btn-circle btn-info">
-				<span>{{translate('Add New Staffs')}}</span>
+				<span>{{translate('Thêm nhân viên')}}</span>
 			</a>
 		</div>
 	</div>
@@ -17,18 +17,18 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Staffs')}}</h5>
+        <h5 class="mb-0 h6">{{translate('Nhân viên')}}</h5>
     </div>
     <div class="card-body">
         <table class="table aiz-table mb-0">
             <thead>
                 <tr>
                     <th data-breakpoints="lg" width="10%">#</th>
-                    <th>{{translate('Name')}}</th>
+                    <th>{{translate('Tên')}}</th>
                     <th data-breakpoints="lg">{{translate('Email')}}</th>
-                    <th data-breakpoints="lg">{{translate('Phone')}}</th>
-                    <th data-breakpoints="lg">{{translate('Role')}}</th>
-                    <th width="10%">{{translate('Options')}}</th>
+                    <th data-breakpoints="lg">{{translate('Số điện thoại')}}</th>
+                    <th data-breakpoints="lg">{{translate('Vai trò')}}</th>
+                    <th width="10%">{{translate('Tùy chọn')}}</th>
                 </tr>
             </thead>
             <tbody>

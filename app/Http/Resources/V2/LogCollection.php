@@ -20,9 +20,9 @@ class LogCollection extends ResourceCollection
             'data' => $this->collection->map(function($data) {
                 return [
                     'id' => $data->id,
-                    'type'=>CustomerBillUtility::$arrayTypeLog[$data->type],
-                    'user_id' => intval($data->user_id),
                     'point'=>$data->point,
+                    'title'=>CustomerBillUtility::$arrayTypeLog[$data->type],
+                    'user_id' => intval($data->user_id),
                     'content' => $data->content,
                     'time'=>date('d/m/Y H:i:s',strtotime($data->created_at)),
                 ];

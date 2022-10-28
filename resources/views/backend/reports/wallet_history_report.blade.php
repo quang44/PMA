@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class=" align-items-center">
-        <h1 class="h3">{{translate('Wallet Transaction Report')}}</h1>
+        <h1 class="h3">Danh sách ví người dùng</h1>
     </div>
 </div>
 
@@ -47,10 +47,10 @@
                         <tr>
                             <th>#</th>
                             <th>{{ translate('Customer')}}</th>
-                            <th data-breakpoints="lg">{{  translate('Date') }}</th>
-                            <th>{{ translate('Point')}}</th>
-                            <th data-breakpoints="lg">{{ translate('Payment Method')}}</th>
-                            <th data-breakpoints="lg" class="text-right">{{ translate('Approval')}}</th>
+{{--                            <th data-breakpoints="lg">Vai trò</th>--}}
+                            <th>Số dư hiện tại </th>
+                            <th>Cập nhật gần nhất </th>
+                            <th data-breakpoints="lg" class="text-right">{{ translate('action')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,23 +58,37 @@
                             <tr>
                                 <td>{{ $key+1 }}</td>
                                 @if ($wallet->user != null)
-                                    <td>{{ $wallet->user->name }}</td>
+                                    <td> <a class=" text-primary" href="{{route('wallet-balance.balance',encrypt($wallet->user_id))}}" title="View">  {{ $wallet->user->name }}    </a></td>
                                 @else
                                     <td>{{ translate('User Not found') }}</td>
                                 @endif
-                                <td>{{ date('d-m-Y', strtotime($wallet->created_at)) }}</td>
-                                <td>{{ single_price((int)config_base64_decode($wallet->amount)) }}</td>
-                                <td>{{ ucfirst(str_replace('_', ' ', $wallet ->payment_method)) }}</td>
+{{--                                <td>--}}
+{{--                                    @if($wallet->user!=null)--}}
+{{--                                    @if($wallet->user->user_type == 'employee')--}}
+{{--                                        <span class="badge badge-inline badge-success">Nhân viên</span>--}}
+{{--                                    @endif--}}
+{{--                                    @if($wallet->user->user_type == 'kol')--}}
+{{--                                        <span class="badge badge-inline badge-info">CTV</span>--}}
+{{--                                    @endif--}}
+{{--                                        @endif--}}
+{{--                                </td>--}}
+                                <td>{{ (int)config_base64_decode($wallet->amount) }} points</td>
+                                <td>{{date('d/m/Y H:i',strtotime($wallet->created_at)) }}</td>
+
+                                {{--                                <td>{{ ucfirst(str_replace('_', ' ', $wallet ->payment_method)) }}</td>--}}
                                 <td class="text-right">
-                                    @if ($wallet->offline_payment)
-                                        @if ($wallet->approval)
-                                            <span class="badge badge-inline badge-success">{{translate('Approved')}}</span>
-                                        @else
-                                            <span class="badge badge-inline badge-info">{{translate('Pending')}}</span>
-                                        @endif
-                                    @else
-                                        N/A
-                                    @endif
+                                    <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('wallet-balance.balance',encrypt($wallet->user_id))}}" title="View">
+                                        <i class="las la-eye"></i>
+                                    </a>
+{{--                                    @if ($wallet->offline_payment)--}}
+{{--                                        @if ($wallet->approval)--}}
+{{--                                            <span class="badge badge-inline badge-success">{{translate('Approved')}}</span>--}}
+{{--                                        @else--}}
+{{--                                            <span class="badge badge-inline badge-info">{{translate('Pending')}}</span>--}}
+{{--                                        @endif--}}
+{{--                                    @else--}}
+{{--                                        N/A--}}
+{{--                                    @endif--}}
                                 </td>
                             </tr>
                         @endforeach

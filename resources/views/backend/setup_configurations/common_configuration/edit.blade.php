@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-lg-6 mx-auto">
+        <div class="col-lg-12 mx-auto">
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0 h6">{{translate('Cập nhật cấu hình chung')}}</h5>
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Currency unit')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Đơn vị tền tệ')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('unit') ? old('unit') : $common_config->unit }}"  name="unit">
                                 @error('unit')
@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Points for referrers')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point cho người giới thiệu')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('for_referrer') ? old('for_referrer') : $common_config->for_referrer }}"  name="for_referrer">
                                 @error('for_referrer')
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point for activator insurance')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point cho người kích hoạt thẻ')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('for_activator') ? old('for_activator') : $common_config->for_activator }}"  name="for_activator">
                                 @error('for_activator')
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Convert points to cash')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Chuyển đổi point (ex:1point = 1000 vnđ)')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('exchange') ? old('exchange') : $common_config->exchange}}" name="exchange" >
                                 @error('exchange')
@@ -69,13 +69,26 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Contact Info')}}</label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Thông tin liên hệ')}}</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('contact_info') ? old('contact_info') : $common_config->contact_info }}"  name="contact_info" required>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-from-label" for="name"> Điều khoản <span class="text-danger">*</span></label>
+                            <div class="col-sm-10">
+					<textarea
+                        class="aiz-text-editor form-control"
+                        data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]'
+                        placeholder="Content.."
+                        data-min-height="300"
+                        name="rules"
+                        required
+                    > {{$common_config->rules}}</textarea>
+                            </div>
+                        </div>
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Update')}}</button>
+                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Lưu')}}</button>
                         </div>
                     </div>
 

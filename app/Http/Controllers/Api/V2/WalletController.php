@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Resources\V2\WalletCollection;
+use App\Models\Log;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class WalletController extends Controller
 //  lịch sử
     public function walletRechargeHistory()
     {
-        return new WalletCollection(Wallet::where('user_id', auth()->user()->id)->latest()->paginate(10));
+        return new WalletCollection(Wallet::with('logs')->where('user_id', auth()->user()->id)->latest()->paginate(10));
     }
 
 

@@ -4,25 +4,25 @@
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="row align-items-center">
 		<div class="col">
-			<h1 class="h3">{{ translate('Website Pages') }}</h1>
+			<h1 class="h3">{{ translate('Trang nội dung') }}</h1>
 		</div>
 	</div>
 </div>
 
 <div class="card">
 	<div class="card-header">
-		<h6 class="mb-0 fw-600">{{ translate('All Pages') }}</h6>
-		<a href="{{ route('custom-pages.create') }}" class="btn btn-primary">{{ translate('Add New Page') }}</a>
+		<h6 class="mb-0 fw-600">{{ translate('Tất cả trang') }}</h6>
+		<a href="{{ route('custom-pages.create') }}" class="btn btn-primary">{{ translate('Thêm mới trang') }}</a>
 	</div>
 	<div class="card-body">
 		<table class="table aiz-table mb-0">
         <thead>
             <tr>
                 <th data-breakpoints="lg">#</th>
-                <th>{{translate('Name')}}</th>
+                <th>{{translate('Tiêu đề')}}</th>
                 <th data-breakpoints="md">{{translate('Icon')}}</th>
-                <th data-breakpoints="md">{{translate('Url')}}</th>
-                <th class="text-right">{{translate('Actions')}}</th>
+                <th data-breakpoints="md">{{translate('Đường dẫn')}}</th>
+                <th class="text-right">{{translate('Tùy chọn')}}</th>
             </tr>
         </thead>
         <tbody>

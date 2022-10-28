@@ -3,7 +3,7 @@
 
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3">{{translate('Update Customer Group Information')}}</h1>
+            <h1 class="h3">{{translate('Cập nhật nhóm nguười dùng')}}</h1>
         </div>
     </div>
 
@@ -16,7 +16,7 @@
                         <input type="hidden" name="_method" value="PATCH">
                         @csrf
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Customer group name')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Tên nhóm')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -28,14 +28,14 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="signinSrEmail">
-                                {{translate('Avatar')}}
+                                {{translate('Ảnh đại diện')}}
                                 <!--                            <small>(1300x650)</small>-->
                             </label>
                             <div class="col-sm-10">
                                 <div class="input-group" data-toggle="aizuploader" data-type="image">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text bg-soft-secondary font-weight-medium">
-                                            {{ translate('Browse')}}
+                                            Browse
                                         </div>
                                     </div>
                                     <div class="form-control file-amount">{{ translate('Choose File') }}</div>
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Reward Points')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Điểm thưởng')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -59,11 +59,11 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Description')}}</label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Mô tả')}}</label>
                             <div class="col-sm-10">
 					<textarea
                         class="aiz-text-editor form-control"
-                        placeholder="{{translate('Content..')}}"
+                        placeholder="{{translate('Nội dung ..')}}"
                         data-buttons='[["font", ["bold", "underline", "italic", "clear"]],["para", ["ul", "ol", "paragraph"]],["style", ["style"]],["color", ["color"]],["table", ["table"]],["insert", ["link", "picture", "video"]],["view", ["fullscreen", "codeview", "undo", "redo"]]]'
                         data-min-height="300"
                         name="description"
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Amount that can be withdrawn')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số tiền tối đa có thể rút')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type=text class="form-control"
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Number of points')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số point cần đạt')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control"
@@ -96,7 +96,7 @@
                         </div>
 
                         <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Save')}}</button>
+                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Lưu')}}</button>
                         </div>
                     </form>
                 </div>

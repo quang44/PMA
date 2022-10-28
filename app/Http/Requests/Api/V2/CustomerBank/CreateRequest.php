@@ -29,7 +29,7 @@ class CreateRequest extends FormRequest
             'name' => 'required|string',
             'branch' => 'string',
             'username' => 'required|string',
-            'number' => 'required|string',
+            'number' => 'required|string|unique:customer_bank',
         ];
     }
 

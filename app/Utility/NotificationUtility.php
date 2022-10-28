@@ -117,11 +117,8 @@ class NotificationUtility
         return $result;
     }
 
-    static function  SendNotifications($type,$content,$user_id){
+    static function  SendNotifications($data){
         $notification=new NotificationCustomer();
-        $notification->user_id=$user_id;
-        $notification->type=$type;
-        $notification->data=$content;
-        $notification->save();
+       $notification->newQuery()->create($data);
     }
 }

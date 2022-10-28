@@ -13,6 +13,7 @@
     use App\Models\User;
     use App\Utility\CustomerBillUtility;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Str;
@@ -294,21 +295,30 @@
             $payment->payment_time = time();
             $payment->payment_user_id = auth()->id();
             $payment->save();
-            $wallet->amount = config_base64_encode(config_base64_decode($wallet->amount) - $payment->amount) ;
+            $wallet->amount = config_base64_encode( config_base64_decode($wallet->amount)- $payment->amount) ;
             $wallet->save();
 
-            $data = ['type' => CustomerBillUtility::TYPE_LOG_WITHDRAW,
-             'point' => (int)$payment->value,
-            'amount' => (int)$payment->value * $config->exchange,
-            'object' => 0,
-            'amount_first' => (int)$amount,
-            'amount_later' => (int)config_base64_decode($wallet->amount),
-            'user_id' => $wallet->user_id,
-            'content' => "Giao dịch chuyển tiền $bank->number đã được duyệt"
-        ];
-            log_history($data);
+
+            log_history(['type' => CustomerBillUtility::TYPE_LOG_WITHDRAW,
+                'point' => -$payment->amount,
+                'amount' => -(int)$payment->amount * $config->exchange,
+                'object' => 0,
+                'amount_first' => (int)$amount,
+                'amount_later' => (int)config_base64_decode($wallet->amount),
+                'user_id' => $wallet->user_id,
+                'accept_by' => Auth::user()->id,
+                'content' => "Giao dịch chuyển tiền đến số thẻ $bank->number đã được duyệt"
+            ]);
             $money = $payment->amount * $config->exchange;
-            NewNotification('payment', "Bạn đã rút tiền thành công $money ", $payment->user_id);
+            NewNotification([
+                'type'=>CustomerBillUtility::TYPE_NOTIFICATION_PAYMENT,
+                'data'=>"Bạn đã rút tiền thành công ".format_price( $money)." ", $payment->user_id,
+                'user_id'=>$wallet->user_id,
+                'amount_first'=>$amount,
+                'amount_later'=>config_base64_decode($wallet->amount),
+                'notifiable_type'=>CustomerBillUtility::TYPE_NOTIFICATION_USER,
+
+            ]);
 
 
             return response([
@@ -328,7 +338,7 @@
                     'message' => 'Không tìm thấy yêu cầu cần thanh toán'
                 ]);
             }
-
+            $wallet=Wallet::where('user_id',$payment->user_id)->first();
             /*$payment->payment_user_id = auth()->id();*/
             //$payment->save();
             DB::transaction(function () use ($payment, $request) {
@@ -339,7 +349,14 @@
                 $payment->reason = $request->reason ?? '';
                 $payment->save();
             });
-            NewNotification('payment', "Thông báo yêu cầu rút tiền của bạn đã bị hủy ", $payment->user_id);
+            NewNotification([
+                'type'=>CustomerBillUtility::$arrayTypeNotification[CustomerBillUtility::TYPE_NOTIFICATION_PAYMENT],
+                'data'=>"Yêu cầu rút tiền của bạn đã bị hủy , nếu có thắc mắc vui lòng liên hệ với BQT ", $payment->user_id,
+                'user_id'=>$wallet->user_id,
+                'amount_first'=>config_base64_decode($wallet->amount),
+                'amount_later'=>config_base64_decode($wallet->amount),
+                'notifiable_type'=>CustomerBillUtility::TYPE_NOTIFICATION_USER,
+            ]);
             return response([
                 'result' => true,
                 'message' => 'Hủy thanh toán thành công'

@@ -94,14 +94,14 @@
 					</div>
 					<div class="form-group mb-3">
 						<label for="name"></label>
-						<input type="text" class="form-control" name="meta_title" placeholder="{{translate('Meta Title')}}">
+						<input type="text" class="form-control" name="meta_title" placeholder="{{translate('Tiêu đề')}}">
 					</div>
 					<div class="form-group mb-3">
-						<label for="name">{{translate('Meta Description')}}</label>
+						<label for="name">{{translate('Thông tin chi tiết')}}</label>
 						<textarea name="meta_description" rows="5" class="form-control"></textarea>
 					</div>
 					<div class="form-group mb-3 text-right">
-						<button type="submit" class="btn btn-primary">{{translate('Save')}}</button>
+						<button type="submit" class="btn btn-primary">{{translate('Lưu')}}</button>
 					</div>
 				</form>
 			</div>
