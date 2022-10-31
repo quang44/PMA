@@ -210,13 +210,14 @@ class AuthController extends Controller
         if ($user!=null && $user->verification_code == $request->verification_code) {
             $user->email_verified_at = date('Y-m-d H:i:s');
             $user->verification_code = null;
-            $user->banned=1;
+            $user->banned=0;
             $user->save();
             return response()->json([
                 'result' => true,
                 'message' => translate('Your account is now verified.Please login'),
             ], 200);
         } else {
+//            $user->delete();
             return response()->json([
                 'result' => false,
                 'message' => translate('Code does not match, you can request for resending the code'),
@@ -253,8 +254,8 @@ class AuthController extends Controller
                 /* if ($user->email_verified_at == null) {
                      return response()->json(['result' => false, 'message' => translate('Please verify your account'), 'data' => null], 401);
                  }*/
-                if ($user->banned == 2) {
-                    return response()->json(['result' => false, 'message' => translate('Tài khoản đã bị khóa'), 'data' => null], 401);
+                if ($user->banned == 1) {
+                    return response()->json(['result' => false, 'message' => 'Tài khoản đã tạm thời bị khóa', 'data' => null], 401);
 
                 }
                 if ($request->device_token) {
@@ -266,10 +267,10 @@ class AuthController extends Controller
                 }
                 return $this->loginSuccess($user);
             } else {
-                return response()->json(['result' => false, 'message' => translate('Tài khoản hoặc mật khẩu không chính xác'), 'data' => null], 401);
+                return response()->json(['result' => false, 'message' => 'Tài khoản hoặc mật khẩu không chính xác', 'data' => null], 401);
             }
         } else {
-            return response()->json(['result' => false, 'message' => translate('User not found'), 'data' => null], 401);
+            return response()->json(['result' => false, 'message' => 'Tài khoản không tồn tại', 'data' => null], 401);
         }
     }
 
@@ -467,16 +468,16 @@ class AuthController extends Controller
                 'expires_at' => null,
                 'user' => [
                     'id' => $user->id,
-                    'type' => $user->user_type,
+//                    'type' => $user->user_type,
                     'name' => $user->name,
-                    'email' => $user->email,
-                    'avatar' => $user->avatar,
-                    'avatar_original' => uploaded_asset($user->avatar_original),
+//                    'email' => $user->email,
+//                    'avatar' => $user->avatar,
+//                    'avatar_original' => uploaded_asset($user->avatar_original),
                     'phone' => $user->phone,
                     'referred_by' => $user->referred_by,
                     'referral_code' => $user->referral_code,
-                    'balance' => $user->balance,
-                    'best_api_user' => $user->best_api_user,
+//                    'balance' => $user->balance,
+//                    'best_api_user' => $user->best_api_user,
                     'created_at' => date('d-m-Y H:i:s', strtotime($user->created_at))
                 ]
             ]
@@ -484,10 +485,11 @@ class AuthController extends Controller
     }
 
     public function balances(){
-        $available_balances = available_balances(auth()->id());
+        $available_balances = available_balances(auth()->user()->id);
+        $customerPackage=CustomerPackage::whereBetween('point',[0,$available_balances])->first();
         return response()->json([
-            'status'=>200,
-            'available_balances'=>$available_balances
+            'balance'=>$available_balances,
+            'package'=>$customerPackage
         ]);
     }
 }

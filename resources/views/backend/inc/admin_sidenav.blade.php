@@ -56,7 +56,7 @@
                     <li class="aiz-side-nav-item">
                         <a href="{{route('brands.index')}}" class="aiz-side-nav-link">
                             <i class="las la-gavel aiz-side-nav-icon"></i>
-                            <span class="aiz-side-nav-text">Nhãn Hiệu</span>
+                            <span class="aiz-side-nav-text">Hãng sản xuất</span>
                         </a>
                         <!--Submenu-->
 {{--                        <ul class="aiz-side-nav-list level-2">--}}

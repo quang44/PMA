@@ -233,34 +233,29 @@ class AffiliateController extends Controller
         $configPoint = CommonConfig::first();
         $point = $value / (int)$configPoint->exchange;
 
-        if ($value < 10000) {
+        if ($value < (int)$user->customer_package->withdraw) {
             return response([
                 'result' => false,
-                'message' =>'Số tiền cần thanh toán phải từ 10.000 vnđ trở lên'
+                'message' =>'Số tiền cần thanh toán phải từ '.number_format($user->customer_package->withdraw).' vnđ '
             ]);
         }
 
         if (!is_int($point)) {
             return response([
                 'result' => false,
-                'message' => 'Số tiền không hợp lệ vui lòng nhập lại, vd:10.000,15.000,20.000 ....'
+                'message' => 'Số tiền không hợp lệ vui lòng nhập lại, vd:100.000,150.000,200.000 ....'
             ]);
         }
 
-        if($value > $user->customer_package->withdraw){
-            return response([
-                'result' => false,
-                'message' => "số tiền tối thiểu bạn có thẻ rút là ".number_format($user->customer_package->withdraw,0, ',', '.')." vnđ "
-            ]);
-        }
 
-            $balance=available_balances($user->id);
+         $balance=available_balances($user->id);
         if ($point > $balance) {
             return response([
                 'result' => false,
                 'message' => 'Số tiền cần thanh toán nhiều hơn số dư tài khoản'
             ]);
         }
+
         $customer_bank = CustomerBank::where('user_id', $user->id)->first();
         if (!$customer_bank) {
             return response([

@@ -17,7 +17,7 @@ class BrandController extends Controller
             $brand_query->where('name', 'like', '%'.$request->name.'%');
             SearchUtility::store($request->name);
         }
-        return new BrandCollection($brand_query->paginate(10));
+        return new BrandCollection($brand_query->paginate(15));
     }
 
     public function top()

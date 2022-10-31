@@ -180,6 +180,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
         Route::get('/customers/destroy/{id}', 'destroy')->name('customers.destroy');
 //        Route::get('customer_pay', 'customerPay')->name('customers.customer_pay');
         Route::post('/bulk-customer-delete', 'bulk_customer_delete')->name('bulk-customer-delete');
+        Route::get('/historyPayment/{id}', 'historyPayment')->name('customers.historyPayment');
     });
 
     Route::resource('banks', BankController::class);

@@ -45,6 +45,16 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'=>'required',
+            'code'=>'required|unique:brands'
+        ],[
+            'name.required'=>'Trường tên là bắt buộc',
+            'code.required'=>'Trường code là bắt buộc',
+            'code.unique'=>'code đã tồn tại',
+
+        ]);
+
         $brand = new Brand;
         $brand->name = $request->name;
         $brand->meta_title = $request->meta_title;
@@ -53,17 +63,18 @@ class BrandController extends Controller
             $brand->slug = str_replace(' ', '-', $request->slug);
         }
         else {
-            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
+            $brand->slug = makeSlug($request->name);
         }
-        $brand->code= preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $request->name)).Str::random(5);
+        $brand->code= $request->code;
         $brand->logo = $request->logo;
+
         $brand->save();
 
         $brand_translation = BrandTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'brand_id' => $brand->id]);
         $brand_translation->name = $request->name;
         $brand_translation->save();
 
-        flash(translate('Brand has been inserted successfully'))->success();
+        flash(translate('Hãng sản xuất đã được tạo thành công'))->success();
         return redirect()->route('brands.index');
 
     }
@@ -101,7 +112,18 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'name'=>'required',
+            'code'=>'required|unique:brands,code,'.$id
+        ],[
+            'name.required'=>'Trường tên là bắt buộc',
+            'code.required'=>'Trường code là bắt buộc',
+            'code.unique'=>'code đã tồn tại',
+
+        ]);
         $brand = Brand::findOrFail($id);
+
         if($request->lang == env("DEFAULT_LANGUAGE")){
             $brand->name = $request->name;
         }
@@ -110,9 +132,10 @@ class BrandController extends Controller
         if ($request->slug != null) {
             $brand->slug = strtolower($request->slug);
         } else {
-            $brand->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->name)).'-'.Str::random(5);
+            $brand->slug = makeSlug($request->name);
         }
-        $brand->code= preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $request->name)).Str::random(5);
+        $brand->code=$request->code;
+//            preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $request->name)).Str::random(5);
         $brand->logo = $request->logo;
         $brand->save();
 
@@ -120,7 +143,7 @@ class BrandController extends Controller
         $brand_translation->name = $request->name;
         $brand_translation->save();
 
-        flash(translate('Brand has been updated successfully'))->success();
+        flash(translate('Hãng sản xuất đã được cập nhật thành công'))->success();
         return back();
 
     }
@@ -157,7 +180,7 @@ class BrandController extends Controller
         }
 
         Brand::destroy($id);
-        flash(translate('Brand has been deleted successfully'))->success();
+        flash(translate('Hãng sản xuất đã bị xóa thành công'))->success();
         return redirect()->route('brands.index');
 
     }

@@ -50,7 +50,7 @@
                                     <option value="">{{ translate('Choose manufacturer....') }}</option>
 
                                     @foreach($brands as $brand)
-                                        @if($brand->status==1)
+                                        @if($brand->status==0)
                                             <option value="{{ $brand->id }}"
                                                     @if(old('brand_id', $Warranty->brand_id) == $brand->id) selected @endif>{{ $brand->name }}</option>
                                         @endif

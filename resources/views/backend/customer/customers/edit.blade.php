@@ -22,15 +22,15 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="email">{{translate('Email')}}</label>
-                        <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Email')}}" id="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" >
-                            @error('email')
-                            <div class="" style="color: red">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+{{--                    <div class="form-group row">--}}
+{{--                        <label class="col-sm-3 col-from-label" for="email">{{translate('Email')}}</label>--}}
+{{--                        <div class="col-sm-9">--}}
+{{--                            <input type="text" placeholder="{{translate('Email')}}" id="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" >--}}
+{{--                            @error('email')--}}
+{{--                            <div class="" style="color: red">{{ $message }}</div>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="mobile">{{translate('Số điện thoại')}}</label>
                         <div class="col-sm-9">

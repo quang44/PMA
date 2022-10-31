@@ -3,7 +3,7 @@
 namespace App\Http\Resources\V2;
 
 use App\Utility\CustomerBillUtility;
-use App\Utility\WarrantyBillUtility;
+use App\Utility\WarrantyCardUtility;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class LogCollection extends ResourceCollection

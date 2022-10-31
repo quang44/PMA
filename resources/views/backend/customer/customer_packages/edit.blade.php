@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số tiền tối đa có thể rút')}} <span
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Số tiền tối thiểu có thể rút')}} <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type=text class="form-control"

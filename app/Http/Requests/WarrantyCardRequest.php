@@ -26,8 +26,9 @@ class WarrantyCardRequest extends FormRequest
         return [
             'user_name'=>'required',
             'address'=>'required',
-            'seri_image'=>'required',
             'seri'=>'required|numeric',
+            'brand_id'=>'required',
+            'image'=>'required'
         ];
     }
 
@@ -36,9 +37,11 @@ class WarrantyCardRequest extends FormRequest
         return [
             'user_name.required'=>'vui lòng nhập tên khách hàng',
             'address.required'=>'vui lòng nhập địa chỉ',
-            'seri_image.required'=>'vui lòng chọn ảnh seri',
             'seri.required'=>'vui lòng nhập số seri',
-            'seri.numeric'=>'seri phải là số'
+            'seri.numeric'=>'seri phải là số',
+             'brand_id.required'=>'vui lòng chọn hãng sản xuất  ',
+            'image.required'=>'vui lòng chọn ảnh',
+
         ];
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\WarrantyBill;
-use App\Utility\WarrantyBillUtility;
+use App\Utility\WarrantyCardUtility;
 use Illuminate\Http\Request;
 
 class WarrantyBillController extends Controller
@@ -12,7 +12,7 @@ class WarrantyBillController extends Controller
 //    show payment guarantee
     function paymentWarranty(Request $request){
         $sort_search=null;
-        $status=WarrantyBillUtility::$aryStatus;
+        $status=WarrantyCardUtility::$aryStatus;
         $payment_guarantees=WarrantyBill::orderBy('created_at','desc');
 
         if ($request->search){
@@ -33,7 +33,7 @@ class WarrantyBillController extends Controller
 //  show
 
 function show($id ,Request $request){
-        $status=WarrantyBillUtility::$aryStatus;
+        $status=WarrantyCardUtility::$aryStatus;
         $warranty_bill=WarrantyBill::with('user')->find($id);
         return view('backend.accounting.warranty_bill.show',compact('warranty_bill','status'));
 }

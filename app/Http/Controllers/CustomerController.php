@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
+use App\Models\AffiliatePayment;
 use App\Models\CustomerGroup;
 use App\Models\CustomerPackage;
 use App\Models\OrderDelivery;
@@ -281,12 +282,12 @@ class CustomerController extends Controller
     {
         $user = User::findOrFail(decrypt($id));
 
-        if ($user->banned == 2) {
-            $user->banned = 1;
-            flash(translate('Customer UnBanned Successfully'))->success();
+        if ($user->banned == 1) {
+            $user->banned = 0;
+            flash('Tài khoản đã được kích hoạt thành công')->success();
         } else {
-            $user->banned = 2;
-            flash(translate('Customer Banned Successfully'))->success();
+            $user->banned = 1;
+            flash('Tài khoản đã  được khóa thành công')->success();
         }
 
         $user->save();
@@ -338,4 +339,17 @@ class CustomerController extends Controller
             'result' => true
         ]);
     }
+
+    function historyPayment(Request $request, $id){
+        $payments = AffiliatePayment::where('user_id',decrypt($id))->whereIn('status', [-1, 2]);
+
+        if ($request->date != null) {
+
+            $payments = $payments->where('created_time', '>=', strtotime(explode(" to ", $request->date)[0]))->where('created_time', '<=', strtotime(explode(" to ", $request->date)[1]) + 86399);
+        }
+        $payments->with(['user.customer_bank']);
+        $payments = $payments->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
+        return view('backend.customer.customers.customerPayment', compact('payments'));
+    }
+
 }

@@ -6,11 +6,11 @@
         <div class=" col-md-6 align-items-center">
             <h1 class="h3">{{translate('Danh sách thẻ bảo hành')}}</h1>
         </div>
-        {{--        <div class="col-md-6 text-md-right">--}}
-        {{--            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
-        {{--                <span>Add New Card</span>--}}
-        {{--            </a>--}}
-        {{--        </div>--}}
+        {{--                <div class="col-md-6 text-md-right">--}}
+        {{--                    <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
+        {{--                        <span>Add New Card</span>--}}
+        {{--                    </a>--}}
+        {{--                </div>--}}
     </div>
 
     <div class="card">
@@ -49,12 +49,12 @@
                     <table class="table aiz-table mb-0">
                         <thead>
                         <tr>
-                            <th>{{translate('Tên nhãn hiệu')}}</th>
+                            <th>{{translate('Tên Hãng sản xuất')}}</th>
                             <th data-breakpoints="lg">{{translate('Tên khách hàng')}}</th>
                             <th data-breakpoints="lg">{{translate('Địa chỉ')}}</th>
                             <th data-breakpoints="lg">{{translate('Seri')}}</th>
                             <th data-breakpoints="lg">{{translate('Thời gian kích hoạt')}}</th>
-                            <th data-breakpoints="lg">{{translate('Ảnh đại dện')}}</th>
+                            <th data-breakpoints="lg">{{translate('Ảnh mô tả')}}</th>
                             <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
                             <th class="text-right">{{translate('Tùy chọn')}}</th>
                         </tr>
@@ -73,13 +73,13 @@
                                             {{date('d/m/Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
                                             <span
-                                                class="badge badge-inline badge-secondary">{{ trans('Not activated') }}</span>
+                                                class="badge badge-inline badge-secondary">{{ trans('chưa kích hoạt') }}</span>
                                         @endif
                                     </td>
                                     <td>
 
                                         @foreach($warranty_card->uploads as $img)
-                                            <a href="javascript:;"  class="a-exampleModal">
+                                            <a href="javascript:;" class="a-exampleModal">
                                                 <img class="h-50px image"
                                                      src="{{ get_image_asset($img->id,$img->object_id) }}" alt="image">
                                             </a>
@@ -88,15 +88,17 @@
 
                                     <td>
                                         @if($warranty_card->status == 0)
-                                            <span
-                                                class="badge badge-inline badge-secondary">{{ translate('Chưa xét duyệt') }}</span>
+                                            <span class="badge badge-inline badge-secondary">
+                                                {{\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_NEW]}}</span>
                                         @else
                                             @if($warranty_card->status == 1)
-                                                <span
-                                                    class="badge badge-inline badge-success">{{ translate('Đã xét duyệt') }}</span>
+                                                <span class="badge badge-inline badge-success">
+                                                    {{\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_SUCCESS]}}
+</span>
                                             @else
-                                                <span
-                                                    class="badge badge-inline badge-danger">{{ translate('Hủy') }}</span>
+                                                <span class="badge badge-inline badge-danger">
+                                                    {{\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_CANCEL]}}
+</span>
                                             @endif
                                         @endif
                                     </td>
@@ -207,8 +209,8 @@
 
 @section('script')
     <script type="text/javascript">
-        $(document).on('click','.a-exampleModal', function () {
-            console.log(  $('#modal-image'))
+        $(document).on('click', '.a-exampleModal', function () {
+            console.log($('#modal-image'))
             $('#modal-image').modal('show', {backdrop: 'static'})
         })
 

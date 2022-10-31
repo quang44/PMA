@@ -1271,3 +1271,25 @@
 
 
     }
+
+    if (!function_exists('update_customer_package')) {
+       function update_customer_package($user_id){
+           $balance=available_balances($user_id);
+           $customerPackage=CustomerPackage::whereBetween('point',[0,$balance])->first();
+           $checkCustomer=User::where('customer_package_id',$customerPackage->id)->first();
+           if(!$checkCustomer){
+               User::findOrFail($user_id)->update([
+                   'customer_package_id'=>$customerPackage->id
+               ]);
+           }
+
+       }
+    }
+
+
+    if (!function_exists('makeSlug')) {
+        function makeSlug($string){
+            $data=preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $string));
+            return   $data;
+        }
+    }

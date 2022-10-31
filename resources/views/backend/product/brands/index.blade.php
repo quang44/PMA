@@ -4,7 +4,7 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="align-items-center">
-			<h1 class="h3">Nhãn hiệu</h1>
+			<h1 class="h3">{{translate('Hãng sản xuất')}}</h1>
 	</div>
 </div>
 
@@ -13,7 +13,7 @@
 		<div class="card">
 		    <div class="card-header row gutters-5">
 				<div class="col text-center text-md-left">
-					<h5 class="mb-md-0 h6">Danh sách nhãn hiệu</h5>
+					<h5 class="mb-md-0 h6">{{translate('Danh sách hãng sản xuất')}}</h5>
 				</div>
 				<div class="col-md-4">
 					<form class="" id="sort_brands" action="" method="GET">
@@ -28,10 +28,10 @@
 		            <thead>
 		                <tr>
 		                    <th>#</th>
-		                    <th>Tên nhãn hiệu</th>
-                            <th>Mã code</th>
+		                    <th>Tên hãng</th>
+                            <th> Code</th>
 		                    <th>Logo</th>
-                            <th>Trạng thái</th>
+                            <th>Trạng thái(Ản/Hiện)</th>
 		                    <th class="text-right">Tùy chọn</th>
 		                </tr>
 		            </thead>
@@ -46,7 +46,7 @@
 		                        </td>
                                 <td>
                                     <label class="aiz-switch aiz-switch-success mb-0">
-                                        <input value="4" type="checkbox" @if($brand->status==1) checked @endif onclick="ChangeStatus( {{$brand->id}},{{$brand->status}})" >
+                                        <input value="4" type="checkbox" @if($brand->status==0) checked @endif onclick="ChangeStatus( {{$brand->id}},{{$brand->status}})" >
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
@@ -71,15 +71,29 @@
 	<div class="col-md-5">
 		<div class="card">
 			<div class="card-header">
-				<h5 class="mb-0 h6">Thêm mới nhãn hiệu</h5>
+				<h5 class="mb-0 h6">Thêm mới hãng sản xuất</h5>
 			</div>
 			<div class="card-body">
 				<form action="{{ route('brands.store') }}" method="POST">
 					@csrf
 					<div class="form-group mb-3">
-						<label for="name">Tên nhãn hiệu <small class="text-danger">*</small>  </label>
+						<label for="name">Tên hãng sản xuất <small class="text-danger">*</small>  </label>
 						<input type="text" placeholder="Tên nhãn hiệu" name="name" class="form-control" required>
 					</div>
+                    <span class="text-danger">
+                        @error('name')
+                        {{$message}}
+                        @enderror
+                    </span>
+                    <div class="form-group mb-3">
+                        <label for="name">Code <small class="text-danger">*</small>  </label>
+                        <input type="text" placeholder="vd :samsungABCD" name="code" class="form-control" required>
+                    </div>
+                    <span class="text-danger">
+                        @error('code')
+                        {{$message}}
+                        @enderror
+                    </span>
 					<div class="form-group mb-3">
 						<label for="name">Logo <small>({{ translate('120x80') }})</small></label>
 						<div class="input-group" data-toggle="aizuploader" data-type="image">
@@ -92,10 +106,10 @@
 {{--						<div class="file-preview box sm">--}}
 {{--						</div>--}}
 					</div>
-					<div class="form-group mb-3">
-						<label for="name"></label>
-						<input type="text" class="form-control" name="meta_title" placeholder="{{translate('Tiêu đề')}}">
-					</div>
+{{--					<div class="form-group mb-3">--}}
+{{--						<label for="name"></label>--}}
+{{--						<input type="text" class="form-control" name="meta_title" placeholder="{{translate('Tiêu đề')}}">--}}
+{{--					</div>--}}
 					<div class="form-group mb-3">
 						<label for="name">{{translate('Thông tin chi tiết')}}</label>
 						<textarea name="meta_description" rows="5" class="form-control"></textarea>

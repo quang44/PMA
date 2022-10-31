@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Upload extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     /**
     * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class Upload extends Model
     * @var array
     */
     protected $fillable = [
-        'file_original_name', 'file_name', 'user_id', 'extension', 'type', 'file_size',
+        'file_original_name', 'file_name', 'user_id', 'extension', 'type', 'file_size','object_id',
     ];
 
     public function user()

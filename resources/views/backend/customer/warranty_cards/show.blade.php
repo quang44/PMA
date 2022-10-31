@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-body align-content-center">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Nhãn hiệu')}} :</label>
+                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Hãng sản xuất')}} :</label>
                         <div class="col-sm-9">
                             <span>{{$warranty_card->brand->name}}</span>
                         </div>
@@ -53,7 +53,7 @@
                                 <span class="text-danger">@if($warranty_card->active_time>0)
                                         {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                     @else
-                                        {{ trans('Not activated') }}
+                                        {{ translate('Chưa kích hoạt') }}
                                     @endif
                                 </span>
                         </div>
@@ -61,15 +61,22 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="package_id">{{translate('Trạng thái')}} :</label>
                         <div class="col-sm-9">
-                                <span>
-                                    @if($warranty_card->status==0)
-                                       đang chờ xử lý
+
+                            @if($warranty_card->status==0)
+                                <span class="badge badge-inline badge-secondary">
+                                    {{\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_NEW]}}
+                                        </span>
                                     @elseif($warranty_card->status==1)
-                                     đã được duyệt
-                                    @else
-                                        đã hủy  / lý do :  {{$warranty_card->reason}}
-                                    @endif
-                                </span>
+                                <span class="badge badge-inline badge-success">
+                                        {{\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_SUCCESS]}}
+    </span>
+                            @else
+                                <span class="badge badge-inline badge-danger">
+                                        {{\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_CANCEL]}}
+                                        / lý do :  {{$warranty_card->reason}}
+                                             </span>
+                            @endif
+
 
                         </div>
                     </div>
@@ -78,21 +85,21 @@
                     <div class="form-group mb-3 row">
                         <label for="name" class=" col-sm-3">{{translate(' Ảnh ')}} :</label>
                         @foreach($warranty_card->uploads as $upload)
-                                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <img class="image" style="width:100px; height: 100px;object-fit: contain"
-                                         src="{{ get_image_asset($upload->id,$upload->object_id) }}" alt="">
-                                </a>
+                            <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <img class="image" style="width:100px; height: 100px;object-fit: contain"
+                                     src="{{ get_image_asset($upload->id,$upload->object_id) }}" alt="">
+                            </a>
 
-                    @endforeach
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3 col-from-label" for="package_id">{{translate('Ghi chú khách hàng')}}
-                        :</label>
-                    <div class="col-sm-9">
-                        <span>{{$warranty_card->note}}</span>
+                        @endforeach
                     </div>
-                </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="package_id">{{translate('Ghi chú khách hàng')}}
+                            :</label>
+                        <div class="col-sm-9">
+                            <span>{{$warranty_card->note}}</span>
+                        </div>
+                    </div>
 
                     @if($warranty_card->status==0 )
                         <a href="javascript:void(0)"
@@ -108,17 +115,17 @@
                             <i class="las la-user-alt-slash"></i>
                         </a>
                     @endif
-            </div>
+                </div>
 
+            </div>
         </div>
-    </div>
     </div>
 
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-                    <img id="image" style="width: 100%; height: 100% ;object-fit: contain" src="" alt="">
-            </div>
+            <img id="image" style="width: 100%; height: 100% ;object-fit: contain" src="" alt="">
+        </div>
     </div>
 
     <div class="modal fade" id="confirm-update-bank">
@@ -167,23 +174,25 @@
 
 <!-- CSS only -->
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"></script>
 
-    <script >
-        $('.image').on('click',function () {
-            let img=$(this).attr('src');
-            $('#image').attr('src',img)
+    <script>
+        $('.image').on('click', function () {
+            let img = $(this).attr('src');
+            $('#image').attr('src', img)
         })
 
-        function confirm_ban(url,status) {
+        function confirm_ban(url, status) {
             $('#confirm-ban').modal('show', {backdrop: 'static'});
-            document.getElementById('confirmation').setAttribute('action', url+'?status='+status);
+            document.getElementById('confirmation').setAttribute('action', url + '?status=' + status);
         }
 
 
-        function updateCard(url,status) {
+        function updateCard(url, status) {
             $('#confirm-update-bank').modal('show', {backdrop: 'static'});
-            document.getElementById('updateCard').setAttribute('href', url+'?status='+status);
+            document.getElementById('updateCard').setAttribute('href', url + '?status=' + status);
         }
 
     </script>

@@ -56,9 +56,9 @@
                                 <td>{{$payment_guarantee->email}}</td>
                                 <td><a href="{{ route('customers.index', ['referred_by' => $payment_guarantee->user_id])}}">{{$payment_guarantee->phone}}</a></td>
                                 <td class="text-center">
-                                    @if($payment_guarantee->status ==\App\Utility\WarrantyBillUtility::STATUS_NEW)
+                                    @if($payment_guarantee->status ==\App\Utility\WarrantyCardUtility::STATUS_NEW)
                                         <span class="badge badge-inline badge-warning ">  {{$status[$payment_guarantee->status]}}</span>
-                                    @elseif($payment_guarantee->status ==\App\Utility\WarrantyBillUtility::STATUS_SUCCESS)
+                                    @elseif($payment_guarantee->status ==\App\Utility\WarrantyCardUtility::STATUS_SUCCESS)
                                         <span class="badge badge-inline badge-success">  {{$status[$payment_guarantee->status]}}</span>
                                     @else
                                         <span class="badge badge-inline badge-danger">  {{$status[$payment_guarantee->status]}}</span>
@@ -68,7 +68,7 @@
                                     <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{route('warranty_bill.show',$payment_guarantee->id)}}" title="View">
                                         <i class="las la-eye"></i>
                                     </a>
-                                  @if($payment_guarantee->status==\App\Utility\WarrantyBillUtility::STATUS_NEW)
+                                  @if($payment_guarantee->status==\App\Utility\WarrantyCardUtility::STATUS_NEW)
                                         <button type="button" class="btn btn-soft-info btn-icon btn-circle btn-sm " onclick="confirmUpdate(`{{ $payment_guarantee->id }}`)" title="{{ translate('Update payment bill') }}">
                                             <i class="las la-money-bill"></i>
                                         </button>

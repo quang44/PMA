@@ -10,7 +10,7 @@ class WalletCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data' => $this->collection->map(function($data,$request) {
+            'data' => $this->collection->map(function($data) {
                 return [
                     'amount' => available_balances($data->user_id)  ,
 //                    'payment_method' => ucwords(str_replace('_', ' ', $data->payment_method)),

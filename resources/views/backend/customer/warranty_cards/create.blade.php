@@ -53,7 +53,7 @@
                                     <option value="">chọn hãng sản xuất....</option>
 
                                     @foreach($brands as $brand)
-                                        @if($brand->status==1)
+                                        @if($brand->status==0)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                         @endif
                                     @endforeach

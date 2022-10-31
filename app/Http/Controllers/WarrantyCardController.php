@@ -69,6 +69,7 @@ class WarrantyCardController extends Controller
             ]);
 
             flash(translate('Thẻ đã được kích hoạt thành công'))->success();
+            update_customer_package($wallet->user_id);
         } else {
             $WarrantyCard->status = 2;
             $content="Yêu cầu bảo hành thiết bị ".$WarrantyCard->brand->name." của bạn đã đã bị hủy .Liện hệ với BQT để biết thêm chi tiết";
@@ -97,14 +98,15 @@ class WarrantyCardController extends Controller
     }
 
     function  store(WarrantyCardRequest $request ){
+
         $Warranty= new WarrantyCard;
         $Warranty->user_name = $request->user_name;
         $Warranty->address = $request->address;
         $Warranty->seri = $request->seri;
         $Warranty->brand_id = $request->brand_id;
-//        $Warranty->qr_code_image = $request->qr_code_image;
-//        $Warranty->seri_image = $request->seri_image;
+
         $Warranty->save();
+
         uploadMultipleImage($request->image,$Warranty->id,$path='uploads/warranty');
 
         flash(translate('Card has been add new successfully'))->success();
@@ -118,26 +120,26 @@ class WarrantyCardController extends Controller
     }
 
 
-    function  edit($id){
-        $brands=Brand::select('id','name','status')->get();
-        $Warranty=WarrantyCard::findOrFail(decrypt($id));
-        return view('backend.customer.warranty_cards.edit',compact('Warranty','brands'));
-    }
+//    function  edit($id){
+//        $brands=Brand::select('id','name','status')->get();
+//        $Warranty=WarrantyCard::findOrFail(decrypt($id));
+//        return view('backend.customer.warranty_cards.edit',compact('Warranty','brands'));
+//    }
 
-
-    function  update(WarrantyCardRequest $request, $id){
-        $Warranty=WarrantyCard::findOrFail(decrypt($id));
-        $Warranty->user_name = $request->user_name;
-        $Warranty->address = $request->address;
-        $Warranty->brand_id = $request->brand_id;
-        $Warranty->qr_code_image = $request->qr_code_image;
-        $Warranty->seri_image = $request->seri_image;
-        $Warranty->seri = $request->seri;
-        $Warranty->save();
-
-        flash(translate('Card has been deleted successfully'))->success();
-        return back();
-    }
+//
+//    function  update(WarrantyCardRequest $request, $id){
+//        $Warranty=WarrantyCard::findOrFail(decrypt($id));
+//        $Warranty->user_name = $request->user_name;
+//        $Warranty->address = $request->address;
+//        $Warranty->brand_id = $request->brand_id;
+//        $Warranty->qr_code_image = $request->qr_code_image;
+//        $Warranty->seri_image = $request->seri_image;
+//        $Warranty->seri = $request->seri;
+//        $Warranty->save();
+//
+//        flash(translate('Card has been deleted successfully'))->success();
+//        return back();
+//    }
 
 
 
@@ -145,13 +147,16 @@ class WarrantyCardController extends Controller
     {
         $WarrantyCard = WarrantyCard::findOrFail(decrypt($id));
 
+
+
         $uploads=Upload::where('object_id',$WarrantyCard->id)->get();
-        foreach ($uploads as $upload){
+        foreach ($uploads as $key=>$upload){
             if (file_exists(base_path('public/').$upload->file_name)) {
                 unlink(base_path('public/') . $upload->file_name);
             }
             $upload->delete();
         }
+
         $WarrantyCard->delete();
         flash(translate('Card has been deleted successfully'))->success();
         return back();

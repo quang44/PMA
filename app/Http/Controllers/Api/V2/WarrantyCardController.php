@@ -48,7 +48,7 @@ class WarrantyCardController extends Controller
         $warrantyCard->address=$request->address;
         $warrantyCard->seri=$request->seri;
         $warrantyCard->brand_id=$request->brand;
-        $warrantyCard->active_time=date('Y-m-d H:i:s');
+        $warrantyCard->active_time=null;
 
         $warrantyCard->save();
         $id=$warrantyCard->id;

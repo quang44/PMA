@@ -33,23 +33,23 @@
                     <a class="dropdown-item" href="#" onclick="bulk_delete()">{{translate('Delete selection')}}</a>
                 </div>
             </div>-->
-            <div class="col-md-2">
-                <div class="form-group mb-0">
-                    <select name="referred_by" id="referred_by" class="form-control">
-                        <option value="">KOL giới thiệu</option>
-                        @foreach($kols as $key => $value)
-                            <option value="{{ $key }}" @if(request('referred_by') == $key) selected @endif>{{ $value }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+{{--            <div class="col-md-2">--}}
+{{--                <div class="form-group mb-0">--}}
+{{--                    <select name="referred_by" id="referred_by" class="form-control">--}}
+{{--                        <option value="">KOL giới thiệu</option>--}}
+{{--                        @foreach($kols as $key => $value)--}}
+{{--                            <option value="{{ $key }}" @if(request('referred_by') == $key) selected @endif>{{ $value }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <div class="col-md-2">
                 <div class="form-group mb-0">
                     <select name="banned" id="banned" class="form-control">
                         <option value="-1">Trạng thái tài khoản</option>
-                        <option value="2" @if(request('banned', -1) == 2) selected @endif>Khóa</option>
-                        <option value="1" @if(request('banned', -1) == 1) selected @endif>Đang hoạt động</option>
-                        <option value="0" @if(request('banned', -1) == 0) selected @endif>Chưa kích hoạt</option>
+                        <option value="1" @if(request('banned', -1) == 1) selected @endif>Khóa</option>
+                        <option value="0" @if(request('banned', -1) == 0) selected @endif>Đang hoạt động</option>
+{{--                        <option value="0" @if(request('banned', -1) == 0) selected @endif>Chưa kích hoạt</option>--}}
                     </select>
                 </div>
             </div>
@@ -97,16 +97,16 @@
                                                     </div>
                                                 </th>-->
                         <th>{{translate('Tên người dùng')}}</th>
-                        <th data-breakpoints="lg">{{translate('Email')}}</th>
+{{--                        <th data-breakpoints="lg">{{translate('Email')}}</th>--}}
                         <th data-breakpoints="lg">{{translate('Số điện thoại')}}</th>
                         <th data-breakpoints="lg">{{translate('Tài khoản ngân hàng')}}</th>
 {{--                        <th data-breakpoints="lg">{{translate('Tài khoản best')}}</th>--}}
                         <th data-breakpoints="lg">{{translate('Trạng thái')}}</th>
-                        <th data-breakpoints="lg">{{translate('Kol giới thiệu')}}</th>
+{{--                        <th data-breakpoints="lg">{{translate('Kol giới thiệu')}}</th>--}}
                         <th data-breakpoints="lg">{{translate('Thuộc nhóm')}}</th>
                         <th data-breakpoints="lg">{{translate('Ngày tạo')}}</th>
                         <th data-breakpoints="lg">{{translate('Ngày cập nhật')}}</th>
-                        <th data-breakpoints="lg">{{translate('Người cập nhật')}}</th>
+{{--                        <th data-breakpoints="lg">{{translate('Người cập nhật')}}</th>--}}
                         <th class="text-right">{{translate('Tùy chọn')}}</th>
                     </tr>
                     </thead>
@@ -124,9 +124,10 @@
                                         </div>
                                     </div>
                                 </td>-->
-                                <td>@if($user->banned == 1) <i class="fa fa-ban text-danger" aria-hidden="true"></i> @endif {{$user->name}}</td>
-                                <td>{{$user->email}}</td>
-                                <td><a href="{{ route('order_delivery.index', ['phone' => $user->phone]) }}">{{$user->phone}}</a></td>
+                                <td><a title="lịch sử thanh toán" href="{{route('customers.historyPayment',encrypt($user->id))}}">{{$user->name}}</a> </td>
+{{--                                <td>{{$user->email}}</td>--}}
+                                <td>{{$user->phone}}</td>
+{{--                                <a href="{{ route('order_delivery.index', ['phone' => $user->phone]) }}"></a>--}}
                                 <td>
                                     @if($user->customer_bank)
                                         <span @if($user->bank_updated == 2) style="color: green" @endif>
@@ -158,15 +159,14 @@
 {{--                                    @endif--}}
 {{--                                </td>--}}
                                 <td>
-                                    @if($user->banned == 2)
+                                    @if($user->banned == 1)
                                         <span class="badge badge-inline badge-danger">{{ trans('Khóa') }}</span>
-                                    @elseif($user->banned==0)
-                                            <span class="badge badge-inline badge-warning">{{ trans('Chưa kích hoạt') }}</span>
+
                                         @else
                                             <span class="badge badge-inline badge-success">{{ trans('Hoạt động') }}</span>
                                     @endif
                                 </td>
-                                <td>{{$kols[$user->referred_by] ?? ''}}</td>
+{{--                                <td>{{$kols[$user->referred_by] ?? ''}}</td>--}}
                                 <td>
                                     @if ($user->customer_package != null)
                                         {{$user->customer_package->getTranslation('name')}}
@@ -174,7 +174,7 @@
                                 </td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>{{ $user->updated_at }}</td>
-                                <td>{{ $user->user_updated->name ?? ''}}</td>
+{{--                                <td>{{ $user->user_updated->name ?? ''}}</td>--}}
                                 <td class="text-right">
 {{--                                    @if($user->bank_updated == 1)--}}
 {{--                                        <a href="javascript:void(0)" class="btn btn-soft-info btn-icon btn-circle btn-sm" onclick="updateBank('{{route('customers.bank', encrypt($user->id))}}');" title="{{ translate('Xác nhận cập nhật tài khoản ngân hàng bên Best') }}">--}}
@@ -185,7 +185,7 @@
                                     <a href="{{ route('customers.edit', [encrypt($user->id)]) }}" class="btn btn-soft-primary btn-icon btn-circle btn-sm" title="{{ translate('Cập nhật thông tin khách hàng') }}" >
                                         <i class="las la-edit"></i>
                                     </a>
-                                    @if($user->banned == 1)
+                                    @if($user->banned == 0)
                                         <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_ban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Khóa tài khoản') }}">
                                             <i class="las la-user-slash"></i>
                                         </a>

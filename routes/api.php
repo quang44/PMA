@@ -9,7 +9,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('password/forget_request', 'App\Http\Controllers\Api\V2\PasswordResetController@forgetRequest');
     Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
     Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');
-    Route::get('balances', 'App\Http\Controllers\Api\V2\AuthController@balances');
+
 
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -20,6 +20,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::post('user/update', 'App\Http\Controllers\Api\V2\AuthController@update');
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
+        Route::get('balances', 'App\Http\Controllers\Api\V2\AuthController@balances');
     });
     Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
     Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
