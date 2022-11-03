@@ -49,7 +49,7 @@
 <!--                        <th>{{ translate('#') }}</th>-->
                         <th>#</th>
                         <th data-breakpoints="md">Người y/cầu</th>
-                        <th data-breakpoints="md">Vai trò</th>
+{{--                        <th data-breakpoints="md">Vai trò</th>--}}
                         <th data-breakpoints="md">{{ translate('Thông tin CK') }}</th>
                         <th data-breakpoints="md">Ngày y/cầu</th>
                         <th data-breakpoints="md" class="text-center">Số tiền Y/C</th>
@@ -65,23 +65,21 @@
                             {{ $payment->id }}
                         </td>
                         <td>
-                            <a href="{{ route('order_delivery.index', [$payment->user->user_type == 'kol' ? 'kol_id' : 'employee_id' => $payment->user->id, 'status_delivery' => [7,8]]) }}">
                                 ID : {{ $payment->user->id }}
                                 <br>
                                 Name : {{ $payment->user->name }}
                                 <br>
                                 Phone : {{ $payment->user->phone }}
-                            </a>
 
                         </td>
-                        <td>
-                            @if($payment->user->user_type == 'employee')
-                                <span class="badge badge-inline badge-success">Nhân viên</span>
-                            @endif
-                            @if($payment->user->user_type == 'kol')
-                                <span class="badge badge-inline badge-info">CTV</span>
-                            @endif
-                        </td>
+{{--                        <td>--}}
+{{--                            @if($payment->user->user_type == 'employee')--}}
+{{--                                <span class="badge badge-inline badge-success">Nhân viên</span>--}}
+{{--                            @endif--}}
+{{--                            @if($payment->user->user_type == 'kol')--}}
+{{--                                <span class="badge badge-inline badge-info">CTV</span>--}}
+{{--                            @endif--}}
+{{--                        </td>--}}
                         <td>
                             STK : {{ $payment->user->customer_bank->number ?? '' }}
                             <br>

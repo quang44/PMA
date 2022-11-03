@@ -49,7 +49,7 @@
 <!--                        <th>{{ translate('#') }}</th>-->
                         <th>#</th>
                         <th data-breakpoints="md">Người y/cầu</th>
-                        <th data-breakpoints="md">Vai trò</th>
+{{--                        <th data-breakpoints="md">Vai trò</th>--}}
                         <th data-breakpoints="md">Ngày y/cầu</th>
                         <th data-breakpoints="md">Ngày thanh toán</th>
                         <th data-breakpoints="md">Trạng thái</th>
@@ -72,14 +72,14 @@
                             <br>
                             Phone : {{ $payment->user->phone }}
                         </td>
-                        <td>
-                            @if($payment->user->user_type == 'employee')
-                                <span class="badge badge-inline badge-success">Nhân viên</span>
-                            @endif
-                            @if($payment->user->user_type == 'kol')
-                                <span class="badge badge-inline badge-info">CTV</span>
-                            @endif
-                        </td>
+{{--                        <td>--}}
+{{--                            @if($payment->user->user_type == 'employee')--}}
+{{--                                <span class="badge badge-inline badge-success">Nhân viên</span>--}}
+{{--                            @endif--}}
+{{--                            @if($payment->user->user_type == 'kol')--}}
+{{--                                <span class="badge badge-inline badge-info">CTV</span>--}}
+{{--                            @endif--}}
+{{--                        </td>--}}
 
                         <td>
                             {{ $payment->created_time ? date('d-m-Y H:i:s', $payment->created_time) : '--' }}
@@ -91,7 +91,8 @@
                             @if($payment->status == 2)
                                 <span class="badge badge-inline badge-success">Đã thanh toán</span>
                             @else
-                                <span class="badge badge-inline badge-danger">Đã hủy</span>
+                                <span class="badge badge-inline badge-danger">Đã hủy</span> /
+                                <span>{{$payment->reason}}</span>
                             @endif
                         </td>
                         <td class="text-right">

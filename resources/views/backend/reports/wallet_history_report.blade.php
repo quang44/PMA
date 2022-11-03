@@ -14,7 +14,7 @@
             <form action="{{ route('wallet-history.index') }}" method="GET">
                 <div class="card-header row gutters-5">
                     <div class="col text-center text-md-left">
-                        <h5 class="mb-md-0 h6">{{ translate('Wallet Transaction') }}</h5>
+                        <h5 class="mb-md-0 h6">Ví người dùng</h5>
                     </div>
                     @if(Auth::user()->user_type != 'seller')
                     <div class="col-md-3 ml-auto">
@@ -46,10 +46,11 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>{{ translate('Customer')}}</th>
+                            <th>{{ translate('Thợ')}}</th>
 {{--                            <th data-breakpoints="lg">Vai trò</th>--}}
                             <th>Số dư hiện tại </th>
                             <th>Cập nhật gần nhất </th>
+                            <th> Nhóm </th>
                             <th data-breakpoints="lg" class="text-right">{{ translate('action')}}</th>
                         </tr>
                     </thead>
@@ -72,8 +73,9 @@
 {{--                                    @endif--}}
 {{--                                        @endif--}}
 {{--                                </td>--}}
-                                <td>{{ (int)config_base64_decode($wallet->amount) }} points</td>
-                                <td>{{date('d/m/Y H:i',strtotime($wallet->created_at)) }}</td>
+                                <td>{{ (int)config_base64_decode($wallet->amount) }} điểm</td>
+                                <td>{{date('d-m-Y H:i',strtotime($wallet->updated_at)) }}</td>
+                                <td> {{$wallet->user->customer_package->name}} </td>
 
                                 {{--                                <td>{{ ucfirst(str_replace('_', ' ', $wallet ->payment_method)) }}</td>--}}
                                 <td class="text-right">

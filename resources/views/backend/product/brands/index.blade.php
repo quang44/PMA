@@ -42,7 +42,7 @@
 		                        <td>{{ $brand->getTranslation('name') }}</td>
                                 <td>{{ $brand->code }}</td>
 								<td>
-		                            <img src="{{ uploaded_asset($brand->logo) }}" alt="{{translate('Brand')}}" class="h-50px">
+		                            <img src="{{ uploaded_asset($brand->logo) }}" alt="Hãng sản xuất" class="h-50px">
 		                        </td>
                                 <td>
                                     <label class="aiz-switch aiz-switch-success mb-0">

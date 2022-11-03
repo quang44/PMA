@@ -21,7 +21,7 @@ class WarrantyCard extends ResourceCollection
                 return
                     [
                         'id' => $data->id,
-                        'brand' => $data->brand->name,
+                        'brand' =>$data->brand!=null?$data->brand->name:'Hãng sản xuất không tồn tại',
                         'user_name' => $data->user_name,
                         'address' => $data->address,
                         'point' =>$data->point,

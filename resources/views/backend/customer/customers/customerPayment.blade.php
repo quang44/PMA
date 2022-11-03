@@ -62,7 +62,8 @@
                                 @if($payment->status == 2)
                                     <span class="badge badge-inline badge-success">Đã thanh toán</span>
                                 @else
-                                    <span class="badge badge-inline badge-danger">Đã hủy</span>
+                                    <span class="badge badge-inline badge-danger">Đã hủy</span> /
+                                    <span>{{$payment->reason}}</span>
                                 @endif
                             </td>
                             <td class="text-right">

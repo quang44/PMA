@@ -390,6 +390,7 @@
                         <a href="{{ route('warranty_card.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['warranty_card.index', 'warranty_card.show'])}}">
                             <i class="las la-money-bill aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">Thẻ Bảo Hành</span>
+                            <span class="badge badge-info" style="margin-right: 3px">{{ \App\Models\WarrantyCard::count() }}</span>
                         </a>
 {{--                        <ul class="aiz-side-nav-list level-2">--}}
 {{--                            <li class="aiz-side-nav-item">--}}
@@ -571,7 +572,7 @@
 {{--                            </li>--}}
                             <li class="aiz-side-nav-item">
                                 <a href="{{ route('wallet-history.index') }}" class="aiz-side-nav-link">
-                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử biến động ví') }}</span>
+                                    <span class="aiz-side-nav-text">{{ translate('Lịch sử thay đổi ví ') }}</span>
                                 </a>
                             </li>
                         </ul>
@@ -679,7 +680,7 @@
 {{--                    </li>--}}
 {{--                @endif--}}
 
-                @if(Auth::user()->user_type == 'admin' || in_array('15', json_decode(Auth::user()->staff->role->permissions)))
+                @if(Auth::user()->user_type == 'admin' || in_array('26', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-link aiz-side-nav-icon"></i>
@@ -705,6 +706,8 @@
                             <li class="aiz-side-nav-item">
                                 <a href="{{route('affiliate.request_payment')}}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">Yêu Cầu Rút Tiền</span>
+                                    <span class="badge badge-info" style="margin-right: 3px">{{ \App\Models\AffiliatePayment::where('status',1)->count() }}</span>
+
                                 </a>
                             </li>
                             <li class="aiz-side-nav-item">

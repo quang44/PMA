@@ -85,11 +85,12 @@ class CustomerController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users|email',
+//            'email' => 'required|unique:users|email',
             'phone' => 'required|unique:users',
         ]);
 
@@ -122,21 +123,18 @@ class CustomerController extends Controller
         echo json_encode($response);
     }
 
-//    public function addNewCustomer(CustomerRequest $request)
-//    {
-//
-//        $user = new User;
-//        $user->name = $request->name;
-//        $user->email = $request->email;
-//        $user->phone = $request->phone;
-//        $user->password = bcrypt($request->password);
-//        $user->referral_code = $request->phone;
-//        $user->customer_package_id = $request->customer_package_id;
-//        $user->customer_group_id = $request->customer_group_id;
-//        $user->device_token =$request->device_token;
-//           $user->email_verified_at = date('Y-m-d H:i:s');
-//       $user->save();
-//
+    public function addNewCustomer(CustomerRequest $request)
+    {
+$package=CustomerPackage::where('default',1)->first();
+        $user = new User;
+        $user->fill($request->all());
+        $user->customer_package_id=$package->id;
+        $user->password = bcrypt($request->password);
+        $user->referral_code = $request->phone;
+        $user->device_token =$request->device_token;
+         $user->email_verified_at = date('Y-m-d H:i:s');
+        $user->save();
+
 //           if (!empty($user->device_token)) {
 //               $req = new \stdClass();
 //               $req->device_token = $user->device_token;
@@ -146,9 +144,9 @@ class CustomerController extends Controller
 //               $req->id = $user->id;
 //               NotificationUtility::sendFirebaseNotification($req);
 //           }
-//       flash(translate('Tạo mới tài khoản thành công'))->success();
-//       return redirect()->route('customers.index');
-//    }
+       flash(translate('Tạo mới tài khoản thành công'))->success();
+       return redirect()->route('customers.index');
+    }
 
 
     /**
@@ -170,6 +168,7 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
+
         $user = User::findOrFail(decrypt($id));
         $packages = CustomerPackage::all();
 
@@ -186,26 +185,24 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $package=CustomerPackage::where('default',1)->first();
+
         $request->validate([
-            'email' => 'nullable|string|email',
             'name' => 'required|string',
             'phone' => 'required|string|unique:users,phone,' . $id,
-            'customer_package_id' => 'required',
-            'password' => 'nullable|string|min:6|confirmed',
         ], [
-            'email.email' => 'Email không đúng định dạng',
             'name.required' => 'Vui lòng nhập tên shop',
             'phone.required' => 'Vui lòng nhập số điện thoại',
             'phone.unique' => 'Số điện thoại đã tồn tại',
-            'customer_package_id.required' => 'Vui lòng chọn gói',
-            'password.min' => 'Mật khẩu tối thiểu 6 ký tự',
-            'password.confirmed' => 'Vui lòng xác nhận mật khẩu',
         ]);
+
         $user = User::findOrFail($id);
+        $balances= available_balances($user->id);
+        $customerPackage=CustomerPackage::whereBetween('point',[0,$balances])->first();
+        $user->customer_package_id=$customerPackage->id;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->customer_package_id = $request->customer_package_id;
         //$user->referred_by = $request->referred_by;
 //        $con1 = $con2 = 0;
 //        if (empty($user->best_api_user)) {

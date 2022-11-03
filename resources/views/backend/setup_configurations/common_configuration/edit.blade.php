@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point cho người giới thiệu')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Điểm cho người giới thiệu')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('for_referrer') ? old('for_referrer') : $common_config->for_referrer }}"  name="for_referrer">
                                 @error('for_referrer')
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Point cho người kích hoạt thẻ')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Điểm cho người kích hoạt bảo hành')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('for_activator') ? old('for_activator') : $common_config->for_activator }}"  name="for_activator">
                                 @error('for_activator')
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-from-label" for="name">{{translate('Chuyển đổi point (ex:1point = 1000 vnđ)')}} <span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-from-label" for="name">{{translate('Chuyển đổi (1 điểm = 1000 vnđ)')}} <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" value="{{old('exchange') ? old('exchange') : $common_config->exchange}}" name="exchange" >
                                 @error('exchange')

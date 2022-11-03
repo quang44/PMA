@@ -30,9 +30,9 @@
                     <th data-breakpoints="lg" width="10%">#</th>
                     <th data-breakpoints="lg">{{translate('Logo')}}</th>
                     <th data-breakpoints="lg">{{translate('Đơn vị tiền')}}</th>
-                    <th data-breakpoints="lg">{{translate('Point cho người giới thiệu')}}</th>
-                    <th data-breakpoints="lg">{{translate('Point cho người kích hoạt bảo hiểm')}}</th>
-                    <th data-breakpoints="lg">{{translate('Chuyển point (ex:1point = 1000 vnđ)')}}</th>
+                    <th data-breakpoints="lg">{{translate('Điểm cho người giới thiệu')}}</th>
+                    <th data-breakpoints="lg">{{translate('Điểm cho người kích hoạt bảo hành')}}</th>
+                    <th data-breakpoints="lg">{{translate('Chuyển đổi (1 điểm = 1000 vnđ)')}}</th>
                     <th data-breakpoints="lg">{{translate('Thông tin liên hệ')}}</th>
                     <th width="10%">{{translate('Tùy chọn')}}</th>
                 </tr>

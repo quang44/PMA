@@ -16,30 +16,30 @@ class PasswordResetController extends Controller
 {
     public function forgetRequest(Request $request)
     {
-        if ($request->send_code_by == 'email') {
-            $user = User::where('email', $request->email_or_phone)->first();
-        } else {
-            $user = User::where('phone', $request->email_or_phone)->first();
-        }
+//        if ($request->send_by == 'email') {
+//            $user = User::where('email', $request->email_or_phone)->first();
+//        } else {
+            $user = User::where('phone', $request->phone)->first();
+//        }
 
 
         if (!$user) {
             return response()->json([
                 'result' => false,
-                'message' => translate('User is not found')], 404);
+                'message' => translate('Tài khoản không tồn tại')], 404);
         }
 
-        if ($user) {
-            $user->verification_code = rand(100000, 999999);
-            $user->save();
-            if ($request->send_code_by == 'phone') {
-
-                $otpController = new OTPVerificationController();
-                $otpController->send_code($user);
-            } else {
-                $user->notify(new AppEmailVerificationNotification());
-            }
-        }
+//        if ($user) {
+//            $user->verification_code = rand(100000, 999999);
+//            $user->save();
+//            if ($request->send_by == 'phone') {
+//
+//                $otpController = new OTPVerificationController();
+//                $otpController->send_code($user);
+//            } else {
+//                $user->notify(new AppEmailVerificationNotification());
+//            }
+//        }
 
         return response()->json([
             'result' => true,
@@ -47,17 +47,23 @@ class PasswordResetController extends Controller
         ], 200);
     }
 
+    public function get_OTP_code( Request $request){
+        User::where('phone', $request->phone)->update([
+         'verification_code',$request->verification_code
+        ]);
+    }
+
     public function confirmReset(Request $request)
     {
         $user = User::where('verification_code', $request->verification_code)->first();
 
-        if ($user != null) {
+        if ($request->result != false) {
             $user->verification_code = null;
             $user->password = Hash::make($request->password);
             $user->save();
             return response()->json([
                 'result' => true,
-                'message' => translate('Your password is reset.Please login'),
+                'message' => translate('Mật khẩu  của bạn đã được thay đổi thành công'),
             ], 200);
         } else {
             return response()->json([
@@ -70,28 +76,28 @@ class PasswordResetController extends Controller
     public function resendCode(Request $request)
     {
 
-        if ($request->verify_by == 'email') {
-            $user = User::where('email', $request->email_or_phone)->first();
-        } else {
-            $user = User::where('phone', $request->email_or_phone)->first();
-        }
+//        if ($request->verify_by == 'email') {
+//            $user = User::where('email', $request->email_or_phone)->first();
+//        } else {
+            $user = User::where('phone', $request->phone)->first();
+//        }
 
 
         if (!$user) {
             return response()->json([
                 'result' => false,
-                'message' => translate('User is not found')], 404);
+                'message' => translate('Tài khoản không tồn tại')], 404);
         }
 
-        $user->verification_code = rand(100000, 999999);
-        $user->save();
+//        $user->verification_code = rand(100000, 999999);
+//        $user->save();
 
-        if ($request->verify_by == 'email') {
-            $user->notify(new AppEmailVerificationNotification());
-        } else {
-            $otpController = new OTPVerificationController();
-            $otpController->send_code($user);
-        }
+//        if ($request->verify_by == 'email') {
+//            $user->notify(new AppEmailVerificationNotification());
+//        } else {
+//            $otpController = new OTPVerificationController();
+//            $otpController->send_code($user);
+//        }
 
 
 

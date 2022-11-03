@@ -8,11 +8,11 @@
           <h1 class="h3">{{translate('Tất cả tài khoản')}}</h1>
       </div>
 
-{{--      <div class="col-md-6 text-md-right">--}}
-{{--          <a href="{{ route('customers.create') }}" class="btn btn-circle btn-info">--}}
-{{--              <span>{{translate('Thêm người dùng')}}</span>--}}
-{{--          </a>--}}
-{{--      </div>--}}
+      <div class="col-md-6 text-md-right">
+          <a href="{{ route('customers.create') }}" class="btn btn-circle btn-info">
+              <span>{{translate('Thêm người dùng')}}</span>
+          </a>
+      </div>
 
   </div>
 </div>

@@ -188,20 +188,27 @@ class SendSMSUtility
             return $response;
         }
 //        elseif (OtpConfiguration::where('type', 'firebase')->first()->value == 1) {
+//
+//            $SERVER_API_KEY="";
 //            $data = [
-//                "apiKey" => "AIzaSyBPolbBt0hf1b20p8qZkfsrMv1zaT-wn6k",
-//                "authDomain" => "appbandonghanh.firebaseapp.com",
-//                "projectId" => "appbandonghanh",
-//                "storageBucket" => "appbandonghanh.appspot.com",
-//                "messagingSenderId" => "99831074492",
-//                "appId" => "1:99831074492:web:44217467bcde475b3f4ab9",
-//                "measurementId" => "G-52R7Z8REE8"
+//                "registration_ids" => '$firebaseToken',
+//                "notification" => [
+//                    "title" => '$request->title',
+//                    "body" => '$request->body',
+//                ]
 //            ];
-//            $url = "https://www.msegat.com/gw/sendsms.php";
-//            $ch = curl_init($url);
+//
+//            $url = "https://fcm.googleapis.com/fcm/send";
+//            $headers = [
+//                'Authorization: key=' . $SERVER_API_KEY,
+//                'Content-Type: application/json',
+//
+//            ];
+//            $ch = curl_init();
 //
 //            curl_setopt($ch, CURLOPT_URL, $url);
 //            curl_setopt($ch, CURLOPT_POST, 1);
+//            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 //            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 //            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

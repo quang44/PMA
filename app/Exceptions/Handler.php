@@ -64,6 +64,8 @@ class Handler extends ExceptionHandler
                     'result' => false
                 ], 401);
             }
+               TelegramService::sendMessage('Có lỗi hệ thống. Message: ' . $e->getMessage() . '. File: ' . $e->getFile() . '. Line: ' . $e->getLine() . url()->full());
+
             return response()->json([
                 'message' => 'Có lỗi hệ thống. Message: ' . $e->getMessage() . '. File: ' . $e->getFile() . '. Line: ' . $e->getLine(),
                 'result' => false

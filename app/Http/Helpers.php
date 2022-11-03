@@ -1265,8 +1265,8 @@
         if ($wallet_user != null && config_base64_decode($wallet_user->amount) != null) {
             $wallet_point = config_base64_decode($wallet_user->amount);
         }
-
-        return $wallet_point - $waiting_point;
+      $result= $wallet_point - $waiting_point;
+        return $result;
     }
 
 
@@ -1276,8 +1276,8 @@
        function update_customer_package($user_id){
            $balance=available_balances($user_id);
            $customerPackage=CustomerPackage::whereBetween('point',[0,$balance])->first();
-           $checkCustomer=User::where('customer_package_id',$customerPackage->id)->first();
-           if(!$checkCustomer){
+           $checkCustomer=User::where('id',$user_id)->where('customer_package_id',$customerPackage->id)->first();
+           if($checkCustomer==null){
                User::findOrFail($user_id)->update([
                    'customer_package_id'=>$customerPackage->id
                ]);

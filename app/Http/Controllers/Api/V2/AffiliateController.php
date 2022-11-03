@@ -243,7 +243,7 @@ class AffiliateController extends Controller
         if (!is_int($point)) {
             return response([
                 'result' => false,
-                'message' => 'Số tiền không hợp lệ vui lòng nhập lại, vd:100.000,150.000,200.000 ....'
+                'message' => 'Số tiền không hợp lệ ,số tiền phải là bội của 10'
             ]);
         }
 
@@ -265,7 +265,7 @@ class AffiliateController extends Controller
         }
 
         DB::transaction(function () use ($user, $value,$point, $customer_bank) {
-            $user->balance = $user->balance - $point;
+//            $user->balance = $user->balance - $point;
             $user->save();
             $request = new AffiliatePayment();
             $request->user_id = $user->id;
@@ -279,6 +279,22 @@ class AffiliateController extends Controller
             $request->created_time = time();
             $request->save();
         });
+// log history
+        $config = CommonConfig::first();
+        $wallet=  Wallet::where('user_id',$user->id)->first();
+        $vat=($point*10/100);
+        $point=$point-$vat;
+        log_history(['type' => CustomerBillUtility::TYPE_LOG_WITHDRAW,
+            'point' => -$point,
+            'amount' => -(int)$point * $config->exchange,
+            'object' => 0,
+            'amount_first' => (int)config_base64_decode($wallet->amount),
+            'amount_later' => (int)available_balances($wallet->user_id),
+            'user_id' => $wallet->user_id,
+            'accept_by' => null,
+            'content' => "Yêu cầu rút tiền  ,Chưa thanh toán"
+        ]);
+
         return response([
             'result' => true,
             'message' => 'Yêu cầu rút tiền của bạn đã được gửi thành công ',
@@ -309,8 +325,8 @@ class AffiliateController extends Controller
             $user->balance = $user->balance + $point;
             $user->save();
             $payment->status = -1; // huy tt
-            if ($user->user_type == 'employee') {
-                $payment->reason = 'Nhân viên tự hủy yêu cầu thanh toán';
+            if ($user->user_type == 'customer') {
+                $payment->reason = 'Khách hàng tự hủy yêu cầu thanh toán';
             }
             if ($user->user_type == 'kol') {
                 $payment->reason = 'Cộng tác viên tự hủy yêu cầu thanh toán';

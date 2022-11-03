@@ -296,28 +296,29 @@
             $payment->payment_user_id = auth()->id();
             $payment->save();
             $wallet->amount = config_base64_encode( config_base64_decode($wallet->amount)- $payment->amount) ;
+            $wallet->updated_at=date('Y-m-d H:i:s');
             $wallet->save();
-
+            update_customer_package($wallet->user_id);
 
             log_history(['type' => CustomerBillUtility::TYPE_LOG_WITHDRAW,
                 'point' => -$payment->amount,
                 'amount' => -(int)$payment->amount * $config->exchange,
-                'object' => 0,
                 'amount_first' => (int)$amount,
-                'amount_later' => (int)config_base64_decode($wallet->amount),
+                'amount_later' => (int)available_balances($wallet->user_id),
                 'user_id' => $wallet->user_id,
                 'accept_by' => Auth::user()->id,
                 'content' => "Giao dịch chuyển tiền đến số thẻ $bank->number đã được duyệt"
             ]);
+
             $money = $payment->amount * $config->exchange;
+
             NewNotification([
                 'type'=>CustomerBillUtility::TYPE_NOTIFICATION_PAYMENT,
                 'data'=>"Bạn đã rút tiền thành công ".format_price( $money)." ", $payment->user_id,
                 'user_id'=>$wallet->user_id,
                 'amount_first'=>$amount,
-                'amount_later'=>config_base64_decode($wallet->amount),
+                'amount_later'=>available_balances($wallet->user_id),
                 'notifiable_type'=>CustomerBillUtility::TYPE_NOTIFICATION_USER,
-
             ]);
 
 
@@ -331,6 +332,7 @@
 
         public function cancelPayment($id, Request $request)
         {
+            $config = CommonConfig::first();
             $payment = AffiliatePayment::where('id', $id)->where('status', 1)->first();
             if (!$payment) {
                 return response([
@@ -339,8 +341,6 @@
                 ]);
             }
             $wallet=Wallet::where('user_id',$payment->user_id)->first();
-            /*$payment->payment_user_id = auth()->id();*/
-            //$payment->save();
             DB::transaction(function () use ($payment, $request) {
                 $user = User::find($payment->user_id);
                 $user->balance = $user->balance + $payment->value;
@@ -349,12 +349,25 @@
                 $payment->reason = $request->reason ?? '';
                 $payment->save();
             });
+            update_customer_package($wallet->user_id);
+
+            log_history(['type' => CustomerBillUtility::TYPE_LOG_WITHDRAW,
+                'point' => $payment->amount,
+                'amount' => (int)$payment->amount * $config->exchange,
+                'amount_first' => (int)config_base64_decode($wallet->amount),
+                'amount_later' => (int)available_balances($wallet->user_id),
+                'user_id' => $wallet->user_id,
+                'accept_by' => Auth::user()->id,
+                'content' => "Giao dịch bị hủy , do $request->reason"
+            ]);
+
+
             NewNotification([
-                'type'=>CustomerBillUtility::$arrayTypeNotification[CustomerBillUtility::TYPE_NOTIFICATION_PAYMENT],
-                'data'=>"Yêu cầu rút tiền của bạn đã bị hủy , nếu có thắc mắc vui lòng liên hệ với BQT ", $payment->user_id,
+                'type'=>CustomerBillUtility::TYPE_NOTIFICATION_PAYMENT,
+                'data'=>"Yêu cầu rút tiền của bạn đã bị hủy , nếu có thắc mắc vui lòng liên hệ với BQT ",
                 'user_id'=>$wallet->user_id,
                 'amount_first'=>config_base64_decode($wallet->amount),
-                'amount_later'=>config_base64_decode($wallet->amount),
+                'amount_later'=>available_balances($wallet->user_id),
                 'notifiable_type'=>CustomerBillUtility::TYPE_NOTIFICATION_USER,
             ]);
             return response([

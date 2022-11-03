@@ -31,7 +31,7 @@ class WarrantyCardRequest extends FormRequest
         return [
             'user_name'=>'required|max:255',
             'address'=>'required',
-            'seri'=>'required|numeric|regex:/^[0-9]*$/u',
+            'seri'=>'required|numeric|unique:warranty_cards',
             'brand'=>'required',
             'image'=>'required',
         ];
@@ -39,7 +39,16 @@ class WarrantyCardRequest extends FormRequest
 
     function messages()
     {
-        return [];
+        return [
+            'user_name.required'=>'vui lòng nhập tên khách hàng',
+            'address.required'=>'vui lòng nhập địa chỉ',
+            'seri.required'=>'vui lòng nhập số seri',
+            'seri.numeric'=>'Trường seri phải là số',
+            'seri.unique'=>' Số seri đã được sử dụng ',
+            'brand_id.required'=>'vui lòng chọn hãng sản xuất  ',
+            'image.required'=>'vui lòng chọn ảnh',
+            'image.image'=>'Trường ảnh không phải 1 ảnh',
+        ];
     }
 
     protected function failedValidation(Validator $validator)

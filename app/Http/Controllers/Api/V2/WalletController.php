@@ -23,7 +23,7 @@ class WalletController extends Controller
 //  lịch sử
     public function walletRechargeHistory()
     {
-        return new WalletCollection(Wallet::with('logs')->where('user_id', auth()->user()->id)->latest()->paginate(10));
+        return new WalletCollection(Wallet::where('user_id', auth()->user()->id)->latest()->paginate(10));
     }
 
 

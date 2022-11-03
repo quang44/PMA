@@ -121,8 +121,8 @@ class ReportController extends Controller
         if ($request->date_range) {
             $date_range = $request->date_range;
             $date_range1 = explode(" / ", $request->date_range);
-            $wallet_history = $wallet_history->where('created_at', '>=', $date_range1[0]);
-            $wallet_history = $wallet_history->where('created_at', '<=', $date_range1[1]);
+            $wallet_history = $wallet_history->whereDate('created_at', '>=', $date_range1[0]);
+            $wallet_history = $wallet_history->whereDate('created_at', '<=', $date_range1[1]);
         }
         if ($user_id){
             $wallet_history = $wallet_history->where('user_id', '=', $user_id);
@@ -139,8 +139,10 @@ class ReportController extends Controller
               if ($request->date_range) {
                   $date_range = $request->date_range;
                   $date_range1 = explode(" / ", $request->date_range);
-                  $logs = $logs->where('created_at', '>=', $date_range1[0]);
-                  $logs = $logs->where('created_at', '<=', $date_range1[1]);
+
+
+                  $logs = $logs->whereDate('created_at', '>=', $date_range1[0]);
+                  $logs = $logs->whereDate('created_at', '<=', $date_range1[1]);
               }
                $logs=$logs->orderBy('created_at','DESC')->paginate(15);
               return view('backend.reports.wallet_balance_history',compact('logs','date_range','user_id'));

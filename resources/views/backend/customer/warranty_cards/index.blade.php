@@ -64,16 +64,15 @@
                             @if ($warranty_card != null)
                                 <tr>
                                     <td>
-                                        <h7 class="text-danger">{{$warranty_card->brand->name}} </h7>
+                                        <h7 class="text-danger">{{$warranty_card->brand_id!=null?$warranty_card->brand->name:'Hãng không tồn tại'}} </h7>
                                     </td>
-                                    <td>{{$warranty_card->user_name}}</td>
+                                    <td>{{ strtoupper($warranty_card->user_name)}}</td>
                                     <td>{{$warranty_card->address}}</td>
                                     <td>{{$warranty_card->seri}}</td>
                                     <td> @if($warranty_card->active_time>0)
-                                            {{date('d/m/Y H:i:s ',strtotime($warranty_card->active_time))}}
+                                            {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                         @else
-                                            <span
-                                                class="badge badge-inline badge-secondary">{{ trans('chưa kích hoạt') }}</span>
+                                               --
                                         @endif
                                     </td>
                                     <td>
@@ -133,12 +132,14 @@
                                         {{--                                           title="{{ translate('Cập nhật thông tin thẻ') }}">--}}
                                         {{--                                            <i class="las la-edit"></i>--}}
                                         {{--                                        </a>--}}
-                                        <a href="#"
-                                           class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
-                                           data-href="{{route('warranty_card.destroy', encrypt($warranty_card->id))}}"
-                                           title="{{ translate('Xóa') }}">
-                                            <i class="las la-trash"></i>
-                                        </a>
+{{--                                        @if($warranty_card->status==\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_CANCEL])--}}
+{{--                                            <a href="#"--}}
+{{--                                               class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"--}}
+{{--                                               data-href="{{route('warranty_card.destroy', encrypt($warranty_card->id))}}"--}}
+{{--                                               title="{{ translate('Xóa') }}">--}}
+{{--                                                <i class="las la-trash"></i>--}}
+{{--                                            </a>--}}
+{{--                                            @endif--}}
                                     </td>
                                 </tr>
                             @endif

@@ -4,11 +4,16 @@
 Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function() {
     Route::post('login', 'App\Http\Controllers\Api\V2\AuthController@login');
     Route::post('signup', 'App\Http\Controllers\Api\V2\AuthController@signup');
+    Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
+    Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
+    Route::post('get-otp', 'App\Http\Controllers\Api\V2\AuthController@getOPt');
+
     Route::post('password/reset', 'App\Http\Controllers\Api\V2\AuthController@resetPassword');
     Route::post('social-login', 'App\Http\Controllers\Api\V2\AuthController@socialLogin');
     Route::post('password/forget_request', 'App\Http\Controllers\Api\V2\PasswordResetController@forgetRequest');
-    Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
     Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');
+    Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
+    Route::post('password/get_otp', 'App\Http\Controllers\Api\V2\PasswordResetController@get_OTP_code');
 
 
 
@@ -22,8 +27,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');
         Route::get('balances', 'App\Http\Controllers\Api\V2\AuthController@balances');
     });
-    Route::post('resend_code', 'App\Http\Controllers\Api\V2\AuthController@resendCode');
-    Route::post('confirm_code', 'App\Http\Controllers\Api\V2\AuthController@confirmCode');
+
 });
 
     Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function() {
@@ -35,7 +39,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::get('provinces', 'App\Http\Controllers\Api\V2\AddressController@getProvinces');
     Route::get('districts-by-province/{province_id}', 'App\Http\Controllers\Api\V2\AddressController@getDistrictsByProvince');
     Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
-    Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
+//    Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
 
     Route::group(['prefix' => 'news', 'middleware' => []], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\NewsController@index');
@@ -354,10 +358,10 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
 
     Route::group(['prefix' => 'warranty', 'middleware' => 'auth:sanctum'], (function () {
         // warranty bill
-        Route::apiResource('warranty_bill', 'App\Http\Controllers\Api\V2\WarrantyBillController')->only('index','store');
+//        Route::apiResource('warranty_bill', 'App\Http\Controllers\Api\V2\WarrantyBillController')->only('index','store');
 
         // warranty Card
-        Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store','show');
+        Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store','update','show','destroy');
         Route::get('warranty_cards/search','App\Http\Controllers\Api\V2\WarrantyCardController@search');
     }));
 

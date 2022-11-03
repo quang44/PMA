@@ -49,8 +49,8 @@ class WarrantyCardController extends Controller
             $WarrantyCard->status = 1;
             $WarrantyCard->active_time=date('H:i:s');
             $amount=config_base64_decode($wallet->amount);
-
             $wallet->amount=config_base64_encode((int)$amount+(int)$commonConfig->for_activator);
+            $wallet->updated_at=date('Y-m-d H:i:s');
             $wallet->save();
 
             $user->balance=$user->balance+(int)$commonConfig->for_activator;
@@ -62,7 +62,7 @@ class WarrantyCardController extends Controller
                 'amount'=>(int)$commonConfig->for_activator*$commonConfig->exchange,
                 'object'=>0,
                 'amount_first'=>(int)$amount,
-                'amount_later'=>(int)config_base64_decode($wallet->amount),
+                'amount_later'=>(int)available_balances($wallet->user_id),
                 'user_id'=>$user->id,
                 'accept_by'=>auth()->id(),
                 'content'=>"Thẻ bảo hành của khách hàng $WarrantyCard->user_name được kích hoạt"
@@ -74,7 +74,7 @@ class WarrantyCardController extends Controller
             $WarrantyCard->status = 2;
             $content="Yêu cầu bảo hành thiết bị ".$WarrantyCard->brand->name." của bạn đã đã bị hủy .Liện hệ với BQT để biết thêm chi tiết";
             $WarrantyCard->reason=$request->reason;
-            flash(translate('Thẻ đã được hủy'))->warning();
+            flash(translate('Thẻ đã được hủy thành công'))->warning();
         }
 
         NewNotification([
@@ -82,7 +82,7 @@ class WarrantyCardController extends Controller
             'data'=>$content,
             'user_id'=>$user->id,
             'amount_first'=>$amount,
-            'amount_later'=>config_base64_decode($wallet->amount),
+            'amount_later'=>available_balances($wallet->user_id),
             'accept_by'=>auth()->id(),
             'notifiable_type'=>CustomerBillUtility::TYPE_NOTIFICATION_USER,
         ]);
@@ -158,7 +158,7 @@ class WarrantyCardController extends Controller
         }
 
         $WarrantyCard->delete();
-        flash(translate('Card has been deleted successfully'))->success();
+        flash(translate('Thẻ bảo hành đã được xóa thành công'))->success();
         return back();
     }
 

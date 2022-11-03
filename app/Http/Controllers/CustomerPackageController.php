@@ -61,7 +61,7 @@ class CustomerPackageController extends Controller
         $customer_package->point = $request->point;
         $customer_package->save();
 
-        flash(translate('Customer group has been inserted successfully'))->success();
+        flash(translate('Nhóm người dùng đã được tạo thành công'))->success();
         return redirect()->route('customer_packages.index');
     }
 
@@ -106,7 +106,7 @@ class CustomerPackageController extends Controller
         $customer_package->point = $request->point;
         $customer_package->save();
 
-        flash(translate('Customer group has been updated successfully'))->success();
+        flash(translate('Nhóm người dùng đã được cập nhật thành công'))->success();
         return back();
     }
 
@@ -124,7 +124,7 @@ class CustomerPackageController extends Controller
         }
         CustomerPackage::destroy($id);
 
-        flash(translate('Customer group has been deleted successfully'))->success();
+        flash(translate('Nhóm người đã được xóa thành công'))->success();
         return redirect()->route('customer_packages.index');
     }
 

@@ -21,7 +21,7 @@
                             {{ translate('Số thợ trên toàn hệ thống') }}
                         </div>
                         <div class="h3 fw-700 mb-3">
-                            {{ \App\Models\User::where('user_type', 'customer')->where('email_verified_at', '!=', null)->count() }}
+                            {{ \App\Models\User::where('user_type', 'customer')->count() }} Thợ
                         </div>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -36,7 +36,7 @@
                             <span class="fs-12 d-block">{{ translate('Tổng') }}</span>
                             {{ translate('Số tiền đã rút trên toàn hệ thống') }}
                         </div>
-                        <div class="h3 fw-700 mb-3">{{ $total_withdraw ? number_format($total_withdraw,0,',','.') : 0 }} points</div>
+                        <div class="h3 fw-700 mb-3">{{ $total_withdraw ? number_format($total_withdraw,0,',','.') : 0 }} Điểm</div>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                         <path fill="rgba(255,255,255,0.3)" fill-opacity="1" d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path>
@@ -50,7 +50,7 @@
                             <span class="fs-12 d-block">{{ translate('Tổng') }}</span>
                             {{ translate('Số tiền chưa rút trên toàn hệ thống') }}
                         </div>
-                        <div class="h3 fw-700 mb-3">{{ $total_not_withdraw ? number_format($total_not_withdraw,0,'.','.') : 0 }} points</div>
+                        <div class="h3 fw-700 mb-3">{{ $total_not_withdraw ? number_format($total_not_withdraw,0,'.','.') : 0 }} Điểm</div>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                         <path fill="rgba(255,255,255,0.3)" fill-opacity="1" d="M0,128L34.3,112C68.6,96,137,64,206,96C274.3,128,343,224,411,250.7C480,277,549,235,617,213.3C685.7,192,754,192,823,181.3C891.4,171,960,149,1029,117.3C1097.1,85,1166,43,1234,58.7C1302.9,75,1371,149,1406,186.7L1440,224L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path>
@@ -62,7 +62,7 @@
                     <div class="px-3 pt-3">
                         <div class="opacity-50">
                             <span class="fs-12 d-block">{{ translate('Tổng') }}</span>
-                            {{ translate('Số thiết bị đã kích hoạt toàn toàn hệ thống') }}
+                            {{ translate('Số thiết bị đã kích hoạt toàn hệ thống') }}
                         </div>
                         <div class="h3 fw-700 mb-3">{{ $total_active ? $total_active : 0 }} {{ translate('Thiết bị') }}</div>
                     </div>

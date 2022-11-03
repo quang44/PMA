@@ -4,7 +4,7 @@
 
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class=" align-items-center">
-            <h1 class="h3">Danh sách biến động số dư người dùng </h1>
+            <h1 class="h3">Danh sách lịch sử thay đổi số dư ví </h1>
         </div>
     </div>
 
@@ -14,8 +14,9 @@
                 <form action="{{ route('wallet-balance.balance',$user_id) }}" method="GET">
                     <div class="card-header row gutters-5">
                         <div class="col text-center text-md-left">
-                            <h5 class="mb-md-0 h6">Lịch sử số dư ví</h5>
+                            <h5 class="mb-md-0 h6">Lịch sử số dư ví </h5>
                         </div>
+
 
                         <div class="col-md-3">
                             <div class="form-group mb-0">
@@ -37,13 +38,13 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>{{translate('Customer')}}</th>
-                            <th> {{translate('Point')}}</th>
-                            <th>{{translate('Date')}}</th>
+                            <th>{{translate('Thợ')}}</th>
+                            <th> {{translate('Điểm')}}</th>
+                            <th>{{translate('Ngày cập nhật')}}</th>
                             <th> Điểm trước</th>
                             <th> Điểm hiện tại</th>
                             <th>Người xác nhận</th>
-                            <th>{{translate('Content')}}</th>
+                            <th>{{translate('Nội dung')}}</th>
                         </thead>
                         <tbody>
                         @foreach ($logs as $key => $log)
@@ -56,25 +57,28 @@
                                 @endif
                                 <td>  @if($log->point>0)
                                         <span class="text-success">
-                                        +{{ single_price($log->point)}}
+                                        +{{ $log->point}}
                                       </span>
                                     @else
                                         <span class="text-danger">
-                                         {{ single_price($log->point)}}
+                                         {{ $log->point}}
                                      </span>
                                     @endif</td>
-                                <td>{{ date('d/m/Y',strtotime($log->created_at))}}</td>
+                                <td>{{ date('d-m-Y',strtotime($log->updated_at))}}</td>
                                 <td>
-                                    {{ single_price($log->amount_first)}}
+                                    {{ $log->amount_first}}
                                 </td>
-                                <td>{{ single_price($log->amount_later)}}</td>
+                                <td>@if($log->amount_later>=$log->amount_first)
+                                        <span class="text-success"> {{$log->amount_later }}</span>
+                                    @else
+                                        <span class="text-danger"> {{$log->amount_later }}</span>
+                                    @endif</td>
                                 <td>
                                     @if($log->acceptor!=null )
                                         @if($log->acceptor->user_type=="admin" )
-                                            <span class="badge badge-inline badge-success">Admin</span>
-                                        @endif
-                                        @if($log->acceptor->user_type == 'accountant')
-                                            <span class="badge badge-inline badge-info">CTV</span>
+                                            <span class="badge badge-inline badge-warning">Admin</span>
+                                        @else
+                                            <span class="badge badge-inline badge-info">Accountant</span>
                                         @endif
                                     @endif
                                 </td>

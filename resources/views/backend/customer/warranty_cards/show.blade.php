@@ -23,7 +23,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="name">{{translate('Tên khách hàng')}} :</label>
                         <div class="col-sm-9">
-                            <span>{{$warranty_card->user_name}}</span>
+                            <span>{{strtoupper($warranty_card->user_name)}}</span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -53,7 +53,7 @@
                                 <span class="text-danger">@if($warranty_card->active_time>0)
                                         {{date('d-m-Y H:i:s ',strtotime($warranty_card->active_time))}}
                                     @else
-                                        {{ translate('Chưa kích hoạt') }}
+                                      --
                                     @endif
                                 </span>
                         </div>
@@ -73,8 +73,7 @@
                             @else
                                 <span class="badge badge-inline badge-danger">
                                         {{\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_CANCEL]}}
-                                        / lý do :  {{$warranty_card->reason}}
-                                             </span>
+                                             </span> / lý do :  {{$warranty_card->reason}}
                             @endif
 
 
