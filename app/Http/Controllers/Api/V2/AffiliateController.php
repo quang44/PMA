@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\V2\AffiliatePaymentCollection;
-use App\Http\Resources\V2\OrderAffiliateCollection;
 use App\Http\Resources\V2\OrderDeliveryCollection;
 use App\Http\Resources\V2\UserCollection;
 use App\Models\AffiliatePayment;
 use App\Models\CommonConfig;
 use App\Models\CustomerBank;
-use App\Models\CustomerPackage;
-use App\Models\NoticeUser;
 use App\Models\OrderDelivery;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Utility\CustomerBillUtility;
-use App\Utility\NotificationUtility;
 use App\Utility\OrderDeliveryUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +34,8 @@ class AffiliateController extends Controller
             $user_type = 'customer';
             $users = User::where('user_type', $user_type)->where('referred_by', $user->id);
         }
+
+
         $keyword = $request->search;
         if (!empty($keyword)) {
             $users = $users->where(function ($query) use ($keyword) {
@@ -425,5 +422,39 @@ class AffiliateController extends Controller
             'result' => true,
             'data' => $order,
         ]);
+    }
+
+    function listDepot(Request $request)
+    {
+        $employee = User::query()
+            ->select('id','name','email','avatar','address','phone','referral_code','belong')
+            ->where('user_type', 'employee');
+        if ($request->search) {
+            $employee = $employee->where('name', 'like', '%' . $request->search . '%');
+        }
+        $employee = $employee->paginate($request->limit ?? 15);
+        $employee->transform(function ($e){
+            $e->makeHidden(['created_at', 'updated_at']);
+            if($e->belong==0){
+                $e->type=  'Tổng kho';
+            }else{
+                $e->type=  'Đại lý';
+            }
+            return $e;
+        });
+        return $this->sendSuccess($employee);
+    }
+
+    function listAgent(Request $request)
+    {
+        $employee = User::query()->where('user_type', 'employee')
+            ->select('id','name','email','avatar','address','phone','referral_code')
+            ->where('belong', '>',0);
+        if ($request->search) {
+            $employee = $employee->where('name', 'like', '%' . $request->search . '%');
+        }
+        $employee = $employee->paginate($request->limit ?? 15);
+        $employee = $employee->makeHidden('created_at', 'updated_at');
+        return $this->sendSuccess($employee);
     }
 }

@@ -14,7 +14,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::post('password/resend_code', 'App\Http\Controllers\Api\V2\PasswordResetController@resendCode');
     Route::post('password/confirm_reset', 'App\Http\Controllers\Api\V2\PasswordResetController@confirmReset');
     Route::post('password/get_otp', 'App\Http\Controllers\Api\V2\PasswordResetController@get_OTP_code');
-
+    Route::get('checkPhone', 'App\Http\Controllers\Api\V2\AuthController@checkPhone');
 
 
     Route::middleware('auth:sanctum')->group(function () {

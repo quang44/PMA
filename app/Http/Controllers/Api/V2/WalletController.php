@@ -21,9 +21,21 @@ class WalletController extends Controller
     }
 
 //  lịch sử
-    public function walletRechargeHistory()
+    public function walletRechargeHistory(Request $request)
     {
-        return new WalletCollection(Wallet::where('user_id', auth()->user()->id)->latest()->paginate(10));
+        $wallet=Log::query()->with('acceptor')->where('user_id', auth()->user()->id)->paginate($request->limit??10);
+
+        $wallet->getCollection()->transform(function ($value) {
+            $value->makeHidden(['created_at','updated_at','object','amount','type']);
+            $value->time=convertTime($value->updated_at);
+            return $value;
+        });
+//        $wallet=  $wallet->makeHidden(['created_at','updated_at','object','amount','point','type','id']);
+       return response([
+           'data'=>$wallet->values(),
+           'result'=>true
+       ]) ;
+//        return new WalletCollection($wallet);
     }
 
 

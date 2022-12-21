@@ -2,24 +2,41 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Http\Resources\V2\ProductCollection;
-use App\Http\Resources\V2\ProductMiniCollection;
-use App\Http\Resources\V2\ProductDetailCollection;
 use App\Http\Resources\V2\FlashDealCollection;
+use App\Http\Resources\V2\ProductCollection;
+use App\Http\Resources\V2\ProductDetailCollection;
+use App\Http\Resources\V2\ProductMiniCollection;
+use App\Models\Color;
 use App\Models\FlashDeal;
 use App\Models\Product;
+use App\Models\ProductStock;
 use App\Models\Shop;
-use App\Models\Color;
-use Illuminate\Http\Request;
 use App\Utility\CategoryUtility;
 use App\Utility\SearchUtility;
 use Cache;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return new ProductMiniCollection(Product::latest()->paginate(10));
+        $product=  Product::select('id','name','thumbnail_img','description','warranty_duration')
+            ->where('wholesale_product',0)->latest()->paginate($request->limit??15);
+        $product= $product->makeHidden(['created_at','update_at']);
+       return new  ProductMiniCollection($product);
+//        return $this->sendSuccess($product);
+    }
+
+    public function warranty_product(Request $request)
+    {
+       $product= Product::query()->select('id','name','thumbnail_img')
+           ->where('wholesale_product',1)->latest()->paginate($request->limit??15);
+        $product=  $product->makeHidden(['created_at','update_at']);
+        foreach ($product as $pr){
+            $pr->thumbnail_img=uploaded_asset( $pr->thumbnail_img);
+        }
+//     $product->thumbnail_img=uploaded_asset($product->thumbnail_img);
+        return  $this->sendSuccess($product);
     }
 
     public function show($id)
@@ -255,7 +272,6 @@ class ProductController extends Controller
         }
 
 
-
         return response()->json([
             'product_id' => $product->id,
             'variant' => $str,
@@ -270,4 +286,58 @@ class ProductController extends Controller
     {
         return new ProductCollection(Product::inRandomOrder()->physical()->take(50)->get());
     }
+
+
+    public function color_by_product($id)
+    {
+        $variant = ProductStock::where('product_id', $id)->where('qty','>',0)->pluck('variant');
+        $colors = Color::query()->whereIn('name', $variant)->get();
+        return response([
+            'result'=>true,
+            'data' => $colors,
+            'product_id' => $id
+        ]);
+    }
+
+    public function product_by_variant(Request $request, $id)
+    {
+        $ProductStock = ProductStock::where('product_id', $id)->where('variant', $request->variant)->first();
+        $data=[];
+      if($ProductStock){
+          $data = [
+              'qty' => $ProductStock->qty,
+              'id' => $ProductStock->id,
+              'image_id' => $ProductStock->image,
+              'image' => uploaded_asset($ProductStock->image)
+          ];
+      }
+        return response([
+            'result'=>true,
+            'data' => $data
+        ]);
+    }
+
+    function qty_by_color(Request $request, $id)
+    {
+        $message='';
+        $result=true;
+        $ProductStock = ProductStock::where('product_id', $id)->where('variant', $request->variant)->first();
+        if ($request->qty > $ProductStock->qty) {
+            $message = 'Số lượng trong kho còn ' . $ProductStock->qty;
+            $result=false;
+        }
+        return response([
+            'message' => $message,
+            'result' => $result
+        ]);
+
+    }
+
+    public function card_combination(Request $request)
+    {
+        $combination = $request->combination;
+        return view('backend.customer.warranty_cards.combination', compact('combination'));
+    }
+
+
 }

@@ -169,10 +169,9 @@
                 $point = (int)$amount - (int)$giftRequest->gift->point;
                 $wallet->amount = $point > 0 ? config_base64_encode($point) : config_base64_encode(0);
                 $wallet->save();
-
 //                $user->balance = $user->balance + (int)$commonConfig->for_activator;
                 $user->save();
-                $content = "Yêu cầu đổi quả " . $giftRequest->gift->name . " của bạn đã được phê duyệt ,chúng tôi sẽ gửi quà sớm nhất cho bạn ";
+                $content = " Bạn đã bị -".$giftRequest->gift->point." cho yêu cầu đổi quà ".$giftRequest->gift->name." thành công, chúng tôi sẽ hỗ trợ gửi quà sớm nhất cho bạn";
                 log_history(['type' => CustomerBillUtility::TYPE_LOG_WITHDRAW,
                     'point' => -$giftRequest->gift->point,
                     'amount' => -$giftRequest->gift->point * $commonConfig->exchange,
@@ -181,16 +180,16 @@
                     'amount_later' => config_base64_decode($wallet->amount),
                     'user_id' => $user->id,
                     'accept_by' => auth()->id(),
-                    'content' => "Yêu cầu đổi quà đã được phê duyệt"
+                    'content' => $content
                 ]);
 
                 flash('Quà đã được phê duyệt thành công')->success();
-                if (!$wallet) {
-                    update_customer_package($wallet->user_id);
-                }
+//                if (!$wallet) {
+//                    update_customer_package($wallet->user_id);
+//                }
             } else {
                 $giftRequest->status = 2;
-                $content = "Yêu cầu đổi quà  " . $giftRequest->gift->name . " của bạn đã đã bị hủy .Liện hệ với BQT để biết thêm chi tiết";
+                $content = "Yêu cầu đổi quà " . $giftRequest->gift->name . " của bạn đã đã bị hủy";
                 $giftRequest->reason = $request->reason;
                 flash(translate('Quà đã được hủy thành công'))->warning();
             }
