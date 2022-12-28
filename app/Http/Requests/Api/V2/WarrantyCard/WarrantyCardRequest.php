@@ -26,36 +26,33 @@ class WarrantyCardRequest extends FormRequest
     public function rules()
     {
 
-
-//        |regex:/^[a-zA-Z_ ]*$/
         return [
-            'user_name'=>'required|max:255',
+            'user_name'=>'required',
             'address'=>'required',
-            'seri'=>'required|numeric|unique:warranty_cards',
-            'brand'=>'required',
-            'image'=>'required',
+            'phone'=>'required|numeric',
+            'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards,warranty_code',
         ];
     }
 
     function messages()
     {
         return [
-            'user_name.required'=>'vui lòng nhập tên khách hàng',
-            'address.required'=>'vui lòng nhập địa chỉ',
-            'seri.required'=>'vui lòng nhập số seri',
-            'seri.numeric'=>'Trường seri phải là số',
-            'seri.unique'=>' Số seri đã được sử dụng ',
-            'brand_id.required'=>'vui lòng chọn hãng sản xuất  ',
-            'image.required'=>'vui lòng chọn ảnh',
-            'image.image'=>'Trường ảnh không phải 1 ảnh',
+            'user_name.required'=>'Vui lòng nhập tên',
+            'address.required'=>'Vui lòng nhập địa chỉ',
+            'phone.required'=>'Vui lòng nhập số điện thoại',
+            'phone.integer'=>'Số điện thoại phải là số ',
+            'warranty_code.required'=>'Vui lòng nhập mã bảo hành',
+            'warranty_code.exists'=>'Mã bảo hành không tồn tại',
+            'warranty_code.unique'=>'Mã bảo hành đã được sử dụng',
         ];
     }
+
 
     protected function failedValidation(Validator $validator)
     {
         $json = [
             'result' => false,
-            'message' => $validator->errors()
+            'message' => $validator->errors()->first()
         ];
         $response = response( $json );
         throw new ValidationException($validator, $response);

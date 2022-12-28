@@ -442,7 +442,7 @@ class AffiliateController extends Controller
             }
             return $e;
         });
-        return $this->sendSuccess($employee);
+        return $this->sendSuccess($employee->values());
     }
 
     function listAgent(Request $request)

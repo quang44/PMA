@@ -83,6 +83,17 @@
 
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-from-label" for="address">{{translate('Address')}} củ thể</label>
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="{{translate('Address')}}" id="name" name="address" value="{{ old('address',$user->address) }}" class="form-control" required>
+                                @error('address')
+                                <div class="" style="color: red">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label class="col-sm-3 col-from-label" for="mobile">{{translate('Phone')}}</label>
                             <div class="col-sm-9">
@@ -105,15 +116,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="address">{{translate('Address',$user->address)}} củ thể</label>
-                            <div class="col-sm-9">
-                                <input type="text" placeholder="{{translate('Address')}}" id="name" name="address" value="{{ old('address') }}" class="form-control" required>
-                                @error('address')
-                                <div class="" style="color: red">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+
                         <div class="form-group row">
                             <label class="col-sm-3 col-from-label" for="depot">{{translate('depot')}}</label>
                             <div class="col-sm-9">

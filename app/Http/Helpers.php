@@ -41,17 +41,20 @@
     if (!function_exists('sendFireBase')) {
         function sendFireBase($user,$title,$text,$type,$amountFirst=null,$amountLast=null,$accept_by=null,$data=null)
         {
-           $type= checkType($type);
-           if($type==0 || $type==1|| $type==4){
+           $result= checkType($type);
+
+           if($result==0 || $result==1){
                $db = [
-                   'type' => $type,
+                   'type' => $result,
                    'data' => $text,
                    'user_id' =>$user->id,
                    'amount_first' => $amountFirst,
                    'amount_later' =>$amountLast,
                    'accept_by' => $accept_by,
+                   'item_id'=>$data->id,
                    'notifiable_type' => CustomerBillUtility::TYPE_NOTIFICATION_USER,
                ];
+
                sendNotification($db);
            }
 
@@ -85,22 +88,20 @@
     }
 
     function checkType($type){
+        $result=null;
         if ($type == 'warranty') {
-            $type = CustomerBillUtility::TYPE_NOTIFICATION_WARRANTY;
+            $result = CustomerBillUtility::TYPE_NOTIFICATION_WARRANTY;
         }
         if ($type == 'gift') {
-            $type = CustomerBillUtility::TYPE_NOTIFICATION_GIFT;
+            $result = CustomerBillUtility::TYPE_NOTIFICATION_GIFT;
         }
         if ($type == 'maintain'){
-            $type = CustomerBillUtility::TYPE_NOTIFICATION_MAINTAIN;
-        }
-        if ($type == 'upgrade') {
-            $type = CustomerBillUtility::TYPE_NOTIFICATION_UPDATE;
+            $result = CustomerBillUtility::TYPE_NOTIFICATION_MAINTAIN;
         }
         if ($type == 'event') {
-            $type = CustomerBillUtility::TYPE_NOTIFICATION_EVENT;
+            $result = CustomerBillUtility::TYPE_NOTIFICATION_EVENT;
         }
-        return $type;
+        return $result;
     }
 
 //highlights the selected navigation on admin panel
@@ -1342,18 +1343,18 @@
             ]);
         }
         $GiftWaiting=\App\Models\GiftRequest::query()
-            ->where('status',0)
             ->with('gift')
+            ->where('status',0)
             ->where('user_id',$user_id)->get();
         $waiting_point = 0;
-        $wallet_point = 0;
         if (count($GiftWaiting) > 0 ) {
             foreach ($GiftWaiting as $key => $item) {
                 $waiting_point += $item->gift->point;
             }
         }
 
-       $wallet_point = config_base64_decode($wallet_user->amount);
+            $wallet_point = config_base64_decode($wallet_user->amount);
+
 
       $result= $wallet_point - $waiting_point;
         return $result;
@@ -1402,7 +1403,7 @@
         function timeWarranty($time)
         {
 
-            if($time<12 && $time>0){
+            if($time<=12 ){
                 $numberTime=$time .' tháng';
             }else if($time==12){
                 $numberTime=$time/12 .' năm';
@@ -1457,6 +1458,11 @@
                 $wallet->user_id=$user_id;
                 $wallet->amount=$amount!=null?config_base64_encode($amount):config_base64_encode(0);
                 $wallet->save();
+            }else{
+                if($amount!=null){
+                    $wallet->amount =config_base64_encode($amount+config_base64_decode($wallet->amount));
+                    $wallet->save();
+                }
             }
             return $wallet;
         }

@@ -4,24 +4,17 @@
 
     use App\Models\Address;
     use App\Models\AffiliatePayment;
-
-    use App\Models\Bank;
-    use App\Models\City;
     use App\Models\CommonConfig;
     use App\Models\CustomerBank;
     use App\Models\District;
     use App\Models\Province;
-    use App\Models\Wallet;
-    use App\Models\Ward;
-    use App\Models\WarrantyCode;
-    use App\Models\Staff;
     use App\Models\User;
+    use App\Models\Wallet;
     use App\Utility\CustomerBillUtility;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Hash;
-    use Illuminate\Support\Str;
 
     class AffiliateController extends Controller
     {
@@ -37,8 +30,6 @@
             $sort_search = null;
             $users = User::where('user_type', 'employee')
                 ->where('belong','>',0)
-//                ->orWhere('user_type','customer')
-//                ->where('status',1)
                 ->with('addresses','user_agent')
                 ->orderBy('updated_at', 'desc');
             if ($request->has('search')) {
@@ -162,34 +153,28 @@
 
             $user = User::findOrFail($id);
             $user->fill($request->all());
-            $user->belong=$request->depot;
+            $user->belong = $request->depot;
             if (strlen($request->password) > 0) {
                 $user->password = Hash::make($request->password);
             }
             $user->save();
-            if($request->addresses!=null){
-                Address::whereIn('id',explode(',',$request->addresses))->delete();
+            if ($request->addresses != null) {
+                Address::whereIn('id', explode(',', $request->addresses))->delete();
             }
 
-            foreach ($request->city as $key=>$city){
-                $address=Address::where('id',$request->address_id[$key])->where('user_id',$user->id)->first();
-                if($address){
-                    $address->update([
-                        'name'=>$request->name,
-                        'province_id'=>$city,
-                        'district_id'=>$request->district[$key],
-                        'ward_id'=>$request->ward[$key],
-                    ]);
-                }else{
-                    Address::create([
-                        'name'=>$request->name,
-                        'user_id'=>$user->id,
-                        'province_id'=>$city,
-                        'district_id'=>$request->district[$key],
-                        'ward_id'=>$request->ward[$key],
-                    ]);
-                }
+            foreach ($request->city as $key => $city) {
+                $address = Address::where('id', $request->address_id[$key])
+                    ->where('user_id', $user->id)->first();
 
+                if (!$address) {
+                    $address = new Address();
+                }
+                   $address->name = $request->name;
+                   $address->user_id = $user->id;
+                   $address->province_id = $city;
+                   $address->district_id = $request->district[$key];
+                   $address->ward_id = $request->ward[$key];
+                  $address->save();
             }
 
             flash('Cập nhật thông tin đại lý thành công')->success();

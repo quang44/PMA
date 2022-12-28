@@ -20,4 +20,13 @@
         {
             return $this->belongsTo(User::class,'accept_by','id')->select('id','name');
         }
+
+        function card(){
+            return $this->belongsTo(WarrantyCard::class,'item_id','id')->with('user','active_user_id','cardDetail.product');
+        }
+        function gifts(){
+            return $this->belongsTo(GiftRequest::class,'item_id','id')->with(['gift','user','accept']);
+        }
+
+
     }

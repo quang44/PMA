@@ -108,6 +108,7 @@ class CustomerController extends Controller
         $user->customer_package_id=CustomerPackage::where('default',1)->first()->id;
         $user->email_verified_at=now();
         $user->save();
+
         Address::create([
             'user_id'=>$user->id,
             'province_id'=>$request->province,
@@ -124,56 +125,8 @@ class CustomerController extends Controller
         $wallet->save();
         flash('Tài khoản đã được tạo thành công')->success();
         return  redirect()->route('customers.index');
-//        $customer = new Customer;
 
-//        $customer->user_id = $user->id;
-//        $customer->save();
-
-//        if (isset($user->id)) {
-//            $html = '';
-//            $html .= '<option value="">
-//                        ' . translate("Walk In Customer") . '
-//                    </option>';
-//            foreach (Customer::all() as $key => $customer) {
-//                if ($customer->user) {
-//                    $html .= '<option value="' . $customer->user->id . '" data-contact="' . $customer->user->email . '">
-//                                ' . $customer->user->name . '
-//                            </option>';
-//                }
-//            }
-//
-//            $response['status'] = 'Success';
-//            $response['html'] = $html;
-//        }
-
-//        echo json_encode($response);
     }
-
-//    public function addNewCustomer(CustomerRequest $request)
-//    {
-//$package=CustomerPackage::where('default',1)->first();
-//        $user = new User;
-//        $user->fill($request->all());
-//        $user->customer_package_id=$package->id;
-//        $user->password = bcrypt($request->password);
-//        $user->referral_code = $request->phone;
-//        $user->device_token =$request->device_token;
-//         $user->email_verified_at = date('Y-m-d H:i:s');
-//        $user->save();
-//
-////           if (!empty($user->device_token)) {
-////               $req = new \stdClass();
-////               $req->device_token = $user->device_token;
-////               $req->title = "Kích hoạt tài khoản !";
-////               $req->text = "Tài khoản của bạn đã được kích hoạt";
-////               $req->type = "active_user";
-////               $req->id = $user->id;
-////               NotificationUtility::sendFirebaseNotification($req);
-////           }
-//       flash(translate('Tạo mới tài khoản thành công'))->success();
-//       return redirect()->route('customers.index');
-//    }
-
 
     /**
      * Display the specified resource.
@@ -224,29 +177,9 @@ class CustomerController extends Controller
         ]);
 
         $user = User::query()->findOrFail($id);
-//        $user->email_verified_at=now();
-//        update_customer_package($user->id);
-        $user->fill($request->all());
-//        $balances= available_balances($user->id);
-//        $customerPackage=CustomerPackage::whereBetween('point',[0,$balances])->first();
-//        $user->customer_package_id=$customerPackage->id;
 
-        //$user->referred_by = $request->referred_by;
-//        $con1 = $con2 = 0;
-//        if (empty($user->best_api_user)) {
-//            $con1 = 1;
-//        }
-//        if (!empty($request->best_api_user) && ($user->best_api_user != $request->best_api_user || $user->best_api_password != $request->best_api_password)) {
-//            $best = new BestExpressService();
-//            $token = $best->checkLogin($request->best_api_user, $request->best_api_password);
-//            if (empty($token)) {
-//                return back()->withErrors(['best_api_user' => 'Tài khoản best không đúng']);
-//            }
-//            $user->best_api_user = $request->best_api_user;
-//            $user->best_api_password = $request->best_api_password;
-//            $user->best_api_token = $token;
-//            $con2 = 1;
-//        }
+        $user->fill($request->all());
+
         if (!empty($request->password)) {
             $user->password = bcrypt($request->password);
         }

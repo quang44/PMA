@@ -171,7 +171,7 @@
                 $wallet->save();
 //                $user->balance = $user->balance + (int)$commonConfig->for_activator;
                 $user->save();
-                $content = " Bạn đã bị -".$giftRequest->gift->point." cho yêu cầu đổi quà ".$giftRequest->gift->name." thành công, chúng tôi sẽ hỗ trợ gửi quà sớm nhất cho bạn";
+                $content = " Bạn đã bị -".$giftRequest->gift->point." điểm cho yêu cầu đổi quà ".$giftRequest->gift->name." thành công, chúng tôi sẽ hỗ trợ gửi quà sớm nhất cho bạn";
                 log_history(['type' => CustomerBillUtility::TYPE_LOG_WITHDRAW,
                     'point' => -$giftRequest->gift->point,
                     'amount' => -$giftRequest->gift->point * $commonConfig->exchange,
@@ -189,7 +189,7 @@
 //                }
             } else {
                 $giftRequest->status = 2;
-                $content = "Yêu cầu đổi quà " . $giftRequest->gift->name . " của bạn đã đã bị hủy";
+                $content = "Yêu cầu đổi quà " . $giftRequest->gift->name . " của bạn đã bị hủy , lý do : $request->reason";
                 $giftRequest->reason = $request->reason;
                 flash(translate('Quà đã được hủy thành công'))->warning();
             }

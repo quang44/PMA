@@ -14,7 +14,7 @@ class LogController extends Controller
             if($request->fiter!=null?$request->filter:-1 > -1){
                 $logHistory=   $logHistory->where('type',$request->type);
             }
-           $logHistory= $logHistory->orderBy('created_at','DESC')->paginate($request->limit??15);
+           $logHistory= $logHistory->orderBy('id','DESC')->paginate($request->limit??15);
             return new LogCollection($logHistory);
 
     }

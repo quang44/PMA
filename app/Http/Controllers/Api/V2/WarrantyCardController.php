@@ -72,7 +72,7 @@ class WarrantyCardController extends Controller
     }
 
 
-// i test req from FormData in javascript
+
     function store(WarrantyCardRequest $request)
     {
 
@@ -102,13 +102,7 @@ class WarrantyCardController extends Controller
         foreach ($request->product as $data) {
             $image = uploadFile($data['img'], 'uploads/warranty');
             $video = uploadFile($data['video'], 'uploads/warranty');
-//            $WarrantyDetail->warranty_card_id=$Warranty->id;
-//            $WarrantyDetail->product_id=$data['id'];
-//            $WarrantyDetail->qty=$data['qty'];
-//            $WarrantyDetail->image=$image;
-//            $WarrantyDetail->video=$video;
-//            $WarrantyDetail->color_id=$data['color'];
-//            $WarrantyDetail->save();
+
             WarrantyCardDetail::create([
                 'warranty_card_id' => $Warranty->id,
                 'product_id' => $data['id'],
@@ -134,21 +128,12 @@ class WarrantyCardController extends Controller
     function update(Request $request, $id)
     {
 
-//        $arr = array_reduce($request->is_delete, function ($init, $currentValte) {
-//            return array_merge($init, explode(",", str_replace("", "", $currentValte)));
-//        }, []);
-
-
         $Warranty = WarrantyCard::query()->findOrFail($id);
         $Warranty->fill($request->all());
         $Warranty->create_time = strtotime(now());
         $Warranty->save();
 
-//        $warranty_code = WarrantyCode::query()->where('code', $request->warranty_code)->first();
-//        $warranty_code->status = 0;
-//        $warranty_code->save();
 
-//        dd($request->product);
         foreach ($request->product as $data) {
 
             if(!isset($data['card_id'])){
@@ -156,6 +141,7 @@ class WarrantyCardController extends Controller
                 $image =  uploadFile($data['img'], 'uploads/warranty');
                 $video = uploadFile($data['video'], 'uploads/warranty');
             }else{
+
                 $warrantyDetail = WarrantyCardDetail::query()->where('warranty_card_id', $id)
                     ->where('id',$data['card_id'])->first();
 //                    ->find($data['card_id']);
@@ -180,18 +166,7 @@ class WarrantyCardController extends Controller
             $warrantyDetail->video=$video;
             $warrantyDetail->color_id=$data['color'];
             $warrantyDetail->save();
-//            else {
-//                $image = uploadFile($data['img'], 'uploads/warranty');
-//                $video = uploadFile($data['video'], 'uploads/warranty');
-//                WarrantyCardDetail::query()->create([
-//                    'warranty_card_id' => $Warranty->id,
-//                    'product_id' => $data->product_id,
-//                    'qty' => $data['qty'],
-//                    'image' => $image,
-//                    'video' => $video,
-//                    'color_id' => $data['qty'],
-//                ]);
-//            }
+
         }
 
         return $this->updateSuccess($Warranty);

@@ -23,7 +23,10 @@ class WalletController extends Controller
 //  lịch sử
     public function walletRechargeHistory(Request $request)
     {
-        $wallet=Log::query()->with('acceptor')->where('user_id', auth()->user()->id)->paginate($request->limit??10);
+        $wallet=Log::query()->with('acceptor')
+            ->where('user_id', auth()->user()->id)
+            ->orderByDesc('updated_at')
+            ->paginate($request->limit??10);
 
         $wallet->getCollection()->transform(function ($value) {
             $value->makeHidden(['created_at','updated_at','object','amount','type']);

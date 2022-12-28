@@ -22,14 +22,25 @@
                         'id' => $data->id,
                         'type'=>$data->type,
                         'user_id' => $data->user_id,
-                        'content' => $data->data,
-                        'amount_first' => format_price($data->amount_first),
-                        'amount_later' => format_price($data->amount_later),
                         'title'=>CustomerBillUtility::$arrayTypeNotification[$data->type],
-                        'date' => date('H:i - d/m/Y',strtotime( $data->read_at))
+                        'content' => $data->data,
+                        'amount_first' => $data->amount_first,
+                        'amount_later' => $data->amount_later,
+                        'date' => convertTime($data->created_at),
+                        'read_at'=>is_null($data->read_at)?false: true,
+                        'item_id'=>$data->item_id
                     ];
 
                 })
+            ];
+        }
+
+
+        public function with($request)
+        {
+            return [
+                'result' => true,
+                'message' => 'successfully',
             ];
         }
     }

@@ -25,28 +25,40 @@
 
         function checkPhone(Request $request)
         {
-            $validate = Validator::make($request->all(), [
-                'phone' => 'required|unique:users|numeric|min:11'
-            ], [
-                'phone.required' => 'Số điện thoại không được để trống',
-                'phone.unique' => 'Số điện thoại đã được sử dụng',
-                'phone.numeric' => 'Số điện thoại không phải là số',
-            ]);
-
-            if ($validate->fails()) {
-                return response([
-                    'message' => $validate->errors()->first(),
-                    'result' => false
+            if($request->type=='reset'){
+                $user=User::query()->where('phone',$request->phone)->first();
+                if(!$user){
+                    return response([
+                        'message' => 'Số điện thoại không tồn tại',
+                        'result' => false
+                    ]);
+                }
+            }else{
+                $validate = Validator::make($request->all(), [
+                    'phone' => 'required|unique:users|digits:10'
+                ], [
+                    'phone.required' => 'Số điện thoại không được để trống',
+                    'phone.unique' => 'Số điện thoại đã được sử dụng',
+                    'phone.digits' => 'Số điện thoại không hợp lệ',
                 ]);
-            } else {
-                return response([
-                    'message' => 'Số điện thoại hợp lệ',
-                    'result' => true
-                ]);
+                if ($validate->fails()) {
+                    return response([
+                        'message' => $validate->errors()->first(),
+                        'result' => false
+                    ]);
+                }
             }
 
 
+            return response([
+                'message' => 'Số điện thoại hợp lệ',
+                'result' => true
+            ]);
+
+
+
         }
+
 
         public function signup(AuthRequest $request)
         {
@@ -121,14 +133,14 @@
             $user->save();
 
             if ($address) {
-                Address::create([
+                Address::query()->create([
                     'user_id' => $user->id,
                     'name' => $request->name,
                     'address' => $request->address,
                     'phone' => $request->phone,
-                    'province_id' => $address ? $address->province_id : null,
-                    'district_id' => $address ? $address->district_id : null,
-                    'ward_id' => $address ? $address->ward_id : null,
+                    'province_id' =>  $address->province_id ?:null,
+                    'district_id' =>  $address->district_id ?: null,
+                    'ward_id' =>  $address->ward_id ?: null,
                 ]);
             }
 
@@ -207,7 +219,7 @@
                     'avatar' => $user->avatar == null ? Null : static_asset($user->avatar),
                     'email' => $user->email,
                     'phone' => $user->phone,
-                    'depot' => $user->belong != null ? $user->user_agent->name : null,
+                    'depot' => $user->belong != null && $user->user_agent!=null ? $user->user_agent->name : null,
                     'referral_code' => $user->referral_code,
                     'address' => $user->addresses,
 //                    'package' => $user->customer_package != null ? $user->customer_package->name : null,
@@ -217,36 +229,98 @@
             ]);
         }
 
-    public function notification()
-    {
-        $user = auth()->user();
-        if (!empty($user->device_token)) {
-            $req = new \stdClass();
-            $req->device_token = $user->device_token;
-            $req->title = "Kích hoạt tài khoản !";
-            $req->text = "Tài khoản của bạn đã được kích hoạt";
-
-            $req->type = "active_user";
-            $req->id = $user->id;
-            $req->best_api_user = $user->best_api_user;
-            $result = NotificationUtility::sendFirebaseNotification($req);
-            return response(['result' => true, 'data' => $result]);
-        } else {
-            return response(['result' => false]);
-        }
-    }
+//    public function notification()
+//    {
+//        $user = auth()->user();
+//        if (!empty($user->device_token)) {
+//            $req = new \stdClass();
+//            $req->device_token = $user->device_token;
+//            $req->title = "Kích hoạt tài khoản !";
+//            $req->text = "Tài khoản của bạn đã được kích hoạt";
+//
+//            $req->type = "active_user";
+//            $req->id = $user->id;
+//            $req->best_api_user = $user->best_api_user;
+//            $result = NotificationUtility::sendFirebaseNotification($req);
+//            return response(['result' => true, 'data' => $result]);
+//        } else {
+//            return response(['result' => false]);
+//        }
+//    }
 
         public function AuthNotification(Request $request)
         {
             $user = auth()->user();
-            $Notification = Notification::query()->where('user_id', $user->id)
+            $Notification = Notification::query()
+                ->with(['card','gifts'])
+                 ->where('user_id', $user->id)
                 ->orWhere('send_group',$user->belong)
-                ->orWhere('send_group',0)
+                ->orWhere(function ($query){
+                    $query->where('send_group',0);
+                })
                 ->orderBy('updated_at', 'DESC')
                 ->paginate($request->limit ?? 10);
+//dd($Notification->toArray());
             return new NotificationCollection($Notification);
         }
 
+        function AuthNotificationDetail($id)
+        {
+            $Notification = Notification::query()
+                ->with(['card.province','card.district','card.ward','gifts'])
+                ->findOrFail($id);
+            $Notification->read_at=strtotime(now());
+            $Notification->save();
+            $Notification-> title=CustomerBillUtility::$arrayTypeNotification[$Notification->type];
+            $Notification->content=$Notification->data;
+            $Notification->date=convertTime($Notification->created_at);
+            $Notification->makeHidden(['gifts', 'card', 'read_at','created_at','updated_at','notifiable_id','send_group','data','notifiable_type']);
+      $data=[];
+
+        if($Notification->gifts){
+            $data=[
+                'username'=>$Notification->gifts->user->name,
+                'name'=>$Notification->gifts->gift->name,
+                'status'=>$Notification->gifts->status,
+                'reason'=>$Notification->gifts->reason,
+                'accept_by'=>!$Notification->accept?null: $Notification->accept->name,
+                'point'=>$Notification->gifts->gift->point,
+                'address'=>$Notification->gifts->address
+            ];
+        }
+
+            if($Notification->card){
+                $product='';
+                foreach ($Notification->card->cardDetail as $item){
+                    $name=$item->product->name;
+                    $product.=$name.',';
+                }
+                 $address=$Notification->card->address.', '.$Notification->card->ward->name.', '.$Notification->card->district->name.', '.$Notification->card->province->name;
+                $data=[
+                    'username'=>$Notification->card->user_name,
+                    'name'=> rtrim($product,','),
+                    'status'=>$Notification->card->status,
+                    'reason'=>$Notification->card->reason,
+                    'accept_by'=>!$Notification->active_user_id?null: $Notification->active_user_id->name,
+                    'point'=>$Notification->card->point,
+                    'address'=>$address
+                ];
+            }
+            $Notification->item=$data;
+//            dd($data);
+
+            return response([
+                'data'=>$Notification,
+                'result'=>true,
+            ]);
+        }
+
+        function  countNotification(){
+            $notification=Notification::query()
+                ->where('user_id',auth()->user()->id)
+             ->whereNull('read_at')->count();
+            return $this->sendSuccess($notification);
+        }
 
         public function update(Request $request)
         {

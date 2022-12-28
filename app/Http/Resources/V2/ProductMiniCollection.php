@@ -14,14 +14,9 @@ class ProductMiniCollection extends ResourceCollection
                     'id' => $data->id,
                     'name' => $data->getTranslation('name'),
                     'thumbnail_image' => uploaded_asset($data->thumbnail_img),
-                    'has_discount' => home_base_price($data, false) != home_discounted_base_price($data, false) ,
-                    'stroked_price' => home_base_price($data),
-                    'main_price' => home_discounted_base_price($data),
-                    'rating' => (double) $data->rating,
-                    'sales' => (integer) $data->num_of_sale,
-                    'links' => [
-                        'details' => route('products.show', $data->id),
-                    ]
+                    'description'=>strip_tags($data->description),
+                    'warranty_duration'=>timeWarranty( (int)$data->warranty_duration),
+
                 ];
             })
         ];
@@ -30,7 +25,7 @@ class ProductMiniCollection extends ResourceCollection
     public function with($request)
     {
         return [
-            'success' => true,
+            'result' => true,
             'status' => 200
         ];
     }

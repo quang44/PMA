@@ -22,6 +22,8 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::get('user', 'App\Http\Controllers\Api\V2\AuthController@user');
 //        Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@notification');
         Route::get('user/notification', 'App\Http\Controllers\Api\V2\AuthController@AuthNotification');
+        Route::get('user/notification/{id}', 'App\Http\Controllers\Api\V2\AuthController@AuthNotificationDetail');
+        Route::get('user/countNotification', 'App\Http\Controllers\Api\V2\AuthController@countNotification');
         Route::post('user/update', 'App\Http\Controllers\Api\V2\AuthController@update');
         Route::post('user/destroy', 'App\Http\Controllers\Api\V2\AuthController@destroy');
         Route::post('password/change', 'App\Http\Controllers\Api\V2\AuthController@changePassword');

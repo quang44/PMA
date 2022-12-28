@@ -59,13 +59,13 @@ class WarrantyCardController extends Controller
         if ($request->status==1) {
             $WarrantyCard->status = 1;
 //            $amount=config_base64_decode($wallet->amount);
-            $wallet->amount=config_base64_encode((int)$amount+(int)$commonConfig->for_activator);
+            $wallet->amount=config_base64_encode($amount+$commonConfig->for_activator);
             $wallet->updated_at=date('Y-m-d H:i:s');
             $wallet->save();
 
             $user->balance=$user->balance+(int)$commonConfig->for_activator;
             $user->save();
-            $content="Yêu cầu bảo hành của bạn đã được phê duyệt ";
+            $content="Bạn đã được +$commonConfig->for_activator điểm cho kích hoạt thẻ bảo hành thành công của khách hàng $WarrantyCard->user_name  ";
 
             log_history(['type'=>CustomerBillUtility::TYPE_LOG_ADDITION,
                 'point'=>(int)$commonConfig->for_activator,
@@ -80,7 +80,7 @@ class WarrantyCardController extends Controller
             flash(translate('Thẻ đã được kích hoạt thành công'))->success();
         } else {
             $WarrantyCard->status = 2;
-            $content="Yêu cầu bảo hành thiết bị của bạn đã đã bị hủy .Liện hệ với BQT để biết thêm chi tiết";
+            $content="Yêu cầu bảo hành thiết bị của bạn đã đã bị hủy ";
             $WarrantyCard->reason=$request->reason;
             flash(translate('Thẻ đã được hủy thành công'))->warning();
         }

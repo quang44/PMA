@@ -7,7 +7,7 @@
     <div class="col-lg-12">
         <div class="row gutters-10">
 
-            <div class="col-3">
+            <div class="col-lg-4 col-md-6 sm-12">
                 <div class="bg-grad-2 text-white rounded-lg mb-4 overflow-hidden">
                     <div class="px-3 pt-3">
                         <div class="opacity-50">
@@ -25,7 +25,7 @@
             </div>
 
 
-    <div class="col-3">
+    <div class="col-lg-4 col-md-6 sm-12">
         <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">
             <div class="px-3 pt-3">
                 <div class="opacity-50">
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="col-3">
+    <div class="col-lg-4 col-md-6 sm-12">
         <div class="bg-grad-3 text-white rounded-lg mb-4 overflow-hidden">
             <div class="px-3 pt-3">
                 <div class="opacity-50">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-          <div class="col-3">
+          <div class="col-lg-4 col-md-6 sm-12">
                 <div class="bg-grad-1 text-white rounded-lg mb-4 overflow-hidden">
                     <div class="px-3 pt-3">
                         <div class="opacity-50">
@@ -69,7 +69,7 @@
                     </svg>
                 </div>
             </div>
-         <div class="col-3">
+         <div class="col-lg-4 col-md-6 sm-12">
                 <div class="bg-grad-4 text-white rounded-lg mb-4 overflow-hidden">
                     <div class="px-3 pt-3">
                         <div class="opacity-50">
