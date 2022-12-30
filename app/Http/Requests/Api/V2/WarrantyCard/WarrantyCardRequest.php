@@ -29,8 +29,8 @@ class WarrantyCardRequest extends FormRequest
         return [
             'user_name'=>'required',
             'address'=>'required',
-            'phone'=>'required|numeric',
-            'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards,warranty_code',
+            'phone'=>'required|numeric|digits:10',
+            'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards',
         ];
     }
 
@@ -41,6 +41,7 @@ class WarrantyCardRequest extends FormRequest
             'address.required'=>'Vui lòng nhập địa chỉ',
             'phone.required'=>'Vui lòng nhập số điện thoại',
             'phone.integer'=>'Số điện thoại phải là số ',
+            'phone.digits'=>'Số điện thoại không đúng định dạng ',
             'warranty_code.required'=>'Vui lòng nhập mã bảo hành',
             'warranty_code.exists'=>'Mã bảo hành không tồn tại',
             'warranty_code.unique'=>'Mã bảo hành đã được sử dụng',

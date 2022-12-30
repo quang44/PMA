@@ -18,20 +18,35 @@ class WarrantyCard extends ResourceCollection
 
         return [
             'data' => $this->collection->map(function ($data) {
+
+
                 return
                     [
                         'id' => $data->id,
-                        'brand' =>$data->brand!=null?$data->brand->name:'Hãng sản xuất không tồn tại',
+                        'user_id'=>$data->user_id,
                         'user_name' => $data->user_name,
+                        'phone'=>$data->phone,
                         'address' => $data->address,
-                        'point' =>$data->point,
-                        'image' => image_asset_by_object($data->id),
-                        'status'=>$data->status,
-                        'reason'=>$data->reason,
-                        'active_time'=> date('d/m/Y H:i:s', strtotime($data->active_time)),
-                        'created_at' => date('d/m/Y H:i:s', strtotime($data->created_at)),
+                        'province'=>$data->province->name,
+                        'district'=>$data->district->name,
+                        'ward'=>$data->ward->name,
+                        'status' => $data->status,
+                        'reason' => $data->reason,
+                        'note' => $data->note,
+                        'active_time' => is_null($data->active_time)?null:convertTime($data->active_time),
+                        'created_at' => convertTime($data->create_time),
                     ];
             })
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'result' => true,
+            'status' => 200
+        ];
+    }
+
+
 }

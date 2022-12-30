@@ -39,7 +39,7 @@ class Controller extends BaseController
     }
 
 
-    public function sendError( $message = 'Errors',$code = 200)
+    public function sendError( $message = 'Errors',$code = 402)
     {
         return response()->json([
             'result'=>false,

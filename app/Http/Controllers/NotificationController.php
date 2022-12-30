@@ -64,12 +64,16 @@ class NotificationController extends Controller
         $firebase_notification->item_type = $request->type;
         $firebase_notification->item_type_id=$request->group;
         $firebase_notification->save();
-
-        $users = User::query()->whereNotNull('device_token')
-            ->where('user_type', 'customer');
-
+        $users = User::query()->whereNotNull('device_token');
         if ($request->group > 0) {
-            $users = $users->where('customer_package_id', $request->group);
+            if ($request->group==1){
+                $users = $users-> where('user_type','customer');
+            }
+            if ($request->group==2){
+                $users = $users-> where('user_type','employee')->where('belong','>',0);
+            }else{
+                $users = $users-> where('user_type','employee')->where('belong',0);
+            }
         }
         $users = $users->get();
         foreach ($users as $user) {
@@ -80,6 +84,7 @@ class NotificationController extends Controller
         $data = [
             'type' => $type,
             'data' => $request->text,
+            'send_group'=>$request->group,
             'notifiable_type' => CustomerBillUtility::TYPE_NOTIFICATION_USER,
         ];
         $Notification->create($data);
@@ -119,10 +124,16 @@ class NotificationController extends Controller
         $firebase_notification->item_type_id=$request->group;
         $firebase_notification->save();
 
-        $users = User::query()->whereNotNull('device_token')
-            ->where('user_type', 'customer');
+        $users = User::query()->whereNotNull('device_token');
         if ($request->group > 0) {
-            $users = $users->where('customer_package_id', $request->group);
+            if ($request->group==1){
+                $users = $users-> where('user_type','customer');
+            }
+            if ($request->group==2){
+                $users = $users-> where('user_type','employee')->where('belong','>',0);
+            }else{
+                $users = $users-> where('user_type','employee')->where('belong',0);
+            }
         }
         $users = $users->get();
         foreach ($users as $user) {
@@ -133,6 +144,7 @@ class NotificationController extends Controller
         $data = [
             'type' => $type,
             'data' => $request->text,
+            'send_group'=>$request->group,
             'notifiable_type' => CustomerBillUtility::TYPE_NOTIFICATION_USER,
         ];
         $Notification->update($data);

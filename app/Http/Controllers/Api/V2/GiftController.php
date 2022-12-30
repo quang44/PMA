@@ -60,7 +60,7 @@
         {
             $user = auth()->user();
             $gift = GiftRequest::where('user_id',$user->id)->findOrFail($id);
-            $gift->reason='khách hàng tự hủy';
+            $gift->reason='khách hàng tự hủy yêu cầu';
             $gift->active_time=strtotime(now());
             $gift->status=2;
             $gift->save();

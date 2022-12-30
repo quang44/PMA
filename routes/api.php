@@ -357,7 +357,9 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
 
 //    Route::get('wallet/balance', 'App\Http\Controllers\Api\V2\WalletController@balance')->middleware('auth:sanctum');
     Route::get('wallet/history', 'App\Http\Controllers\Api\V2\WalletController@walletRechargeHistory')->middleware('auth:sanctum');
-//    Route::post('wallet/offline-recharge', 'App\Http\Controllers\Api\V2\WalletController@offline_recharge')->middleware('auth:sanctum');
+    Route::get('wallet/history/{id}', 'App\Http\Controllers\Api\V2\WalletController@walletRechargeHistoryDetail')->middleware('auth:sanctum');
+
+    //    Route::post('wallet/offline-recharge', 'App\Http\Controllers\Api\V2\WalletController@offline_recharge')->middleware('auth:sanctum');
 
     Route::get('flash-deals', 'App\Http\Controllers\Api\V2\FlashDealController@index');
     Route::get('flash-deal-products/{id}', 'App\Http\Controllers\Api\V2\FlashDealController@products');

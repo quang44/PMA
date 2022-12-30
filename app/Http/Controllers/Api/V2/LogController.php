@@ -11,9 +11,11 @@ class LogController extends Controller
 {
     function index(Request $request){
             $logHistory=Log::where('user_id',auth()->id());
-            if($request->fiter!=null?$request->filter:-1 > -1){
+            if($request->filter!=null?$request->filter:-1 > -1){
                 $logHistory=   $logHistory->where('type',$request->type);
             }
+
+
            $logHistory= $logHistory->orderBy('id','DESC')->paginate($request->limit??15);
             return new LogCollection($logHistory);
 

@@ -40,6 +40,6 @@ class WarrantyCard extends Model
 
 
     function active_user_id(){
-        return $this->belongsTo(User::class,'accept_by');
+        return $this->belongsTo(User::class,'accept_by','id');
     }
 }

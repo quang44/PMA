@@ -27,7 +27,7 @@
                         'amount_first' => $data->amount_first,
                         'amount_later' => $data->amount_later,
                         'date' => convertTime($data->created_at),
-                        'read_at'=>is_null($data->read_at)?false: true,
+                        'read_at'=>$data->read_at,
                         'item_id'=>$data->item_id
                     ];
 

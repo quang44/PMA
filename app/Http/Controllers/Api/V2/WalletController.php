@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Http\Resources\V2\WalletCollection;
 use App\Models\Log;
 use App\Models\User;
 use App\Models\Wallet;
@@ -23,22 +22,66 @@ class WalletController extends Controller
 //  lịch sử
     public function walletRechargeHistory(Request $request)
     {
-        $wallet=Log::query()->with('acceptor')
+        $logs = Log::query()
+            ->with(['acceptor'])
             ->where('user_id', auth()->user()->id)
             ->orderByDesc('updated_at')
-            ->paginate($request->limit??10);
+            ->paginate($request->limit ?? 10);
 
-        $wallet->getCollection()->transform(function ($value) {
-            $value->makeHidden(['created_at','updated_at','object','amount','type']);
-            $value->time=convertTime($value->updated_at);
+        $logs->getCollection()->transform(function ($value) {
+            $value->makeHidden(['created_at', 'updated_at', 'object', 'amount', 'type']);
+            $value->time = convertTime($value->updated_at);
             return $value;
         });
+
 //        $wallet=  $wallet->makeHidden(['created_at','updated_at','object','amount','point','type','id']);
-       return response([
-           'data'=>$wallet->values(),
-           'result'=>true
-       ]) ;
+        return response([
+            'data' => $logs->values(),
+            'result' => true
+        ], 200);
 //        return new WalletCollection($wallet);
+    }
+
+
+//    chi Tiết lịch sử
+    function walletRechargeHistoryDetail($id)
+    {
+        $logs = Log::query()->findOrFail($id);
+        $logs->load('card', 'gifts');
+        $logs->makeHidden(['gifts', 'card', 'created_at', 'updated_at', 'object', 'amount', 'type','item_id']);
+
+        $data = null;
+        if (!is_null($logs->gifts) && $logs->type==1) {
+            $data = [
+                'username' => $logs->gifts->user->name,
+                'name' => $logs->gifts->gift->name,
+                'status' => $logs->gifts->status,
+                'reason' => $logs->gifts->reason,
+                'accept_by' => !$logs->accept ? null : $logs->accept->name,
+                'point' => $logs->gifts->gift->point,
+                'address' => $logs->gifts->address
+            ];
+        }
+        if (!is_null($logs->card) && $logs->type==2) {
+            $product = '';
+            foreach ($logs->card->cardDetail as $item) {
+                $name = $item->product->name;
+                $product .= ucfirst($name) . ',';
+            }
+            $address = $logs->card->address . ', ' . $logs->card->ward->name . ', ' . $logs->card->district->name . ', ' . $logs->card->province->name;
+            $data = [
+                'username' => $logs->card->user_name,
+                'name' => rtrim($product, ','),
+                'status' => $logs->card->status,
+                'reason' => $logs->card->reason,
+                'accept_by' => !$logs->active_user_id ? null : $logs->active_user_id->name,
+                'point' => $logs->card->point,
+                'address' => $address
+            ];
+        }
+        $logs->item = $data;
+        return  $this->sendSuccess($logs);
+
     }
 
 
@@ -49,7 +92,7 @@ class WalletController extends Controller
 
         if ($user->balance >= $request->amount) {
 
-            $response =  $order->store($request, true);
+            $response = $order->store($request, true);
             $decoded_response = $response->original;
             if ($decoded_response['result'] == true) { // only decrease user balance with a success
                 $user->balance -= $request->amount;

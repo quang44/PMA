@@ -13,6 +13,7 @@ class NewsCollection extends ResourceCollection
             'data' => $this->collection->map(function($data) {
                 $text = new Html2Text($data->content);
                 $text = $text->getText();
+
                 $images = get_images_path($data->images);
                 $video = $data->link ? explode(PHP_EOL, $data->link) : [];
                 return [
@@ -21,7 +22,7 @@ class NewsCollection extends ResourceCollection
                     'icon' => uploaded_asset($data->icon),
                     'images' => array_merge($images, $video),
                     'content' => $data->content,
-                    'content_text' => $text,
+                    'content_text' => $text ,
                     'url' => route('home').'/news/'. $data->slug,
                     'created_at' => $data->created_at
                 ];

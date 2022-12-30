@@ -65,7 +65,7 @@ class WarrantyCardController extends Controller
 
             $user->balance=$user->balance+(int)$commonConfig->for_activator;
             $user->save();
-            $content="Bạn đã được +$commonConfig->for_activator điểm cho kích hoạt thẻ bảo hành thành công của khách hàng $WarrantyCard->user_name  ";
+            $content="Bạn đã được +$commonConfig->for_activator điểm do kích hoạt thẻ bảo hành thành công của khách hàng $WarrantyCard->user_name  ";
 
             log_history(['type'=>CustomerBillUtility::TYPE_LOG_ADDITION,
                 'point'=>(int)$commonConfig->for_activator,
@@ -75,7 +75,7 @@ class WarrantyCardController extends Controller
                 'amount_later'=>(int)config_base64_decode($wallet->user_id),
                 'user_id'=>$user->id,
                 'accept_by'=>auth()->id(),
-                'content'=>"Thẻ bảo hành của khách hàng $WarrantyCard->user_name được kích hoạt"
+                'content'=>$content
             ]);
             flash(translate('Thẻ đã được kích hoạt thành công'))->success();
         } else {

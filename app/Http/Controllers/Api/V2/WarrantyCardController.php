@@ -14,13 +14,14 @@ class WarrantyCardController extends Controller
 {
     function index(Request $request)
     {
-        $warrantyCard = WarrantyCard::query()->where('user_id', auth()->id());
+        $warrantyCard = WarrantyCard::query()->where('user_id', auth()->user()->id);
         if (!empty($request->search)) {
             $warrantyCard = $warrantyCard->where('phone', 'like', "%$request->search%")
                 ->orWhere('user_name', 'like', "%$request->search%");
         }
-        $warrantyCard = $warrantyCard->paginate($request->limit ?? 10);
-        $warrantyCard = $warrantyCard->makeHidden('created_at', 'updated_at');
+        $warrantyCard = $warrantyCard->orderByDesc('updated_at')
+            ->paginate($request->limit ?? 10);
+//        $warrantyCard = $warrantyCard->makeHidden('created_at', 'updated_at');
 
         return new WarrantyCardCollection($warrantyCard);
     }
@@ -75,30 +76,17 @@ class WarrantyCardController extends Controller
 
     function store(WarrantyCardRequest $request)
     {
-
+//         check warranty code exits
         $warranty_code = WarrantyCode::query()->where('code', $request->warranty_code)->first();
-//        $checkCode=WarrantyCard::query()->where('warranty_code',$request->warranty_code)->first();
-//        if($checkCode || $warranty_code){
-//          return  $this->sendError('Mã bảo hành đã được sử dụng');
-//        }
-//        return $this->sendSuccess($request->all());
 
-        // user_id, user_name,phone,address,video_url,warranty_code
-//        foreach ($request->product as $data) {
-//            if (!isset($data['id']) || !isset($data['img']) ||
-//                !isset($data['video']) || !isset($data['color'])
-//                || !isset($data['qty'])) {
-//                return $this->sendError('Vui lòng nhập dữ liệu đầy đủ');
-//            }
-//        }
-
+//        create database warranty
         $Warranty = new WarrantyCard;
         $Warranty->fill($request->all());
         $Warranty->create_time = strtotime(now());
         $Warranty->user_id = auth()->id();
         $Warranty->save();
 
-//        $WarrantyDetail = new WarrantyCardDetail;
+// create warranty card detail
         foreach ($request->product as $data) {
             $image = uploadFile($data['img'], 'uploads/warranty');
             $video = uploadFile($data['video'], 'uploads/warranty');
@@ -112,7 +100,7 @@ class WarrantyCardController extends Controller
                 'color_id' => $data['color'],
             ]);
         }
-
+// update status  warranty code
         if ($warranty_code) {
             $warranty_code->status = 1;
             $warranty_code->use_at = now();
@@ -136,15 +124,17 @@ class WarrantyCardController extends Controller
 
         foreach ($request->product as $data) {
 
+//            check id warranty_card
             if(!isset($data['card_id'])){
                 $warrantyDetail=new WarrantyCardDetail;
                 $image =  uploadFile($data['img'], 'uploads/warranty');
                 $video = uploadFile($data['video'], 'uploads/warranty');
             }else{
 
-                $warrantyDetail = WarrantyCardDetail::query()->where('warranty_card_id', $id)
+                $warrantyDetail = WarrantyCardDetail::query()
+                    ->where('warranty_card_id', $id)
                     ->where('id',$data['card_id'])->first();
-//                    ->find($data['card_id']);
+
                 if (isset($data['img'])) {
                     removeImg($warrantyDetail->image);
                     $image = uploadFile($data['img'], 'uploads/warranty');
