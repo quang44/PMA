@@ -30,38 +30,28 @@ class CustomerController extends Controller
         $users = User::with('customer_bank', 'user_updated', 'addresses', 'user_agent')
             ->where('user_type', 'customer')
             ->whereNotNull('email_verified_at')
-            ->orderBy('created_at', 'desc');
+            ->orderBy('id', 'desc');
 
 //
-        if ($request->has('search')) {
+        if (!empty($request->search)) {
             $sort_search = $request->search;
-            $users->where(function ($q) use ($sort_search) {
-                $q->where('name', 'like', '%' . $sort_search . '%')
-                    ->orWhere('phone', 'like', '%' . $sort_search . '%');
-            });
+            $users = $users->where('name', 'like', '%' . $sort_search . '%')
+                ->orWhere('phone', 'like', '%' . $sort_search . '%');
         }
+
         if (!empty($request->referred_by)) {
             $users = $users->where('referred_by', $request->referred_by);
         }
         if ((isset($request->banned) ? $request->banned : -1) >= 0) {
-//            switch ($request->banned) {
-//                case 1:
                     $users = $users->where('banned', $request->banned);
-//                    break;
-//                case 0:
-//                    $users = $users->where('banned', 0)->whereNotNull('best_api_user');
-//                    break;
-//                case 2:
-//                    $users = $users->where('banned', 0)->whereNull('best_api_user');
-//                    break;
-//            }
+        }
+//        else {
+//            $users = $users->whereIn('banned', [0, 1]);
+//        }
 
-        } else {
-            $users = $users->whereIn('banned', [0, 1]);
-        }
-        if ((isset($request->bank_updated) ? $request->bank_updated : -1) >= 0) {
-            $users = $users->where('bank_updated', $request->bank_updated);
-        }
+//        if ((isset($request->bank_updated) ? $request->bank_updated : -1) >= 0) {
+//            $users = $users->where('bank_updated', $request->bank_updated);
+//        }
 //        if ($request->has_best_api > 0) {
 //            if ($request->has_best_api == 1) {
 //                $users = $users->whereNull('best_api_user');
@@ -69,6 +59,10 @@ class CustomerController extends Controller
 //                $users = $users->whereNotNull('best_api_user');
 //            }
 //        }
+
+
+
+
 
         $users = $users->paginate(15);
         $packages = CustomerPackage::all();

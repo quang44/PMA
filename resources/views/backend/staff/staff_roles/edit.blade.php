@@ -9,18 +9,18 @@
     <div class="col-lg-7 mx-auto">
         <div class="card">
             <div class="card-body p-0">
-                <ul class="nav nav-tabs nav-fill border-light">
-                    @foreach (\App\Models\Language::all() as $key => $language)
-                        <li class="nav-item">
-                            <a class="nav-link text-reset @if ($language->code == $lang) active @else bg-soft-dark border-light border-left-0 @endif py-3"
-                               href="{{ route('roles.edit', ['id'=>$role->id, 'lang'=> $language->code] ) }}">
-                                <img src="{{ static_asset('assets/img/flags/'.$language->code.'.png') }}" height="11"
-                                     class="mr-1">
-                                <span>{{$language->name}}</span>
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
+{{--                <ul class="nav nav-tabs nav-fill border-light">--}}
+{{--                    @foreach (\App\Models\Language::all() as $key => $language)--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a class="nav-link text-reset @if ($language->code == $lang) active @else bg-soft-dark border-light border-left-0 @endif py-3"--}}
+{{--                               href="{{ route('roles.edit', ['id'=>$role->id, 'lang'=> $language->code] ) }}">--}}
+{{--                                <img src="{{ static_asset('assets/img/flags/'.$language->code.'.png') }}" height="11"--}}
+{{--                                     class="mr-1">--}}
+{{--                                <span>{{$language->name}}</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    @endforeach--}}
+{{--                </ul>--}}
                 <form class="p-4" action="{{ route('roles.update', $role->id) }}" method="POST">
                     <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" name="lang" value="{{ $lang }}">
@@ -122,7 +122,7 @@
 
                             <div class="row">
                                 <div class="col-md-10">
-                                    <label class="col-from-label">{{ translate('Banner') }}</label>
+                                    <label class="col-from-label">Banner</label>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="aiz-switch aiz-switch-success mb-0">
@@ -207,7 +207,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-10">
-                                    <label class="col-from-label">{{ translate('Notification') }}</label>
+                                    <label class="col-from-label">Thông báo</label>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="aiz-switch aiz-switch-success mb-0">

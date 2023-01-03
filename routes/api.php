@@ -387,6 +387,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::group(['prefix' => 'warranty', 'middleware' => 'auth:sanctum'], (function () {
         // warranty bill
         Route::get('warranty_code', 'App\Http\Controllers\Api\V2\WarrantyCardController@warrantyCode');
+        Route::get('validateCode', 'App\Http\Controllers\Api\V2\WarrantyCardController@validateWarrantyCard');
         // warranty Card
         Route::apiResource('warranty_cards', 'App\Http\Controllers\Api\V2\WarrantyCardController')->only('index','store','show','destroy','update');
         Route::get('warranty_cards/delete/{id}','App\Http\Controllers\Api\V2\WarrantyCardController@deleteDetail');

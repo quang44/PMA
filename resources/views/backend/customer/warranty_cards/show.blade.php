@@ -16,7 +16,13 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="name">Người tạo :</label>
                         <div class="col-sm-9">
-                            <span>{{strtoupper($warranty_card->user->name)}}</span>
+                            <span>
+                                @if($warranty_card->user)
+                                    {{strtoupper($warranty_card->user->name)}}
+                                @else
+                                    người dùng không tồn tại
+                                    @endif
+                               </span>
                         </div>
                     </div>
 

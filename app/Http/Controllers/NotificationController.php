@@ -58,36 +58,37 @@ class NotificationController extends Controller
             $type = CustomerBillUtility::TYPE_NOTIFICATION_EVENT;
         }
 
+
+        $users = User::query()->whereNotNull('device_token');
+        $group=(int)$request->group;
+//        dd($group);
+            if ($group==1){
+                $users = $users-> where('user_type','customer');
+            }else if ($group==2){
+                $users = $users-> where('user_type','employee')->where('belong','>',0);
+            }else if($group==3){
+                $users = $users-> where('user_type','employee')->where('belong',0);
+            }
+          $users = $users->get();
+        foreach ($users  as $user) {
+            sendFireBase($user, $request->title, $request->text, $request->type);
+        }
+
         $firebase_notification = new FirebaseNotification;
         $firebase_notification->title = $request->title;
         $firebase_notification->text = $request->text;
         $firebase_notification->item_type = $request->type;
         $firebase_notification->item_type_id=$request->group;
         $firebase_notification->save();
-        $users = User::query()->whereNotNull('device_token');
-        if ($request->group > 0) {
-            if ($request->group==1){
-                $users = $users-> where('user_type','customer');
-            }
-            if ($request->group==2){
-                $users = $users-> where('user_type','employee')->where('belong','>',0);
-            }else{
-                $users = $users-> where('user_type','employee')->where('belong',0);
-            }
-        }
-        $users = $users->get();
-        foreach ($users as $user) {
-            sendFireBase($user, $request->title, $request->text, $request->type);
-        }
 
         $Notification = new NotificationCustomer;
-        $data = [
+        $Notification->create([
             'type' => $type,
             'data' => $request->text,
             'send_group'=>$request->group,
+            'notifiable_id'=>$firebase_notification->id,
             'notifiable_type' => CustomerBillUtility::TYPE_NOTIFICATION_USER,
-        ];
-        $Notification->create($data);
+        ]);
         flash('Thêm thông báo thành công');
         return redirect()->route('admin.all-notification');
     }
@@ -125,38 +126,40 @@ class NotificationController extends Controller
         $firebase_notification->save();
 
         $users = User::query()->whereNotNull('device_token');
-        if ($request->group > 0) {
-            if ($request->group==1){
-                $users = $users-> where('user_type','customer');
-            }
-            if ($request->group==2){
-                $users = $users-> where('user_type','employee')->where('belong','>',0);
-            }else{
-                $users = $users-> where('user_type','employee')->where('belong',0);
-            }
+        $group=(int)$request->group;
+        if ($group==1){
+            $users = $users-> where('user_type','customer');
+        }else if ($group==2){
+            $users = $users-> where('user_type','employee')->where('belong','>',0);
+        }else if($group==3){
+            $users = $users-> where('user_type','employee')->where('belong',0);
         }
+
         $users = $users->get();
         foreach ($users as $user) {
             sendFireBase($user, $request->title, $request->text, $request->type);
         }
 
-        $Notification = new NotificationCustomer;
-        $data = [
-            'type' => $type,
-            'data' => $request->text,
-            'send_group'=>$request->group,
-            'notifiable_type' => CustomerBillUtility::TYPE_NOTIFICATION_USER,
-        ];
-        $Notification->update($data);
-        flash('Sửa thông báo thành công');
+        $Notification =NotificationCustomer::query()->where('notifiable_id',$firebase_notification->id)->first();
+        if($Notification){
+            $Notification->update([
+                'type' => $type,
+                'data' => $request->text,
+                'send_group'=>$request->group,
+                'notifiable_id'=>$firebase_notification->id,
+                'notifiable_type' => CustomerBillUtility::TYPE_NOTIFICATION_USER,
+            ]);
+        }
+        flash('Sửa thông báo thành công')->success();
         return redirect()->route('admin.all-notification');
     }
 
     function destroy($id)
     {
-        $notification = FirebaseNotification::findOrFail(decrypt($id));
+        $notification = FirebaseNotification::query()->findOrFail(decrypt($id));
+        NotificationCustomer::where('notifiable_id',$notification->id)->delete();
         $notification->delete();
-        flash('xóa thông báo thành công');
+        flash('xóa thông báo thành công')->success();
         return redirect()->route('admin.all-notification');
     }
 

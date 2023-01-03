@@ -14,12 +14,12 @@
                         <div class="custom-file">
                             <label class="custom-file-label">
                                 <input type="file" name="bulk_file" class="custom-file-input" required>
-                                <span class="custom-file-name">Chọn file excel</span>
+                                <span class="custom-file-name">Chọn tập tin excel</span>
                             </label>
                         </div>
                     </div>
                     <div class="form-group col-sm-4">
-                        <button type="submit" class="btn btn-info">Tải file excel</button>
+                        <button type="submit" class="btn btn-info">Tải lên <i class="la la-upload"></i></button>
                     </div>
                 </div>
               @error('bulk_file')
@@ -36,6 +36,13 @@
         </div>
     </div>
 
+
+    <div class="col-md-3 mb-3">
+        <a href="{{static_asset('download/codewarranty.xlsx')}}" class="btn  btn-success">
+            <i class="la la-file-excel"></i>
+            <span>Tải xuống file mẫu   <i class="la la-download"></i></span>
+        </a>
+    </div>
     <div class="card">
         <form class="" id="sort_Card" action="" method="GET">
             <div class="card-header row gutters-5">

@@ -23,6 +23,7 @@ class WarrantyCardController extends Controller
     function  index(Request $request){
         $search=null;
         $status=null;
+        $sort_customer=null;
          $warranty_cards=WarrantyCard::orderBy('updated_at','desc');
         if($request->search){
             $search=$request->search;
@@ -31,12 +32,22 @@ class WarrantyCardController extends Controller
                 ->orWhere('address','like','%'.$search.'%');
         }
 
+        if((isset($request->sort_customer) ? $request->sort_customer : -1) >= 0){
+            $sort_customer=$request->sort_customer;
+            $warranty_cards =$warranty_cards->where('user_id',$sort_customer);
+        }
+
         if((isset($request->sort_status) ? $request->sort_status : -1) >= 0){
             $status=$request->sort_status;
             $warranty_cards =$warranty_cards->where('status',$status);
         }
+
+        $customers = User::whereIn('id', function($query) {
+            $query->select('user_id')->from(with(new WarrantyCard)->getTable());
+        })->get();
+
         $warranty_cards=$warranty_cards->with('user','cardDetail.product','active_user_id','district','province','ward')->paginate(15);
-        return view('backend.customer.warranty_cards.index',compact('warranty_cards','search','status'));
+        return view('backend.customer.warranty_cards.index',compact('warranty_cards','search','status','customers'));
 
     }
 
@@ -72,7 +83,7 @@ class WarrantyCardController extends Controller
                 'amount'=>(int)$commonConfig->for_activator*$commonConfig->exchange,
                 'object'=>0,
                 'amount_first'=>(int)$amount,
-                'amount_later'=>(int)config_base64_decode($wallet->user_id),
+                'amount_later'=>(int)config_base64_decode($wallet->amount),
                 'user_id'=>$user->id,
                 'accept_by'=>auth()->id(),
                 'content'=>$content

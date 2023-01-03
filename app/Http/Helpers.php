@@ -60,6 +60,7 @@
 
 
             if (!empty($user->device_token)) {
+
                 $req = new \stdClass();
                 $req->device_token = $user->device_token;
                 $req->title = $title;
@@ -74,7 +75,6 @@
                 $req->accept_by = $accept_by;
 
                 $result = NotificationUtility::sendFirebaseNotification($req);
-
                 return response(['result' => true, 'data' => $result]);
             } else {
                 return response(['result' => false]);

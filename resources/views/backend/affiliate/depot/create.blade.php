@@ -23,7 +23,8 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="email">{{translate('Email')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" autocomplete="off" placeholder="{{translate('Email')}}"value="{{old('email')}}"  id="email"
+                            <input type="text" autocomplete="off" placeholder="{{translate('Email')}}"
+                                   value="{{old('email')}}" id="email"
                                    name="email" class="form-control">
                         </div>
                     </div>
@@ -32,34 +33,49 @@
                             <label class=" col-from-label" for="email">Địa chỉ </label>
                         </div>
                         <div class="col-9 row">
-                        <div class="col-4 form-group">
-                            <label class="col-from-label " for="email">{{translate('Province')}}</label>
-                            <select name="city" id="city0"  data-city="0" class="form-control aiz-selectpicker city"
-                                    data-selected-text-format="count" data-live-search="true">
-                                <option>Lựa chọn thành phố</option>
-                                @foreach($provinces as $city)
-                                    <option value="{{$city->id}}">{{$city->name}}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
-                        <div class="col-4 ">
-                            <div class="form-group ">
-                                <label class=" col-from-label" for="district">{{translate('District')}}</label>
-                                <select name="district" data-district="0"  id="district0"  class="district form-control aiz-selectpicker"
-                                        data-selected-text-format="count" data-live-search="true" disabled>
+                            <div class="col-4 form-group">
+                                <label class="col-from-label " for="email">{{translate('Province')}}</label>
+                                <select required name="city" id="city0" data-city="0"
+                                        class="form-control aiz-selectpicker city"
+                                        data-selected-text-format="count" data-live-search="true">
+                                    <option>Lựa chọn thành phố</option>
+                                    @foreach($provinces as $city)
+                                        <option value="{{$city->id}}">{{$city->name}}</option>
+                                    @endforeach
                                 </select>
+                                @error('city')
+                               <span class="text-danger">
+                                    {{$message}}
+                               </span>
+                                @enderror
                             </div>
-                        </div>
-                        <div class="col-4 form-group">
-                            <div class="form-group ">
-                                <label class="" for="district">{{translate('Ward')}}</label>
-                                <select name="ward" id="ward0"  class="ward form-control aiz-selectpicker"
-                                        data-selected-text-format="count" data-live-search="true" disabled>
-                                </select>
-
+                            <div class="col-4 ">
+                                <div class="form-group ">
+                                    <label class=" col-from-label" for="district">{{translate('District')}}</label>
+                                    <select required name="district" data-district="0" id="district0"
+                                            class="district form-control aiz-selectpicker"
+                                            data-selected-text-format="count" data-live-search="true" disabled>
+                                    </select>
+                                    @error('district')
+                                    <span class="text-danger">
+                                    {{$message}}
+                               </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
+                            <div class="col-4 form-group">
+                                <div class="form-group ">
+                                    <label class="" for="district">{{translate('Ward')}}</label>
+                                    <select required name="ward" id="ward0" class="ward form-control aiz-selectpicker"
+                                            data-selected-text-format="count" data-live-search="true" disabled>
+                                    </select>
+                                    @error('ward')
+                                    <span class="text-danger">
+                                    {{$message}}
+                               </span>
+                                    @enderror
+                                </div>
+                            </div>
 
                         </div>
 

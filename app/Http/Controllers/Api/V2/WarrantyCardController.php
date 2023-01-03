@@ -9,6 +9,7 @@ use App\Models\WarrantyCardDetail;
 use App\Models\WarrantyCode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class WarrantyCardController extends Controller
 {
@@ -72,14 +73,28 @@ class WarrantyCardController extends Controller
         return $this->deleteSuccess();
     }
 
-
+   function validateWarrantyCard(Request $request){
+        $validate=Validator::make($request->all(),[
+            'warranty_code'=>'required|unique:warranty_cards,warranty_code|exists:warranty_codes,code'
+        ],[
+           'warranty_code.required'=>'không được để trống',
+            'warranty_code.unique'=>'Mã bảo hành đã được sử dụng',
+            'warranty_code.exists'=>'Mã bảo hành không tồn tại',
+        ]);
+        if($validate->fails()){
+            return $this->sendError($validate->errors()->first());
+        }
+        return  $this->sendSuccess(null);
+   }
 
     function store(WarrantyCardRequest $request)
     {
+
 //         check warranty code exits
         $warranty_code = WarrantyCode::query()->where('code', $request->warranty_code)->first();
 
 //        create database warranty
+
         $Warranty = new WarrantyCard;
         $Warranty->fill($request->all());
         $Warranty->create_time = strtotime(now());
@@ -88,10 +103,11 @@ class WarrantyCardController extends Controller
 
 // create warranty card detail
         foreach ($request->product as $data) {
+
             $image = uploadFile($data['img'], 'uploads/warranty');
             $video = uploadFile($data['video'], 'uploads/warranty');
-
-            WarrantyCardDetail::create([
+//            dd($video);
+            WarrantyCardDetail::query()->insert([
                 'warranty_card_id' => $Warranty->id,
                 'product_id' => $data['id'],
                 'qty' => $data['qty'],

@@ -18,7 +18,19 @@
                 <div class="col">
                     <h5 class="mb-0 h6">{{translate('List of Warranty')}}</h5>
                 </div>
-
+                <div class="col-md-3">
+                    <div class="form-group mb-0">
+                        <select name="sort_customer" id="sort_selectCart" class="form-control aiz-selectpicker"
+                                data-selected-text-format="count"
+                                data-live-search="true"
+                        >
+                            <option value="-1">Người tạo</option>
+                            @foreach($customers as $customer)
+                                <option  @if(request('sort_customer',-1)==$customer->id) selected @endif  value="{{$customer->id}}">{{$customer->name}}</option>
+                                @endforeach
+                        </select>
+                    </div>
+                </div>
 
                 <div class="col-md-3">
                     <div class="form-group mb-0">
@@ -73,7 +85,13 @@
                         @foreach($warranty_cards as $key => $warranty_card)
                             @if ($warranty_card != null)
                                 <tr>
-                                    <td>    {{$warranty_card->user->name}} <br></td>
+                                    <td>
+                                        @if($warranty_card->user)
+                                            {{$warranty_card->user->name}}
+                                        @else
+                                            người dùng không tồn tại
+                                            @endif
+                                        </td>
                                     <td>
                                         {{translate('Customer')}} : {{ ucfirst($warranty_card->user_name)}} <br>
                                         {{translate('Address')}} : {{ ucfirst($warranty_card->address)}}, {{ ucfirst($warranty_card->ward->name)}}, {{ ucfirst($warranty_card->district->name)}}, {{ ucfirst($warranty_card->province->name)}} <br>
@@ -201,7 +219,7 @@
             $('#sort_Card').submit();
         })
 
-        $('#sort_selectCart').on('change', function () {
+        $(document).on('change','#sort_selectCart' ,function () {
             $('#sort_Card').submit();
         })
 

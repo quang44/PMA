@@ -34,7 +34,6 @@ class CustomerBillUtility
     const TYPE_NOTIFICATION_WARRANTY = 1;
     const TYPE_NOTIFICATION_MAINTAIN = 2;
     const TYPE_NOTIFICATION_EVENT = 3;
-//    const TYPE_NOTIFICATION_UPDATE = 4;
 
     const TYPE_NOTIFICATION_USER = 0;
     const TYPE_NOTIFICATION_ADMIN = 1;
@@ -42,9 +41,8 @@ class CustomerBillUtility
     public static $arrayTypeNotification = [
         self::TYPE_NOTIFICATION_GIFT =>  'Thông báo đổi quà',
         self::TYPE_NOTIFICATION_WARRANTY => 'Thông báo bảo hành',
-        self::TYPE_NOTIFICATION_MAINTAIN => 'Cập nhật hệ thống',
+        self::TYPE_NOTIFICATION_MAINTAIN => 'Thông báo hệ thống',
         self::TYPE_NOTIFICATION_EVENT => 'Thông báo sự kiện',
-//        self::TYPE_NOTIFICATION_UPDATE=>'Thông báo nâng cấp'
     ];
 
 }

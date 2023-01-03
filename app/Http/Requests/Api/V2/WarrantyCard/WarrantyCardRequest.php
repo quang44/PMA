@@ -25,12 +25,11 @@ class WarrantyCardRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
             'user_name'=>'required',
             'address'=>'required',
             'phone'=>'required|numeric|digits:10',
-            'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards',
+            'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards,warranty_code',
         ];
     }
 

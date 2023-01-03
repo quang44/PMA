@@ -75,7 +75,7 @@ class NotificationUtility
         $url = 'https://fcm.googleapis.com/fcm/send';
         $db = null;
         $type = null;
-        $firebase_id=$req->firebase_id??null;
+//        $firebase_id=$req->firebase_id??null;
 
         if ( isset($req->data)) {
             $db = json_decode(json_encode($req->data, false));

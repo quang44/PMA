@@ -152,7 +152,7 @@
             if ($user != null) {
                 if (Hash::check($request->password, $user->password)) {
                     if ($user->banned == 1) {
-                        return response()->json(['result' => false, 'message' => 'Tài khoản đã tạm thời bị khóa', 'data' => null], 401);
+                        return response()->json(['result' => false, 'message' => 'Tài khoản đã bị khóa', 'data' => null], 401);
                     }
                     if ($request->device_token) {
                         $user->device_token = $request->device_token;
@@ -244,15 +244,17 @@
             $Notification = Notification::query()
                 ->with(['card', 'gifts'])
                 ->where('user_id', $user->id)
-                ->orWhere(function ($query) use ($user, $send_group)  {
+                ->orWhere(function ($query) use ($user, $send_group) {
                     $query->where('send_group', 0)
-                        ->orWhere('send_group', $send_group)
-                        ->orWhere('user_id', $user->id);
+                        ->orWhere('send_group', $send_group);
+//                        ->orWhere('user_id', $user->id);
                 })
                 ->orderByDesc('id')
                 ->paginate($request->limit ?? 100);
+//dd(count($Notification));
+            $notification = collect($Notification->values())->where('created_at', '>=', date('Y-m-d', strtotime($user->email_verified_at)));
+//            dd($notification);
 
-            $notification = collect($Notification->values())->where('updated_at', '>=', date('Y-m-d', strtotime($user->email_verified_at)));
             $notification->transform(function ($query) {
                 $query->makeHidden(['created_at', 'updated_at', 'card', 'gifts', 'notifiable_id', 'data', 'notifiable_type']);
                 $query->title = CustomerBillUtility::$arrayTypeNotification[$query->type];
@@ -320,21 +322,18 @@
         function countNotification()
         {
             $user = auth()->user();
-            $send_group = $user->belong == 0 ? 3 : 2;
+            if ($user->user_type == "employee" && $user->belong == 0) $send_group = 3;
+            if ($user->user_type == "employee" && $user->belong > 0) $send_group = 2;
+            if ($user->user_type == "customer") $send_group = 1;
             $notification = Notification::query()
                 ->where('user_id', $user->id)
                 ->orWhere(function ($query) use ($user, $send_group) {
                     $query->orWhere('send_group', 0)
                         ->orWhere('send_group', $send_group)
-                        ->where('user_id', $user->id);
+                        ->orWhere('user_id', $user->id);
                 })->get();
-            $count = 0;
-            foreach ($notification as $no) {
-                if (is_null($no->read_at) == true) {
-                    $count += 1;
-                }
-            }
-            return $this->sendSuccess($count);
+            $notification = collect($notification)->whereNull('read_at');
+            return $this->sendSuccess($notification->count());
         }
 
         public function update(Request $request)
@@ -343,8 +342,15 @@
             $user = User::findOrFail(auth()->user()->id);
             $validate = Validator::make($request->all(), [
                 'name' => 'required',
-                'phone' => 'required|unique:users,phone,' . $user->id,
+                'phone' => 'required|digits:10|unique:users,phone,' . $user->id,
                 'email' => 'email|unique:users,email,' . $user->id,
+            ], [
+                'name.required' => 'Tên không được để trống',
+                'phone.required' => 'Số điện thoại không được để trống',
+                'phone.unique' => 'Số điện thoại đã được sử dụng',
+                'phone.digits' => 'Số điện thoại không đúng định dạng',
+                'email.email' => 'email không đúng định dạng',
+                'email.unique' => 'email đã được sử dụng'
             ]);
             if ($validate->fails()) {
                 return response([
@@ -431,14 +437,12 @@
         public function destroy(Request $request)
         {
             $user = auth()->user();
-            if (!$user) {
-                return response(['result' => false, 'message' => translate('Không tìm thấy thông tin tài khoản')]);
-            }
-            $user->banned = 2;
+            $user->banned = 1;
             $user->save();
             return response([
+                'message' => 'Bạn đã khóa tài khoản thành công',
                 'result' => true,
-            ]);
+            ], 200);
         }
 
         /*public function socialLogin(Request $request)

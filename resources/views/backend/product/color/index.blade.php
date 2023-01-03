@@ -104,17 +104,17 @@
                     </form>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="mb-0 h6">{{translate('Color filter activation')}}</h3>
-                </div>
-                <div class="card-body text-center">
-                    <label class="aiz-switch aiz-switch-success mb-0">
-                        <input type="checkbox" onchange="updateSettings(this, 'color_filter_activation')" <?php if(get_setting('color_filter_activation') == 1) echo "checked";?>>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
+{{--            <div class="card">--}}
+{{--                <div class="card-header">--}}
+{{--                    <h3 class="mb-0 h6">{{translate('Color filter activation')}}</h3>--}}
+{{--                </div>--}}
+{{--                <div class="card-body text-center">--}}
+{{--                    <label class="aiz-switch aiz-switch-success mb-0">--}}
+{{--                        <input type="checkbox" onchange="updateSettings(this, 'color_filter_activation')" <?php if(get_setting('color_filter_activation') == 1) echo "checked";?>>--}}
+{{--                        <span class="slider round"></span>--}}
+{{--                    </label>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 

@@ -228,6 +228,15 @@
 
         public function depot_store(Request $request)
         {
+            $request->validate([
+                'city'=>'required',
+                'district'=>'required',
+                'ward'=>'required'
+            ],[
+                'city.required'=>'không được để trống',
+                'district.required'=>'không được để trống',
+                'ward.required'=>'không được để trống',
+            ]);
             if (User::where('phone', $request->phone)->first() == null) {
                 $user = new User;
                 $user->fill($request->all());

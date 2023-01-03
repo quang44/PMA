@@ -27,7 +27,7 @@ class AuthRequest extends FormRequest
     {
         return [
             'name'=>'required',
-            'phone'=>'required|unique:users|digits:10',
+            'phone'=>'required|unique:users,phone|digits:10',
             'password'=>'required|min:6',
             'password_confirmation'=>'same:password',
             'rules_accept'=>'required',

@@ -55,21 +55,15 @@ class PasswordResetController extends Controller
 
     public function confirmReset(Request $request)
     {
-        $user = User::where('verification_code', $request->verification_code)->first();
+        $user = User::where('phone', $request->phone)->first();
 
-        if ($request->result != false) {
+        if ($user) {
             $user->verification_code = null;
             $user->password = Hash::make($request->password);
             $user->save();
-            return response()->json([
-                'result' => true,
-                'message' => translate('Mật khẩu  của bạn đã được thay đổi thành công'),
-            ], 200);
+            return $this->updateSuccess($user,'Mật khẩu  của bạn đã được thay đổi thành công') ;
         } else {
-            return response()->json([
-                'result' => false,
-                'message' => translate('No user is found'),
-            ], 200);
+            return $this->sendError(translate('No user is found'));
         }
     }
 

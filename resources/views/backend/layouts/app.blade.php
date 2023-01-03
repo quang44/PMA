@@ -18,7 +18,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<!-- Favicon -->
-	<link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
+	<link rel="icon" href="{{static_asset('assets/img/faviconpma.jpg')}}">
 	<title>{{ translate('PMA') }}</title>
 
 	<!-- google font -->

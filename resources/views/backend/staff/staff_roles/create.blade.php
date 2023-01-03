@@ -130,7 +130,7 @@
                         </div>
                             <div class="row">
                                 <div class="col-md-10">
-                                    <label class="col-from-label">{{ translate('Banner') }}</label>
+                                    <label class="col-from-label">Banner</label>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="aiz-switch aiz-switch-success mb-0">
@@ -186,7 +186,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-10">
-                                    <label class="col-from-label">{{ translate('Notification') }}</label>
+                                    <label class="col-from-label">Thông báo</label>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="aiz-switch aiz-switch-success mb-0">
