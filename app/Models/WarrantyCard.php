@@ -42,4 +42,13 @@ class WarrantyCard extends Model
     function active_user_id(){
         return $this->belongsTo(User::class,'accept_by','id');
     }
+
+    function uploadFile($imageName, $path){
+        $image = $imageName;
+        $realImage = $image->hashName();
+        $newPath = $path . "/$realImage";
+        $image->store($path, 'local');
+        return $newPath;
+    }
+
 }

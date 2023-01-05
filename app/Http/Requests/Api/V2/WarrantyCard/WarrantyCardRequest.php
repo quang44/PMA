@@ -26,22 +26,22 @@ class WarrantyCardRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_name'=>'required',
-            'address'=>'required',
-            'phone'=>'required|numeric|digits:10',
-            'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards,warranty_code',
+//            'user_name'=>'required',
+//            'address'=>'required',
+//            'phone'=>'required|numeric|digits:10',
+            'warranty_code'=>'exists:warranty_codes,code|unique:warranty_cards,warranty_code',
         ];
     }
 
     function messages()
     {
         return [
-            'user_name.required'=>'Vui lòng nhập tên',
-            'address.required'=>'Vui lòng nhập địa chỉ',
-            'phone.required'=>'Vui lòng nhập số điện thoại',
-            'phone.integer'=>'Số điện thoại phải là số ',
-            'phone.digits'=>'Số điện thoại không đúng định dạng ',
-            'warranty_code.required'=>'Vui lòng nhập mã bảo hành',
+//            'user_name.required'=>'Vui lòng nhập tên',
+//            'address.required'=>'Vui lòng nhập địa chỉ',
+//            'phone.required'=>'Vui lòng nhập số điện thoại',
+//            'phone.integer'=>'Số điện thoại phải là số ',
+//            'phone.digits'=>'Số điện thoại không đúng định dạng ',
+//            'warranty_code.required'=>'Vui lòng nhập mã bảo hành',
             'warranty_code.exists'=>'Mã bảo hành không tồn tại',
             'warranty_code.unique'=>'Mã bảo hành đã được sử dụng',
         ];

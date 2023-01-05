@@ -91,7 +91,7 @@ class WarrantyCardController extends Controller
             flash(translate('Thẻ đã được kích hoạt thành công'))->success();
         } else {
             $WarrantyCard->status = 2;
-            $content="Yêu cầu bảo hành thiết bị của bạn đã đã bị hủy ";
+            $content="Yêu cầu bảo hành thiết bị của bạn đã bị hủy ";
             $WarrantyCard->reason=$request->reason;
             flash(translate('Thẻ đã được hủy thành công'))->warning();
         }

@@ -61,7 +61,7 @@ class PasswordResetController extends Controller
             $user->verification_code = null;
             $user->password = Hash::make($request->password);
             $user->save();
-            return $this->updateSuccess($user,'Mật khẩu  của bạn đã được thay đổi thành công') ;
+            return $this->updateSuccess($user,'Mật khẩu của bạn đã được thay đổi thành công') ;
         } else {
             return $this->sendError(translate('No user is found'));
         }

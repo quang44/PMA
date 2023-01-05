@@ -13,7 +13,7 @@
         function index(Request $request)
         {
             $status = null;
-            $warranty_codes = WarrantyCode::orderBy('created_at', 'DESC');
+            $warranty_codes = WarrantyCode::query()->orderByDesc('updated_at');
             if ((isset($request->sort_status) ? $request->sort_status : -1) >= 0) {
                 $status = $request->sort_status;
 
@@ -88,7 +88,7 @@
                 $import = new WarrantyCodeImport;
                 Excel::import($import, request()->file('bulk_file'));
             }
-
+            flash(translate('Warranty Code imported successfully'))->success();
             return back();
         }
 

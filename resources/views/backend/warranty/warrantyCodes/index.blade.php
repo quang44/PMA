@@ -38,7 +38,7 @@
 
 
     <div class="col-md-3 mb-3">
-        <a href="{{static_asset('download/codewarranty.xlsx')}}" class="btn  btn-success">
+        <a href="{{static_asset('download/warrantycode.xlsx')}}" class="btn  btn-success">
             <i class="la la-file-excel"></i>
             <span>Tải xuống file mẫu   <i class="la la-download"></i></span>
         </a>
@@ -129,12 +129,12 @@
                                         @endif
                                     </td>
 
-                                    <td>{{date('d-m-Y H:i:s',strtotime($warranty_code->created_at))}}</td>
+                                    <td>{{convertTime($warranty_code->updated_at)}}</td>
                                     <td>
                                         @if($warranty_code->use_at==null)
                                           ---
                                             @else
-                                            {{date('d-m-Y H:i:s',strtotime($warranty_code->use_at))}}</td>
+                                            {{convertTime($warranty_code->use_at)}}</td>
 
                                     @endif
                                     <td class="text-right">

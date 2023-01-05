@@ -10,9 +10,15 @@ use App\Models\WarrantyCode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use App\Services\UploadFileService;
 class WarrantyCardController extends Controller
 {
+    protected $UploadFileService;
+    function __construct(UploadFileService $UploadFileService)
+    {
+        $this->UploadFileService=$UploadFileService;
+    }
+
     function index(Request $request)
     {
         $warrantyCard = WarrantyCard::query()->where('user_id', auth()->user()->id);
@@ -87,27 +93,36 @@ class WarrantyCardController extends Controller
         return  $this->sendSuccess(null);
    }
 
-    function store(WarrantyCardRequest $request)
+    function store(Request $request)
     {
 
+
+//      echo '<pre>';
+//      print_r($request->all());
+//      echo '</pre>';
+//      die();
 //         check warranty code exits
-        $warranty_code = WarrantyCode::query()->where('code', $request->warranty_code)->first();
 
 //        create database warranty
-
         $Warranty = new WarrantyCard;
-        $Warranty->fill($request->all());
+        $Warranty->fill($request->except('product'));
         $Warranty->create_time = strtotime(now());
         $Warranty->user_id = auth()->id();
         $Warranty->save();
 
-// create warranty card detail
         foreach ($request->product as $data) {
-
+//upload file
             $image = uploadFile($data['img'], 'uploads/warranty');
             $video = uploadFile($data['video'], 'uploads/warranty');
-//            dd($video);
-            WarrantyCardDetail::query()->insert([
+
+//            $image= $this->UploadFileService->uploadFile($data['img'],'uploads/warranty');
+//            $video= $this->UploadFileService->uploadFile($data['video'],'uploads/warranty');
+//             $image= $Warranty->uploadFile($data['img'],'uploads/warranty');
+//             $video= $Warranty->uploadFile($data['video'],'uploads/warranty');
+
+
+// create warranty card detail
+            WarrantyCardDetail::create([
                 'warranty_card_id' => $Warranty->id,
                 'product_id' => $data['id'],
                 'qty' => $data['qty'],
@@ -116,6 +131,9 @@ class WarrantyCardController extends Controller
                 'color_id' => $data['color'],
             ]);
         }
+
+
+        $warranty_code = WarrantyCode::query()->where('code', $request->warranty_code)->first();
 // update status  warranty code
         if ($warranty_code) {
             $warranty_code->status = 1;

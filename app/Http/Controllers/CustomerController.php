@@ -27,10 +27,14 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $sort_search = null;
+        $data=[];
+
         $users = User::with('customer_bank', 'user_updated', 'addresses', 'user_agent')
+            ->select(['id', 'name' , 'email' , 'address' , 'phone' , 'status', 'banned', 'belong','created_at','updated_at'])
             ->where('user_type', 'customer')
             ->whereNotNull('email_verified_at')
-            ->orderBy('id', 'desc');
+            ->orderByDesc('id');
+
 
 //
         if (!empty($request->search)) {
@@ -64,7 +68,7 @@ class CustomerController extends Controller
 
 
 
-        $users = $users->paginate(15);
+        $users = $users-> paginate(15);
         $packages = CustomerPackage::all();
         $kols = User::where('user_type', 'kol')->pluck('name', 'id');
         return view('backend.customer.customers.index', compact('users', 'sort_search', 'packages', 'kols'));

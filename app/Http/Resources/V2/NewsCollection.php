@@ -22,7 +22,7 @@ class NewsCollection extends ResourceCollection
                     'icon' => uploaded_asset($data->icon),
                     'images' => array_merge($images, $video),
                     'content' => "<div style='font-size: larger'> $data->content</div>" ,
-                    'content_text' =>  str_replace(['&nbsp',';'],'',strip_tags($text)) ,
+                    'content_text' =>  str_replace(['&nbsp',';',''],' ',strip_tags($text))  ,
                     'url' => route('home').'/news/'. $data->slug,
                     'created_at' => $data->created_at
                 ];

@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Services\Extend\TelegramService;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,7 +65,13 @@ class Handler extends ExceptionHandler
                     'result' => false
                 ], 401);
             }
-//               TelegramService::sendMessage('Có lỗi hệ thống. Message: ' . $e->getMessage() . '. File: ' . $e->getFile() . '. Line: ' . $e->getLine() . url()->full());
+
+            if($e instanceof ModelNotFoundException){
+                return response()->json([
+                    'message' => 'Data not found',
+                    'result' => false
+                ],404);
+            }
 
             return response()->json([
                 'message' => 'Có lỗi hệ thống. Message: ' . $e->getMessage() . '. File: ' . $e->getFile() . '. Line: ' . $e->getLine(),
