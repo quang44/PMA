@@ -54,24 +54,24 @@
                                        data-separator=" to " autocomplete="off" required>
                             </div>
                         </div>
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 control-label" for="products">{{translate('Type')}}</label>
-                            <div class="col-sm-9">
-                                <select name="type" id="type" class="form-control aiz-selectpicker" required
-                                        data-placeholder="{{ translate('Choose type') }}">
-                                    <option value="link" @if($banner->type == 'link') selected  @endif >{{ trans('Link') }}</option>
-                                    <option value="content" @if($banner->type == 'content') selected  @endif>{{ trans('Content') }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row" id="row_link" @if($banner->type != 'link') style="display: none" @endif>
-                            <label class="col-md-3 col-form-label">
-                                {{translate('Link')}}
-                            </label>
-                            <div class="col-md-9">
-                                <input type="text" placeholder="" value="{{ $banner->link }}" name="link" class="form-control">
-                            </div>
-                        </div>
+{{--                        <div class="form-group row mb-3">--}}
+{{--                            <label class="col-sm-3 control-label" for="products">{{translate('Type')}}</label>--}}
+{{--                            <div class="col-sm-9">--}}
+{{--                                <select name="type" id="type" class="form-control aiz-selectpicker" required--}}
+{{--                                        data-placeholder="{{ translate('Choose type') }}">--}}
+{{--                                    <option value="link" @if($banner->type == 'link') selected  @endif >{{ trans('Link') }}</option>--}}
+{{--                                    <option value="content" @if($banner->type == 'content') selected  @endif>{{ trans('Content') }}</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="form-group row" id="row_link" @if($banner->type != 'link') style="display: none" @endif>--}}
+{{--                            <label class="col-md-3 col-form-label">--}}
+{{--                                {{translate('Link')}}--}}
+{{--                            </label>--}}
+{{--                            <div class="col-md-9">--}}
+{{--                                <input type="text" placeholder="" value="{{ $banner->link }}" name="link" class="form-control">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 {{--                        <div class="form-group row">--}}
 {{--                            <label class="col-md-3 col-form-label">--}}
 {{--                                Đối tượng hiển thị--}}

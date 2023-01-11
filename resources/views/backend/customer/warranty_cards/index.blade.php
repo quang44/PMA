@@ -100,7 +100,7 @@
                                     </td>
                                     <td>
                                         @foreach($warranty_card->cardDetail as $pr)
-                                           - {{$pr->product->name}} <br>
+                                           - {{!$pr->product?'not found':$pr->product->name}} <br>
                                         @endforeach
                                     </td>
                                     <td>

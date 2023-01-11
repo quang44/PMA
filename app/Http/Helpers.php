@@ -1484,3 +1484,27 @@
             return implode(',', $arr);
         }
     }
+
+
+    if (!function_exists('convertAmount')) {
+        function convertAmount($amount){
+            $config=\App\Models\CommonConfig::first();
+            $result=$amount/$config->exchange;
+            return (int)$result.' '.'điểm';
+        }
+    }
+
+    if (!function_exists('number_convert')) {
+        function number_convert($amount){
+            $result=$amount;
+            return number_format($result,0,'.','.');
+        }
+    }
+
+    if (!function_exists('revert_amount')) {
+        function revert_amount($amount){
+            $config=\App\Models\CommonConfig::first();
+            $result=$amount*$config->exchange;
+            return single_price($result);
+        }
+    }

@@ -25,12 +25,6 @@ class WarrantyCardController extends Controller
         $status=null;
         $sort_customer=null;
          $warranty_cards=WarrantyCard::orderBy('updated_at','desc');
-        if($request->search){
-            $search=$request->search;
-            $warranty_cards =$warranty_cards->where('user_name','like','%'.$search.'%')
-                ->orWhere('phone','like','%'.$search.'%')
-                ->orWhere('address','like','%'.$search.'%');
-        }
 
         if((isset($request->sort_customer) ? $request->sort_customer : -1) >= 0){
             $sort_customer=$request->sort_customer;
@@ -40,6 +34,13 @@ class WarrantyCardController extends Controller
         if((isset($request->sort_status) ? $request->sort_status : -1) >= 0){
             $status=$request->sort_status;
             $warranty_cards =$warranty_cards->where('status',$status);
+        }
+
+        if($request->search){
+            $search=$request->search;
+            $warranty_cards =$warranty_cards->where('user_name','like','%'.$search.'%')
+                ->orWhere('phone','like','%'.$search.'%');
+//                ->orWhere('address','like','%'.$search.'%');
         }
 
         $customers = User::whereIn('id', function($query) {

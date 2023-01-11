@@ -45,7 +45,7 @@ class BannerController extends Controller
         $banner = new Banner();
         $banner->name = $request->name;
         $banner->image = $request->image;
-        $banner->type = $request->type;
+        $banner->type = $request->type??'link';
         $banner->link = $request->link;
         $banner->subject = $request->subject;
         $banner->content = $request->content;
@@ -74,7 +74,7 @@ class BannerController extends Controller
         $banner = Banner::find($id);
         $banner->name = $request->name;
         $banner->image = $request->image;
-        $banner->type = $request->type;
+        $banner->type = $request->type??'link';
         $banner->link = $request->link;
         $banner->subject = $request->subject;
         $banner->content = $request->content;

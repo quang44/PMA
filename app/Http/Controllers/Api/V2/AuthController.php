@@ -136,8 +136,8 @@
                 ]);
 
 
-            $amount = $referred_by != 0 ? $package->bonus + $common_config->for_activator : $package->bonus;
-            addWallet($user->id, $amount);
+//            $amount = $referred_by != 0 ? $package->bonus + $common_config->for_activator : $package->bonus;
+            addWallet($user->id, 0);
 
             return $this->createSuccess($user);
 

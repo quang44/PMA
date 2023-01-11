@@ -133,7 +133,7 @@
                 @if(Auth::user()->user_type == 'admin' || in_array('9', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item ">
                         <a href="#"
-                           class="aiz-side-nav-link {{ areActiveRoutes(['warranty_card.index', 'warranty_card.show'])}}">
+                           class="aiz-side-nav-link {{ areActiveRoutes(['warranty_codes.index','warranty_codes.edit','warranty_codes.create', 'product_warranty.index','product_warranty.create','product_warranty.edit','attributes.index','attributes.create','attributes.edit'])}}">
                             <i class="las la-credit-card aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">Cấu hình bảo hành</span>
                             <span class="aiz-side-nav-arrow"></span>

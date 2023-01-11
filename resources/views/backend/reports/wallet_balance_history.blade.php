@@ -14,7 +14,7 @@
                 <form action="{{ route('wallet-balance.balance',$user_id) }}" method="GET">
                     <div class="card-header row gutters-5">
                         <div class="col text-center text-md-left">
-                            <h5 class="mb-md-0 h6">Lịch sử số dư ví - Số dư hiện tại : {{ $wallet }} , {{\App\Models\User::findOrFail(decrypt($user_id))->name}} </h5>
+                            <h5 class="mb-md-0 h6">Lịch sử số dư ví - Số dư hiện tại : {{ number_convert($wallet) }} , {{\App\Models\User::findOrFail(decrypt($user_id))->name}} </h5>
                         </div>
 
                         <div class="col-md-3">
@@ -51,18 +51,18 @@
                                 <td>{{ $key+1 }}</td>
                                 <td>  @if($log->point>0)
                                         <span class="text-success">
-                                        +{{ revert_amount($log->point)}}
+                                        +{{ number_convert($log->point)}}
                                       </span>
                                     @else
                                         <span class="text-danger">
-                                         {{ revert_amount($log->point)}}
+                                         {{ number_convert($log->point)}}
                                      </span>
                                     @endif</td>
-                                <td>{{ date('d-m-Y H:i',strtotime($log->created_at))}}</td>
+                                <td class="w-lg-100px">{{ date('d-m-Y',strtotime($log->created_at))}}</td>
                                 <td>
-                                    {{ revert_amount($log->amount_first)}}
+                                    {{ number_convert($log->amount_first)}}
                                 </td>
-                                <td>{{ revert_amount($log->amount_later)}}</td>
+                                <td>{{ number_convert($log->amount_later)}}</td>
                                 <td>
                                     @if($log->acceptor!=null )
                                         @if($log->acceptor->user_type=="admin" )
