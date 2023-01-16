@@ -47,7 +47,7 @@ class BannerController extends Controller
         $banner->image = $request->image;
         $banner->type = $request->type??'link';
         $banner->link = $request->link;
-        $banner->subject = $request->subject;
+        $banner->subject = $request->subject??'customer';
         $banner->content = $request->content;
         $banner->status = 1;
         $date_var               = explode(" to ", $request->date_range);
@@ -76,7 +76,7 @@ class BannerController extends Controller
         $banner->image = $request->image;
         $banner->type = $request->type??'link';
         $banner->link = $request->link;
-        $banner->subject = $request->subject;
+        $banner->subject = $request->subject??'customer';;
         $banner->content = $request->content;
         $banner->status = 1;
         $date_var               = explode(" to ", $request->date_range);

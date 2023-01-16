@@ -56,7 +56,7 @@
         public function signup(AuthRequest $request)
         {
 
-            $common_config = CommonConfig::first();
+//            $common_config = CommonConfig::first();
 
             $user = User::where('phone', $request->phone)->first();
             if ($user != null) {
@@ -64,50 +64,50 @@
             }
 
             $package = CustomerPackage::where('default', 1)->first();
-
             $user_type = $request->user_type ?? 'customer';
-            $referral_code = $request->referral_code;
+//            $referral_code = $request->referral_code;
             $referred_by = "";
-            if ($user_type == 'kol') {
-                if (!empty($referral_code)) {
-                    $employee = User::where('user_type', 'employee')->where('referral_code', $referral_code)->first();
-                    if (!$employee) {
-                        return $this->sendError('không tìm thấy người giới thiệu');
-                    }
 
-                    $referred_by = $employee->id;
-                }
-            }
+//            if ($user_type == 'kol') {
+//                if (!empty($referral_code)) {
+//                    $employee = User::where('user_type', 'employee')->where('referral_code', $referral_code)->first();
+//                    if (!$employee) {
+//                        return $this->sendError('không tìm thấy người giới thiệu');
+//                    }
+//
+//                    $referred_by = $employee->id;
+//                }
+//            }
 
-            if ($user_type == 'customer') {
-                if (!empty($referral_code)) {
-                    $kol = User::with('customer_group')->where('referral_code', $referral_code)->first();
-                    if (!$kol) {
-                        return $this->sendError('không tìm thấy người giới thiệu');
-
-                    } else {
-
-                        $walletKol = addWallet($kol->id);
-                        $point = config_base64_decode($walletKol->amount);
-                        $amount = $point + $common_config->for_referrer;
-                        log_history($data = ['type' => CustomerBillUtility::TYPE_LOG_ADDITION,
-                            'point' => (int)$amount,
-                            'amount' => (int)$amount * $common_config->exchange,
-                            'amount_first' => $point,
-                            'amount_later' => (int)available_balances($walletKol->user_id),
-                            'user_id' => $user->id,
-                            'content' => "Giới thiệu thành công"
-                        ]);
-
-                        $walletKol->amount = config_base64_encode($amount);
-                        $walletKol->payment_method = translate('Hệ thống');
-                        $walletKol->save();
-                        $referred_by = $kol->id;
-
-
-                    }
-                }
-            }
+//            if ($user_type == 'customer') {
+//                if (!empty($referral_code)) {
+//                    $kol = User::with('customer_group')->where('referral_code', $referral_code)->first();
+//                    if (!$kol) {
+//                        return $this->sendError('không tìm thấy người giới thiệu');
+//
+//                    } else {
+//
+//                        $walletKol = addWallet($kol->id);
+//                        $point = config_base64_decode($walletKol->amount);
+//                        $amount = $point + $common_config->for_referrer;
+//                        log_history($data = ['type' => CustomerBillUtility::TYPE_LOG_ADDITION,
+//                            'point' => (int)$amount,
+//                            'amount' => (int)$amount * $common_config->exchange,
+//                            'amount_first' => $point,
+//                            'amount_later' => (int)available_balances($walletKol->user_id),
+//                            'user_id' => $user->id,
+//                            'content' => "Giới thiệu thành công"
+//                        ]);
+//
+//                        $walletKol->amount = config_base64_encode($amount);
+//                        $walletKol->payment_method = translate('Hệ thống');
+//                        $walletKol->save();
+//                        $referred_by = $kol->id;
+//
+//
+//                    }
+//                }
+//            }
             $address = Address::query()->where('user_id', $request->depot)->first();
 
             $user = new User([
@@ -426,8 +426,9 @@
 
         public function logout(Request $request)
         {
-            $request->user()->tokens()->delete();
-
+//            $request->user()->tokens()->delete();
+            $user = auth()->user();
+            $user->tokens()->delete();
             return response()->json([
                 'result' => true,
                 'message' => translate('Successfully logged out')

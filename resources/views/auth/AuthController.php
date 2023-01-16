@@ -268,7 +268,7 @@
                          return response()->json(['result' => false, 'message' => translate('Please verify your account'), 'data' => null], 401);
                      }*/
                     if ($user->banned == 1) {
-                        return response()->json(['result' => false, 'message' => 'Tài khoản đã tạm thời bị khóa', 'data' => null], 401);
+                        return response()->json(['result' => false, 'message' => 'Tài khoản đã tạm thời bị khóa', 'data' => null], 500);
 
                     }
                     if ($request->device_token) {
@@ -281,10 +281,10 @@
 
                     return $this->loginSuccess($user);
                 } else {
-                    return response()->json(['result' => false, 'message' => 'Tài khoản hoặc mật khẩu không chính xác', 'data' => null], 401);
+                    return response()->json(['result' => false, 'message' => 'Tài khoản hoặc mật khẩu không chính xác', 'data' => null], 500);
                 }
             } else {
-                return response()->json(['result' => false, 'message' => 'Tài khoản không tồn tại', 'data' => null], 401);
+                return response()->json(['result' => false, 'message' => 'Tài khoản không tồn tại', 'data' => null], 500);
             }
         }
 
