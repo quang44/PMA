@@ -51,7 +51,7 @@ class WarrantyCardController extends Controller
             foreach ($warranty->cardDetail as $item) {
                 $item->image = static_asset($item->image);
                 $item->video = static_asset($item->video);
-                $item->color->warranty_duration = $item->color->warranty_duration;
+                $item->color->warranty_duration = $item->color?$item->color->warranty_duration:null;
             }
         }
         return $this->sendSuccess($warranty);
@@ -80,16 +80,21 @@ class WarrantyCardController extends Controller
     }
 
    function validateWarrantyCard(Request $request){
+       $warrantyCode=WarrantyCode::query()->where('code',$request->warranty_code)->first();
+        if($warrantyCode && $warrantyCode->status===1){
+            return $this->sendError('Mã bảo hành đã được sử dụng');
+        }
         $validate=Validator::make($request->all(),[
-            'warranty_code'=>'required|unique:warranty_cards,warranty_code|exists:warranty_codes,code'
+            'warranty_code'=>'required|exists:warranty_codes,code'
         ],[
            'warranty_code.required'=>'không được để trống',
-            'warranty_code.unique'=>'Mã bảo hành đã được sử dụng',
             'warranty_code.exists'=>'Mã bảo hành không tồn tại',
         ]);
         if($validate->fails()){
             return $this->sendError($validate->errors()->first());
         }
+
+
         return  $this->sendSuccess(null);
    }
 

@@ -73,7 +73,7 @@
         function showRequest(Request $request)
         {
             $user=   auth()->user();
-            $gifts = GiftRequest::query()->with('gift')->where('user_id',$user->id);
+            $gifts = GiftRequest::query()->with('gift')->where('user_id',$user->id)->orderByDesc('created_at');
             $gifts = $gifts->paginate($request->limit ?? 10);
 
             $data=[];

@@ -4,8 +4,8 @@
 
     use App\Models\WarrantyCode;
     use App\Models\WarrantyCodeImport;
-    use Illuminate\Http\Request;
     use Excel;
+    use Illuminate\Http\Request;
 
     class WarrantyCodeController extends Controller
     {
@@ -16,8 +16,11 @@
             $warranty_codes = WarrantyCode::query()->orderByDesc('updated_at');
             if ((isset($request->sort_status) ? $request->sort_status : -1) >= 0) {
                 $status = $request->sort_status;
-
                 $warranty_codes = $warranty_codes->where('status', $status);
+            }
+
+            if (!empty($request->search)) {
+                $warranty_codes = $warranty_codes->where('code', $request->search);
             }
 
             $warranty_codes = $warranty_codes->paginate(15);
@@ -56,19 +59,35 @@
         function update(Request $request,$id)
         {
             $request->validate([
-                'code' => 'required|unique:warranty_codes,code,'.$id,
+                'code' => 'required|unique:warranty_codes,code,' . $id,
             ], [
                 'code.required' => 'Vui lòng nhập mã bảo hành',
                 'code.unique' => 'Mã bảo hành đã tồn tại'
             ]);
 
-            $warrantyCode=WarrantyCode::findOrFail($id);
+            $warrantyCode = WarrantyCode::findOrFail($id);
             $warrantyCode->update([
                 'code' => $request->code
             ]);
             flash(translate('Warranty code has been update successfully'))->success();
             return redirect()->route('warranty_codes.index');
         }
+
+        function ChangeStatus(Request $request)
+        {
+            $warrantyCode = WarrantyCode::query()->findOrFail($request->id);
+            if ($warrantyCode) {
+                $warrantyCode->update(['status' =>0, 'use_at' => null]);
+                return response([
+                    'result' => true,
+                ]);
+            } else {
+                return response([
+                    'result' => false,
+                ]);
+            }
+
+    }
 
 
         function importWarrantyCode()
@@ -80,9 +99,9 @@
 
         public function warrantyCodeUpload(Request $request)
         {
-            $request->validate(['bulk_file'=>'required|mimes:xlsx'],[
-                'bulk_file.required'=>'không có phải nào được chọn',
-                'bulk_file.mimes'=>'File không đúng định dạng xlsx'
+            $request->validate(['bulk_file' => 'required|mimes:xlsx'], [
+                'bulk_file.required' => 'không có file nào được chọn',
+                'bulk_file.mimes' => 'File không đúng định dạng xlsx'
             ]);
             if ($request->hasFile('bulk_file')) {
                 $import = new WarrantyCodeImport;
@@ -96,7 +115,7 @@
         {
             WarrantyCode::findOrFail($id)->delete();
             flash(translate('Warranty code has been deleted successfully'))->success();
-            return redirect()->route('warranty_codes.index');
+            return back();
         }
 
 

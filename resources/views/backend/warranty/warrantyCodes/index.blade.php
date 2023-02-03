@@ -73,14 +73,14 @@
                         </select>
                     </div>
                 </div>
-                {{--                <div class="col-md-3">--}}
-                {{--                    <div class="form-group mb-0">--}}
+                                <div class="col-md-3">
+                                    <div class="form-group mb-0">
 
-                {{--                        <input type="text" class="form-control" id="search" name="search"--}}
-                {{--                               @isset($search) value="{{ $search }}"--}}
-                {{--                               @endisset placeholder="{{ translate('Nhập tên khách hàng hoặc số sê-ri') }}">--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+                                        <input type="text" class="form-control" id="search" name="search"
+                                               value="{{ request('search','') }}"
+                                               placeholder="nhập mã và enter">
+                                    </div>
+                                </div>
             </div>
 
             <div class="card-body">
@@ -211,6 +211,9 @@
             }
 
         });
+        $(document).on('change','#search',function () {
+            $('#sort_Card').submit();
+        })
 
         $('#sort_selectCart').on('change', function () {
             $('#sort_Card').submit();
@@ -229,6 +232,7 @@
 
         function bulk_delete() {
             var data = new FormData($('#sort_Card')[0]);
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

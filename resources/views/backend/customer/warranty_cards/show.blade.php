@@ -155,8 +155,13 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class='size-25px d-inline-block mr-2 rounded border'
-                                          style='background:{{$detail->color->code}}'></span>
+                                    @if(!$detail->color)
+                                        <span class='size-25px d-inline-block mr-2 bg-danger '>not found</span>
+                                        @else
+                                        <span class='size-25px d-inline-block mr-2 rounded border'
+                                              style='background:{{$detail->color?$detail->color->code:''}}'></span>
+                                        @endif
+
                                 </td>
                                 <td>{{$detail->qty}}</td>
 

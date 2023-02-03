@@ -16,8 +16,8 @@ class CustomerController extends Controller
         ->select('name','id','email','phone','created_at','updated_at')
         ->where('user_type','customer');
 
-        if($request->search){
-            $customer=$customer->where('name',"%$request->search%");
+        if(!empty($request->search)){
+            $customer=$customer->where('name', 'like',"%$request->search%");
         }
         $customer= $customer->paginate($request->limit??15);
         $customer=$customer->makeHidden(['created_at','updated_at']);

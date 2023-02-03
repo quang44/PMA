@@ -10,40 +10,21 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpsertColumns;
-use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class WarrantyCodeImport implements ToModel, WithHeadingRow,WithUpsertColumns,WithBatchInserts
+class WarrantyCodeImport implements ToModel, WithHeadingRow,WithBatchInserts,WithUpsertColumns,WithChunkReading
 {
 //    private $rows = 0;
     public function model(array $rows)
     {
-        unset($rows['']);
-//        dd($rows);
-          $warrantyCode=WarrantyCode::query()->where('code',$rows['code'])->first();
-              if(!$warrantyCode && isset($rows['code'])){
-                  WarrantyCode::query()->create([
-                      'code' => $rows['code'],
-//                      'status' =>  $rows['status']??0,
-//                      'use_at' =>  $rows['use_at']??null,
-                  ]);
-              }
-//              return back();
+             unset($rows['']);
+            if(!WarrantyCode::query()->where('code',$rows['code'])->exists()){
+                return new  WarrantyCode([
+                    'code'=>$rows['code']
+                ]);
+            }
     }
-
-
-//    public function rules(): array
-//    {
-//        return [
-//            'code' => 'unique:warranty_codes',
-//        ];
-//    }
-//
-//    public function customValidationMessages()
-//    {
-//        return [
-//            'code.unique' => 'Số điện thoại đã tồn tại ',
-//        ];
-//    }
 
 
     public function batchSize(): int
@@ -51,9 +32,15 @@ class WarrantyCodeImport implements ToModel, WithHeadingRow,WithUpsertColumns,Wi
         return 1000;
     }
 
-
     public function upsertColumns()
     {
-        return ['code'];
+        return 'code';
     }
+
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
+
+
 }

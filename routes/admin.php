@@ -76,7 +76,7 @@ Route::controller(UpdateController::class)->group(function () {
 
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin' ]);
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin','doNotCacheResponse']], function() {
-    // category
+    // category ,'doNotCacheResponse'
     Route::resource('categories', CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {
         Route::get('/categories/edit/{id}', 'edit')->name('categories.edit');
@@ -218,6 +218,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin','doNotCacheR
     //       Warranty code
 
     Route::resource('warranty_codes',WarrantyCodeController::class)->only('index','create','store','edit','update');
+    Route::post('warranty_codes/update_status',[WarrantyCodeController::class,'ChangeStatus'])->name('warranty_code.update_status');
     Route::group(['prefix'=>'warranty_codes'],function (){
     Route::controller(WarrantyCodeController::class)->group(function () {
      Route::get('/destroy/{id}','destroy')->name('warranty_codes.destroy');

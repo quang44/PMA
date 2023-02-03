@@ -23,6 +23,7 @@ class AdminController extends Controller
      */
     public function admin_dashboard(Request $request)
     {
+
         CoreComponentRepository::initializeCache();
         $root_categories = Category::where('level', 0)->get();
 
@@ -47,7 +48,6 @@ class AdminController extends Controller
             }
             $item['num_of_sale_data'] = $num_of_sale_data;
             $item['qty_data'] = $qty_data;
-
             return $item;
         });
 
