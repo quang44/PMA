@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Requests\Api\V2\WarrantyCard\WarrantyCardRequest;
 use App\Http\Resources\V2\WarrantyCard as WarrantyCardCollection;
+use App\Models\Color;
 use App\Models\WarrantyCard;
 use App\Models\WarrantyCardDetail;
 use App\Models\WarrantyCode;
@@ -45,14 +46,17 @@ class WarrantyCardController extends Controller
     {
         $warranty = WarrantyCard::query()->with(['code', 'user', 'district', 'ward', 'province', 'cardDetail.product', 'cardDetail.color'])->findOrFail($id);
         $warranty->makeHidden(['created_at', 'updated_at']);
+
         if ($warranty) {
             $warranty->create_time = convertTime($warranty->create_time);
             $warranty->active_time = convertTime($warranty->active_time);
-            foreach ($warranty->cardDetail as $item) {
-                $item->image = static_asset($item->image);
-                $item->video = static_asset($item->video);
-                $item->color->warranty_duration = $item->color?$item->color->warranty_duration:null;
-            }
+            $warranty->cardDetail=collect($warranty->cardDetail)->transform(function ($query){
+                $query->makeHidden(['created_at', 'updated_at']);
+                $query->image = static_asset($query->image);
+                $query->color->warranty_duration = $query->color?$query->color->warranty_duration:null;
+                $query->warranty_duration=timeWarranty($query->warranty_duration);
+                return $query;
+            });
         }
         return $this->sendSuccess($warranty);
     }
@@ -100,14 +104,6 @@ class WarrantyCardController extends Controller
 
     function store(Request $request)
     {
-
-
-//      echo '<pre>';
-//      print_r($request->all());
-//      echo '</pre>';
-//      die();
-//         check warranty code exits
-
 //        create database warranty
         $Warranty = new WarrantyCard;
         $Warranty->fill($request->except('product'));
@@ -119,33 +115,26 @@ class WarrantyCardController extends Controller
 //upload file
             $image = uploadFile($data['img'], 'uploads/warranty');
             $video = uploadFile($data['video'], 'uploads/warranty');
-
-//            $image= $this->UploadFileService->uploadFile($data['img'],'uploads/warranty');
-//            $video= $this->UploadFileService->uploadFile($data['video'],'uploads/warranty');
-//             $image= $Warranty->uploadFile($data['img'],'uploads/warranty');
-//             $video= $Warranty->uploadFile($data['video'],'uploads/warranty');
-
-
+            $color=Color::query()->findOrFail($data['color']);
 // create warranty card detail
-            WarrantyCardDetail::create([
+            WarrantyCardDetail::query()->create([
                 'warranty_card_id' => $Warranty->id,
                 'product_id' => $data['id'],
                 'qty' => $data['qty'],
                 'image' => $image,
                 'video' => $video,
                 'color_id' => $data['color'],
+                'warranty_duration'=>$color->warranty_duration
             ]);
         }
-
-
         $warranty_code = WarrantyCode::query()->where('code', $request->warranty_code)->first();
+
 // update status  warranty code
         if ($warranty_code) {
             $warranty_code->status = 1;
             $warranty_code->use_at = now();
             $warranty_code->save();
         }
-
 
 //        Thẻ bảo hành của bạ đã được tạo thành công
         return $this->createSuccess($Warranty);

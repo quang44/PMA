@@ -1423,7 +1423,7 @@
 //
 //               $text=str_replace($numberTime, ',',"$numberTime năm");
 //               dd($text);
-            return $numberTime;
+            return is_null($time)?null:$numberTime;
         }
     }
 

@@ -127,7 +127,7 @@
                         <table class="table aiz-table mb-0">
                             <thead>
                             <tr>
-                                <th>{{translate('Product')}} </th>
+                                <th> Cửa bảo hành </th>
                                 <th data-breakpoints="lg">{{translate('Image')}}</th>
                                 <th data-breakpoints="lg">{{translate('Video')}}</th>
                                 <th data-breakpoints="lg">{{translate('Color')}}</th>
@@ -160,6 +160,7 @@
                                         @else
                                         <span class='size-25px d-inline-block mr-2 rounded border'
                                               style='background:{{$detail->color?$detail->color->code:''}}'></span>
+                                        <p>Thời gian bảo hành ({{  timeWarranty($detail->warranty_duration)}})</p>
                                         @endif
 
                                 </td>

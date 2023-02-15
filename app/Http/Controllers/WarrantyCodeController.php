@@ -58,6 +58,7 @@
 
         function update(Request $request,$id)
         {
+
             $request->validate([
                 'code' => 'required|unique:warranty_codes,code,' . $id,
             ], [
@@ -66,9 +67,14 @@
             ]);
 
             $warrantyCode = WarrantyCode::findOrFail($id);
-            $warrantyCode->update([
-                'code' => $request->code
-            ]);
+
+            if (isset($request->status )) {
+                $warrantyCode->status = $request->status;
+                $warrantyCode->use_at=null;
+            }
+            $warrantyCode->code= $request->code;
+            $warrantyCode->save();
+
             flash(translate('Warranty code has been update successfully'))->success();
             return redirect()->route('warranty_codes.index');
         }

@@ -31,7 +31,7 @@ class AuthRequest extends FormRequest
             'password'=>'required|min:6',
             'password_confirmation'=>'same:password',
             'rules_accept'=>'required',
-            'email'=>'required|email'
+//            'email'=>'required|email'
         ];
     }
 
@@ -46,8 +46,8 @@ class AuthRequest extends FormRequest
             'password.required'=>'Vui lòng nhập nhập khẩu',
             'password.min'=>'Mật khẩu chứa ít 6 ký tự trở lên',
             'password_confirmation.same'=>'Mật khẩu không khớp',
-            'email.required'=>'Vui lòng nhập email',
-            'email.email'=>'Email không đúng định dạng'
+//            'email.required'=>'Vui lòng nhập email',
+//            'email.email'=>'Email không đúng định dạng'
         ];
     }
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class WarrantyCardDetail extends Model
 {
     use HasFactory;
-    protected $fillable=['warranty_card_id','product_id','color_id','image','qty','video'];
+    protected $fillable=['warranty_card_id','product_id','color_id','image','qty','video','warranty_duration'];
 
     function card(){
         return $this->belongsTo(WarrantyCard::class);

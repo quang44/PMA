@@ -58,10 +58,10 @@
 
 //            $common_config = CommonConfig::first();
 
-            $user = User::where('phone', $request->phone)->first();
-            if ($user != null) {
-                return $this->sendError('Số điện thoại đã được sử dụng');
-            }
+//            $user = User::where('phone', $request->phone)->first();
+//            if ($user != null) {
+//                return $this->sendError('Số điện thoại đã được sử dụng');
+//            }
 
             $package = CustomerPackage::where('default', 1)->first();
             $user_type = $request->user_type ?? 'customer';
