@@ -428,7 +428,8 @@ class AffiliateController extends Controller
     {
         $employee = User::query()
             ->select('id','name','email','avatar','address','phone','referral_code','belong')
-            ->where('user_type', 'employee');
+            ->where('user_type', 'employee')
+            ->where('banned',0);
         if ($request->search) {
             $employee = $employee->where('name', 'like', '%' . $request->search . '%');
         }

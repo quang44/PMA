@@ -134,7 +134,7 @@
                         <table class="table aiz-table mb-0">
                             <thead>
                             <tr>
-                                <th><?php echo e(translate('Product')); ?> </th>
+                                <th> Cửa bảo hành </th>
                                 <th data-breakpoints="lg"><?php echo e(translate('Image')); ?></th>
                                 <th data-breakpoints="lg"><?php echo e(translate('Video')); ?></th>
                                 <th data-breakpoints="lg"><?php echo e(translate('Color')); ?></th>

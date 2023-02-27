@@ -124,15 +124,15 @@
                                             <i class="las la-level-up-alt"></i>
                                         </a>
                                     @else
-                                    @if($user->banned != 1)
-                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_ban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Khóa tài khoản') }}">
-                                            <i class="las la-user-slash"></i>
-                                        </a>
-                                    @else
-                                        <a href="#" class="btn btn-soft-success btn-icon btn-circle btn-sm" onclick="confirm_unban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Kích hoạt tài khoản') }}">
-                                            <i class="las la-user-check"></i>
-                                        </a>
-                                    @endif
+{{--                                    @if($user->banned != 1)--}}
+{{--                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_ban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Khóa tài khoản') }}">--}}
+{{--                                            <i class="las la-user-slash"></i>--}}
+{{--                                        </a>--}}
+{{--                                    @else--}}
+{{--                                        <a href="#" class="btn btn-soft-success btn-icon btn-circle btn-sm" onclick="confirm_unban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Kích hoạt tài khoản') }}">--}}
+{{--                                            <i class="las la-user-check"></i>--}}
+{{--                                        </a>--}}
+{{--                                    @endif--}}
                                 @endif
 <!--                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('affiliate.employee.destroy', $user->id)}}" title="{{ translate('Xóa tài khoản') }}">
                                         <i class="las la-trash"></i>

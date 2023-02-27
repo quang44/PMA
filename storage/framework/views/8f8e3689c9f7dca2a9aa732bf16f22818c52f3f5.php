@@ -175,7 +175,7 @@
                                         
                                         
                                         
-                                        
+                                            
                                     </td>
 
                                 </tr>
@@ -185,22 +185,21 @@
                     </table>
                 </div>
 
-                                <div class="aiz-pagination">
-                                    <?php echo e($warranty_cards->appends(request()->input())->links()); ?>
+                <div class="aiz-pagination">
+                    <?php echo e($warranty_cards->appends(request()->input())->links()); ?>
 
-                                </div>
+                </div>
             </div>
         </form>
     </div>
 
 
 
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('modal'); ?>
     <?php echo $__env->make('modals.confirm_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
-
-<?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('modal'); ?>
     <?php echo $__env->make('modals.delete_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>

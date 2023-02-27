@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Http\Requests\Api\V2\WarrantyCard\WarrantyCardRequest;
 use App\Http\Resources\V2\WarrantyCard as WarrantyCardCollection;
 use App\Models\Color;
 use App\Models\WarrantyCard;
 use App\Models\WarrantyCardDetail;
 use App\Models\WarrantyCode;
+use App\Services\UploadFileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Services\UploadFileService;
+
 class WarrantyCardController extends Controller
 {
     protected $UploadFileService;
@@ -50,11 +50,12 @@ class WarrantyCardController extends Controller
         if ($warranty) {
             $warranty->create_time = convertTime($warranty->create_time);
             $warranty->active_time = convertTime($warranty->active_time);
-            $warranty->cardDetail=collect($warranty->cardDetail)->transform(function ($query){
+            $warranty->cardDetail=collect($warranty->cardDetail)->transform(function ($query) {
                 $query->makeHidden(['created_at', 'updated_at']);
                 $query->image = static_asset($query->image);
-                $query->color->warranty_duration = $query->color?$query->color->warranty_duration:null;
-                $query->warranty_duration=timeWarranty($query->warranty_duration);
+                $query->video = static_asset($query->video);
+//                $query->color->warranty_duration = $query->color?$query->color->warranty_duration:null;
+                $query->warranty_duration = timeWarranty($query->warranty_duration);
                 return $query;
             });
         }
@@ -104,6 +105,7 @@ class WarrantyCardController extends Controller
 
     function store(Request $request)
     {
+//        dd($request->product);
 //        create database warranty
         $Warranty = new WarrantyCard;
         $Warranty->fill($request->except('product'));
@@ -195,6 +197,33 @@ class WarrantyCardController extends Controller
     {
         WarrantyCardDetail::query()->findOrFail($id)->delete();
         return $this->deleteSuccess();
+    }
+
+    function warranty_lookup(Request $request)
+    {
+        $warrantyCard = WarrantyCard::query()
+            ->with(['code', 'user', 'district', 'ward', 'province', 'cardDetail.product', 'cardDetail.color'])
+            ->where('phone', $request->phone);
+        $warrantyCard = $warrantyCard->orderByDesc('updated_at')->get();
+
+        $warrantyCard=collect($warrantyCard)->transform(function ($query){
+            $query->makeHidden(['card_detail','created_at','updated_at','note']);
+            $query->create_time=date('d-m-y H:i:s',$query->create_time);
+            $query->active_time=$query->active_time? date('d-m-y H:i:s',$query->active_time):'--';
+            $query->cardDetail=collect(  $query->cardDetail)->transform(function ($q){
+                $q->warranty_duration=timeWarranty( $q->warranty_duration);
+                $q->image=static_asset($q->image);
+                $q->video=static_asset($q->video);
+                return $q;
+            });
+
+            return $query;
+        });
+        return response([
+            'return' => true,
+            'data' => $warrantyCard
+        ]);
+
     }
 
 }

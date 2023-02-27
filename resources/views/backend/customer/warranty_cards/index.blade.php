@@ -169,7 +169,7 @@
                                         {{--                                               title="{{ translate('Xóa') }}">--}}
                                         {{--                                                <i class="las la-trash"></i>--}}
                                         {{--                                            </a>--}}
-                                        {{--                                            @endif--}}
+                                            {{--                                            @endif--}}
                                     </td>
 
                                 </tr>
@@ -179,21 +179,20 @@
                     </table>
                 </div>
 
-                                <div class="aiz-pagination">
-                                    {{ $warranty_cards->appends(request()->input())->links() }}
-                                </div>
+                <div class="aiz-pagination">
+                    {{ $warranty_cards->appends(request()->input())->links() }}
+                </div>
             </div>
         </form>
     </div>
 
 
 
+@endsection
 @section('modal')
     @include('modals.confirm_modal')
 @endsection
 
-
-@endsection
 
 @section('modal')
     @include('modals.delete_modal')
