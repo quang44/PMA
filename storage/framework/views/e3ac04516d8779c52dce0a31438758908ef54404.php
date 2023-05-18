@@ -46,10 +46,23 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="address"><?php echo e(translate('Address')); ?> :</label>
                         <div class="col-sm-9">
-                            <span><?php echo e($warranty_card->address); ?>, <?php echo e($warranty_card->ward->name); ?>, <?php echo e($warranty_card->district->name); ?>, <?php echo e($warranty_card->province->name); ?></span>
+                            <span><?php echo e($warranty_card->address); ?>, <?php echo e($warranty_card->ward->name??''); ?>, <?php echo e($warranty_card->district->name??''); ?>, <?php echo e($warranty_card->province->name??''); ?></span>
 
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="email">Vị trí :</label>
+                        <div class="col-sm-9">
+                            <input type="hidden" id="map-lat" class="form-control" name="User[lat]" value="">
+                            <input type="hidden" id="map-long" class="form-control" name="User[long]" placeholder="<?php // echo $model->getOldAttribute('long') ?>">
+                            <div style="width:800px; height:400px;" id="map-canvas"></div>
+                            <div class="help-block"></div>
+                        </div>
+                    </div>
+
+
+
 
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="Seri"><?php echo e(translate('Created_at')); ?> :</label>
@@ -136,9 +149,11 @@
                             <tr>
                                 <th> Cửa bảo hành </th>
                                 <th data-breakpoints="lg"><?php echo e(translate('Image')); ?></th>
-                                <th data-breakpoints="lg"><?php echo e(translate('Video')); ?></th>
+
                                 <th data-breakpoints="lg"><?php echo e(translate('Color')); ?></th>
                                 <th data-breakpoints="lg"><?php echo e(translate('Quantity')); ?></th>
+                                <th data-breakpoints="lg"><?php echo e(translate('Status')); ?></th>
+                                <th data-breakpoints="lg"><?php echo e(translate('Action')); ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -147,31 +162,55 @@
                                 <td><?php echo e($detail->product!=null?$detail->product->name:"sản phẩm không tồn tại"); ?></td>
                                 <td>
                                     <div class="row" id="gallery<?php echo e($key); ?>">
-                                    <a class="a-key" data-key="<?php echo e($key); ?>" href="<?php echo e(static_asset($detail->image)); ?>" >
-                                    <img src="<?php echo e(static_asset($detail->image)); ?>" alt="" class="h-60px image" >
+                                    <?php $__currentLoopData = explode(',',$detail->image); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index=> $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="col-3" >
+                                    <a class="a-key" data-key="<?php echo e($key); ?>" href="<?php echo e(static_asset($image)); ?>" >
+                                    <img src="<?php echo e(static_asset($image)); ?>" alt="" class="h-60px image" >
                                     </a>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="row" id="video<?php echo e($key); ?>">
-                                        <a  >
-                                            <video width="200" height="300px" controls>
-                                                <source src="<?php echo e(static_asset($detail->video)); ?>" type="video/mp4">
-                                            </video>
-                                        </a>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </div>
                                 </td>
+
+
+
+
+
+
+
+
+
                                 <td>
                                     <?php if(!$detail->color): ?>
                                         <span class='size-25px d-inline-block mr-2 bg-danger '>not found</span>
                                         <?php else: ?>
                                         <span class='size-25px d-inline-block mr-2 rounded border'
                                               style='background:<?php echo e($detail->color?$detail->color->code:''); ?>'></span>
-                                        <p>Thời gian bảo hành (<?php echo e(timeWarranty($detail->warranty_duration)); ?>)</p>
+                                        <p>Thời gian bảo hành (<?php echo e(timeWarranty($detail->color->warranty_duration)); ?>)</p>
                                         <?php endif; ?>
-
                                 </td>
                                 <td><?php echo e($detail->qty); ?></td>
+                                <td>    <?php if($detail->status==2): ?>
+                                        <span class="text-danger"> Hủy </span>
+                                      <?php endif; ?>
+                                    <?php if($detail->status==0): ?>
+                                        <span class="text-secondary"> Chờ duyệt </span>
+                                     <?php endif; ?>
+
+                                    <?php if($detail->status==1): ?>
+                                    <span class="text-secondary"> Đã duyệt </span>
+                                    <?php endif; ?>
+                                    </td>
+                                <td>
+                                    <?php if($warranty_card->status==0 && $detail->status==0): ?>
+                                        <a href="javascript:void(0)"
+                                           class="btn btn-soft-danger btn-icon btn-circle btn-sm"
+                                           onclick="confirm_ban('<?php echo e(route('warranty_card.ban_detail', encrypt($detail->id))); ?>' ,2);"
+                                           title="<?php echo e(translate('Cancel the card')); ?>">
+                                            <i class="las la-credit-card"></i>
+                                        </a>
+                                        <?php endif; ?>
+                                </td>
 
                             </tr>
                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -211,8 +250,11 @@
 
 <!-- CSS only -->
 <?php $__env->startSection('script'); ?>
-
-
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
     <script>
         $(document).on('focus', '.a-key', function (e) {
             let key = $(this).attr('data-key')
@@ -221,9 +263,69 @@
                 type: 'image',
                 gallery: {
                     enabled: true
+                },
+                image: {
+                    verticalFit: true
+                },
+                zoom:
+                    {
+                        enabled: true,
+                        duration: 300 // don't foget to change the duration also in CSS
+                    },
+                callbacks: {
+                    resize: changeImgSize,
+                    imageLoadComplete:changeImgSize,
+                    change:changeImgSize
                 }
+                // callbacks: {
+                //     open: function () {
+                //         $(".mfp-figure figure").css("cursor", "zoom-in");
+                //         $(".mfp-figure figure").zoom({
+                //             on: "click",
+                //             onZoomIn: function () {
+                //                 $(this).css("cursor", "zoom-out");
+                //             },
+                //             onZoomOut: function () {
+                //                 $(this).css("cursor", "zoom-in");
+                //             }
+                //         });
+                //     },
+                // }
             })
         })
+
+        function changeImgSize(){
+            var img = this.content.find('img');
+            img.css('max-height', '100%');
+            img.css('width', '100%');
+            img.css('max-width', 'auto');
+        }
+
+        // var zoom_percent = "100";
+        // function zoom(zoom_percent){
+        //     $(".mfp-figure figure").click(function(){
+        //         switch(zoom_percent){
+        //             case "100":
+        //                 zoom_percent = "120";
+        //                 break;
+        //             case "120":
+        //                 zoom_percent = "150";
+        //                 break;
+        //             case "150":
+        //                 zoom_percent = "200";
+        //                 $(".mfp-figure figure").css("cursor", "zoom-out");
+        //                 break;
+        //             case "200":
+        //                 zoom_percent = "100";
+        //                 $(".mfp-figure figure").css("cursor", "zoom-in");
+        //                 break;
+        //         }
+        //         $(this).css("zoom", zoom_percent+"%");
+        //     });
+        // }
+
+
+
 
         $(document).on('focus', '.a-video', function (e) {
             let key = $(this).attr('data-key')
@@ -234,14 +336,6 @@
                 }
             })
         })
-        // $(`div#gallery`).magnificPopup({
-        //     delegate: 'a',
-        //     type: 'image',
-        //     gallery: {
-        //         enabled: true
-        //     }
-        // })
-
 
         $('.image').on('click', function () {
             let img = $(this).attr('src');
@@ -260,6 +354,117 @@
         }
 
     </script>
+    <script type="text/javascript">
+        var igl = 0;
+        var arrmarker = new Array();
+
+        var platform = new H.service.Platform({
+            'apikey': 'IXaetlCntXwtUCqEMmvbcaWYtsD8aSH1tfpSl-ElCS8' // Make sure to add your own API KEY
+        });
+
+        function switchMapLanguage(map, platform) {
+            // Create default layers
+            let defaultLayers = platform.createDefaultLayers({
+                lg: 'vi'
+            });
+            // Set the normal map variant of the vector map type
+            map.setBaseLayer(defaultLayers.vector.normal.map);
+
+            var ui = H.ui.UI.createDefault(map, defaultLayers);
+            // Remove not needed settings control
+            ui.removeControl('mapsettings');
+        }
+
+        function moveMapTo(map, lat, lng) {
+            map.setCenter({
+                lat: lat,
+                lng: lng
+            });
+            map.setZoom(15);
+            makeMarker(map, lat, lng);
+        }
+
+        function setUpClickListener(map) {
+            map.addEventListener('tap', function(evt) {
+                //get lat lng click
+                var coord = map.screenToGeo(evt.currentPointer.viewportX,
+                    evt.currentPointer.viewportY);
+                var LocationOfMarker = {
+                    lat: Math.abs(coord.lat.toFixed(4)),
+                    lng: Math.abs(coord.lng.toFixed(4))
+                };
+                makeMarker(map, coord.lat.toFixed(4), coord.lng.toFixed(4));
+                jQuery('#map-lat').val(Math.abs(coord.lat.toFixed(4)));
+                jQuery('#map-long').val(Math.abs(coord.lng.toFixed(4)));
+            });
+        }
+
+        function makeMarker(map, lat, lng) {
+            var LocationOfMarker = {
+                lat: lat,
+                lng: lng
+            };
+            var svgIcon = '<svg width="24" height="24" ' +
+                'xmlns="http://www.w3.org/2000/svg">' +
+                '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+                'height="22" /><text x="12" y="18" font-size="12pt" ' +
+                'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+                'fill="white">N</text></svg>';
+
+            // Create a marker icon from an image URL:
+            var icon = new H.map.Icon(svgIcon, {
+                size: {
+                    w: 20,
+                    h: 25
+                }
+            });
+            // Create a marker using the previously instantiated icon:
+            i = window.igl;
+            arrmarker[i] = new H.map.Marker(LocationOfMarker, {
+                icon: icon,
+            });
+            map.addObject(arrmarker[i]);
+            $('#latlng').val('' + lat + ',' + lng);
+            // console.log(i);
+            if (i - 1 >= 0) {
+                map.removeObject(arrmarker[i - 1]);
+            }
+            window.igl = i + 1;
+        }
+
+
+        var defaultLayers = platform.createDefaultLayers();
+        var LocationOfMarker = {
+            lat:<?= !empty(explode(',',$warranty_card->latlng)[0])?explode(',',$warranty_card->latlng)[0]:'21.0226967'  ?>,
+            lng:<?=  !empty(explode(',',$warranty_card->latlng)[1])?explode(',',$warranty_card->latlng)[1]:'105.8369637'   ?>,
+        };
+        //Step 2: initialize a map - this map is centered over Europe
+        var map = new H.Map(document.getElementById('map-canvas'),
+            defaultLayers.vector.normal.map, {
+                center: LocationOfMarker,
+                zoom: 1,
+                type: 'base',
+                pixelRatio: window.devicePixelRatio || 1
+            });
+
+
+        window.addEventListener('resize', () => map.getViewPort().resize());
+
+        //Step 3: make the map interactive
+        // MapEvents enables the event system
+        // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+        var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+        // Create the default UI components
+        var ui = H.ui.UI.createDefault(map, defaultLayers);
+        // Now use the map as required...
+        window.onload = function() {
+            moveMapTo(map, ' <?= !empty(explode(',',$warranty_card->latlng)[0])?explode(',',$warranty_card->latlng)[0]:'21.0226967'  ?> ', ' <?= !empty(explode(',',$warranty_card->latlng)[1])?explode(',',$warranty_card->latlng)[1]:'105.8369637'  ?>');
+        }
+        setUpClickListener(map);
+        switchMapLanguage(map, platform);
+    </script>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('backend.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH F:\PHP\PMA\resources\views/backend/customer/warranty_cards/show.blade.php ENDPATH**/ ?>

@@ -12,9 +12,10 @@
 </div>
 <div class="">
     <form class="form form-horizontal mar-top" action="{{route('product_warranty.store')}}" method="POST" enctype="multipart/form-data" id="choice_form">
+        @csrf
+
         <div class="row gutters-5">
             <div class="col-lg-12">
-                @csrf
                 <input type="hidden" name="added_by" value="admin">
                 <div class="card">
                     <div class="card-header">
@@ -25,6 +26,19 @@
                             <label class="col-md-3 col-from-label">{{translate('Product Name')}} <span class="text-danger">*</span></label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control" name="name" placeholder="{{ translate('Product Name') }}" onchange="update_sku()" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0 h6">Điểm </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-from-label">Điểm <span class="text-danger">*</span></label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" name="unit" placeholder="Điểm"  required>
                             </div>
                         </div>
                     </div>
@@ -59,11 +73,11 @@
 
             <div class="col-12">
                 <div class="btn-toolbar float-right mb-3" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group mr-2" role="group" aria-label="Third group">
-                        <button type="submit" name="button" value="unpublish" class="btn btn-primary action-btn">{{ translate('Save & Unpublish') }}</button>
-                    </div>
+{{--                    <div class="btn-group mr-2" role="group" aria-label="Third group">--}}
+{{--                        <button type="submit" name="button" value="unpublish" class="btn btn-primary action-btn">{{ translate('Save & Unpublish') }}</button>--}}
+{{--                    </div>--}}
                     <div class="btn-group" role="group" aria-label="Second group">
-                        <button type="submit" name="button" value="publish" class="btn btn-success action-btn">{{ translate('Save & Publish') }}</button>
+                        <button type="submit" name="button" value="publish" class="btn btn-success action-btn">{{ translate('Save') }}</button>
                     </div>
                 </div>
             </div>

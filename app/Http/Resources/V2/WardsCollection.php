@@ -19,6 +19,7 @@ class WardsCollection extends ResourceCollection
                 return [
                     'id'      =>(int) $data->id,
                     'name' => $data->name,
+                    'latlng'=>$data->latlng
                 ];
             })
         ];

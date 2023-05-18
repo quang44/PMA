@@ -64,10 +64,9 @@
                         @if($type == 'Seller' || $type == 'All')
                             <th data-breakpoints="md">{{translate('Added By')}}</th>
                         @endif
-
+                        <th data-breakpoints="md">Điểm</th>
                         <th data-breakpoints="md">{{translate('Status')}}</th>
                         <th data-breakpoints="md">{{translate('Created_at')}}</th>
-
                         <th data-breakpoints="sm" class="text-right">{{translate('Options')}}</th>
                     </tr>
                 </thead>
@@ -94,9 +93,11 @@
                                 </div>
                             </div>
                         </td>
-                        @if($type == 'Seller' || $type == 'All')
-                            <td>{{$product->user!=null ?$product->user->name:'người dùng không tồn tại' }}</td>
-                        @endif
+                        <td>{{$product->unit??0}}</td>
+{{--                        @if($type == 'Seller' || $type == 'All')--}}
+{{--                            <td>{{$product->user!=null ?$product->user->name:'người dùng không tồn tại' }}</td>--}}
+{{--                        @endif--}}
+
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input value="4" type="checkbox" @if($product->status==0) checked @endif onclick="ChangeStatus( {{$product->id}},{{$product->status}})" >

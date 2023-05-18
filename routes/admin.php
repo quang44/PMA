@@ -75,7 +75,7 @@ Route::controller(UpdateController::class)->group(function () {
 
 
 Route::get('/admin', [AdminController::class, 'admin_dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin' ]);
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin','doNotCacheResponse']], function() {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
     // category ,'doNotCacheResponse'
     Route::resource('categories', CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {
@@ -242,6 +242,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin','doNotCacheR
             Route::post('card_combinations_edit','card_combination_edit')->name('warranty_card.combinations_edit');
             Route::get('.ban/{id}', 'ban')->name('warranty_card.ban');
             Route::get('/destroy/{id}', 'destroy')->name('warranty_card.destroy');
+            Route::post('/buck-delete', 'buck_delete')->name('warranty_card.buck-delete');
+            Route::get('ban-detail/{id}', 'ban_detail')->name('warranty_card.ban_detail');
+
         });
     });
 

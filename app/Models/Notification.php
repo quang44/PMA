@@ -16,6 +16,9 @@ class Notification extends Model
     function card(){
         return $this->belongsTo(WarrantyCard::class,'item_id','id')->with('user','active_user_id','cardDetail.product');
     }
+    function cardDetail(){
+        return $this->belongsTo(WarrantyCardDetail::class,'item_id','id')->with('card','product');
+    }
     function gifts(){
         return $this->belongsTo(GiftRequest::class,'item_id','id')->with(['gift','user','accept']);
     }

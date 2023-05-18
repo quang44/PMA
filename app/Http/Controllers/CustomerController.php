@@ -82,7 +82,8 @@ class CustomerController extends Controller
     public function create()
     {
         $province=Province::all();
-        $depots=User::where('user_type','employee')->where('belong',0)->get();
+        $depots=User::query()->where('user_type','employee')
+            ->where('banned',0) ->get();
         return view('backend.customer.customers.create', compact('province','depots'));
     }
 
@@ -105,16 +106,17 @@ class CustomerController extends Controller
         $user->password=Hash::make($request->password);
         $user->customer_package_id=CustomerPackage::where('default',1)->first()->id;
         $user->email_verified_at=now();
+        $user->belong=$request->depot;
         $user->save();
 
-        Address::create([
-            'user_id'=>$user->id,
-            'province_id'=>$request->province,
-            'district_id'=>$request->district,
-            'ward_id'=>$request->ward,
-            'phone'=>$request->phone,
-            'name'=>$request->name,
-        ]);
+//        Address::create([
+//            'user_id'=>$user->id,
+//            'province_id'=>$request->province,
+//            'district_id'=>$request->district,
+//            'ward_id'=>$request->ward,
+//            'phone'=>$request->phone,
+//            'name'=>$request->name,
+//        ]);
         $wallet = new Wallet;
         $wallet->user_id = $user->id;
         $amount = $referred_by != null ? $package->bonus + $common_config->for_activator : $package->bonus;
@@ -134,7 +136,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('customer_package')->findOrFail(decrypt($id));
+        $user = User::with(['customer_package','user_agent'])->findOrFail(decrypt($id));
         return view('backend.customer.customers.show', compact('user'));
     }
 
@@ -148,12 +150,12 @@ class CustomerController extends Controller
     {
 
         $user = User::with('user_agent','address_one')->findOrFail(decrypt($id));
-        $province=Province::all();
-        $districts=District::all();
-        $wards=Ward::all();
-        $depots=User::where('user_type','employee')->where('belong',0)->get();
+//        $province=Province::all();
+//        $districts=District::all();
+//        $wards=Ward::all();
+        $depots=User::where('user_type','employee')->where('banned',0)->get();
 
-        return view('backend.customer.customers.edit', compact('user','province','depots','districts','wards'));
+        return view('backend.customer.customers.edit', compact('user','depots'));
     }
 
     /**
@@ -184,15 +186,16 @@ class CustomerController extends Controller
         $user->updated_by = auth()->id();
         $user->belong = $request->depot;
         $user->save();
-        $address = Address::query()->where('user_id', $user->id)->first();
-        if($address){
-            $address->province_id = $request->province;
-            $address->district_id = $request->district;
-            $address->ward_id = $request->ward;
-            $address->phone = $request->phone;
-            $address->name = $request->name;
-            $address->save();
-        }
+//        $address = Address::query()->where('user_id', $user->id)->first();
+//        if($address){
+//            $address->province_id = $request->province;
+//            $address->district_id = $request->district;
+//            $address->ward_id = $request->ward;
+//            $address->phone = $request->phone;
+//            $address->name = $request->name;
+//            $address->save();
+//        }
+
 
 //        if ($con1 == 1 && $con2 == 1) {
 //            if (!empty($user->device_token)) {

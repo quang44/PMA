@@ -7,10 +7,10 @@
     use App\Http\Controllers\OTPVerificationController;
     use App\Http\Requests\Api\V2\Auth\AuthRequest;
     use App\Models\Address;
-    use App\Models\CommonConfig;
     use App\Models\CustomerPackage;
     use App\Models\Notification;
     use App\Models\User;
+    use App\Models\WarrantyCard;
     use App\Utility\CustomerBillUtility;
     use Hash;
     use Illuminate\Http\Request;
@@ -273,6 +273,8 @@
             $Notification = Notification::query()
                 ->with(['card', 'gifts'])
                 ->findOrFail($id);
+            $Notification->load('gifts', 'card', 'cardDetail');
+
             $Notification->read_at = strtotime(now());
             $Notification->save();
             $Notification->title = CustomerBillUtility::$arrayTypeNotification[$Notification->type];
@@ -310,6 +312,24 @@
                     'address' => $address
                 ];
             }
+
+            if ($Notification->cardDetail && $Notification->type == 1) {
+                $card = WarrantyCard::query()->find($Notification->cardDetail->warranty_card_id);
+                $card->load('ward', 'province', 'district');
+                $productName = $Notification->cardDetail->product->name;
+                $productName = ucfirst($productName);
+                $address = $card->address . ', ' . $card->ward->name ?? '' . ', ' . $card->district->name ?? '' . ', ' . $card->province->name ?? '';
+                $data = [
+                    'username' => $card->user_name,
+                    'name' => $productName,
+                    'status' => $Notification->cardDetail->status,
+                    'reason' => $Notification->cardDetail->reason,
+                    'accept_by' => $Notification->active_user_id->name ?? null,
+                    'point' => $card->point,
+                    'address' => $address
+                ];
+            }
+
             $Notification->item = $data;
 //            dd($data);
 

@@ -10,7 +10,7 @@ class WarrantyCard extends Model
     use HasFactory;
     protected $fillable=['user_id','user_name','address','phone',
         'warranty_code','video_url', 'point',
-        'note','reason','active_time','status','create_time','accept_by','province_id','district_id','ward_id'];
+        'note','reason','active_time','status','create_time','accept_by','province_id','district_id','ward_id','latlng'];
 
     function brand(){
         return $this->belongsTo(Brand::class);
@@ -23,7 +23,7 @@ class WarrantyCard extends Model
     }
 
     function cardDetail(){
-        return $this->hasMany(WarrantyCardDetail::class);
+        return $this->hasMany(WarrantyCardDetail::class)->with('product');
     }
     public function province(){
         return $this->belongsTo(Province::class)->select('name','id');

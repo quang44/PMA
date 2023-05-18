@@ -23,14 +23,14 @@
                 <h5 class="mb-0 h6">{{translate('Account depot')}}</h5>
             </div>
 
-<!--            <div class="dropdown mb-2 mb-md-0">
+          <div class="dropdown mb-2 mb-md-0">
                 <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
                     {{translate('Bulk Action')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#" onclick="bulk_delete()">{{translate('Delete selection')}}</a>
                 </div>
-            </div>-->
+            </div>
             <div class="col-md-3">
                 <div class="form-group mb-0">
                     <select name="banned" id="banned" class="form-control aiz-selectpicker "
@@ -55,7 +55,7 @@
                 <thead>
                     <tr>
                         <!--<th data-breakpoints="lg">#</th>-->
-<!--                        <th>
+                      <th>
                             <div class="form-group">
                                 <div class="aiz-checkbox-inline">
                                     <label class="aiz-checkbox">
@@ -64,8 +64,8 @@
                                     </label>
                                 </div>
                             </div>
-                        </th>-->
-                        <th>#</th>
+                        </th>
+{{--                        <th>#</th>--}}
                         <th>{{translate('Tên Tổng kho')}}</th>
                         <th data-breakpoints="md">{{translate('Email')}}</th>
                         <th data-breakpoints="md">{{translate('Phone')}}</th>
@@ -78,17 +78,17 @@
                     @foreach($users as $key => $user)
                         @if ($user != null)
                             <tr>
-                                <td>{{ ($key+1) + ($users->currentPage() - 1)*$users->perPage() }}</td>
-{{--                             <td>--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <div class="aiz-checkbox-inline">--}}
-{{--                                            <label class="aiz-checkbox">--}}
-{{--                                                <input type="checkbox" class="check-one" name="id[]" value="{{$user->id}}">--}}
-{{--                                                <span class="aiz-square-check"></span>--}}
-{{--                                            </label>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </td>--}}
+{{--                                <td>{{ ($key+1) + ($users->currentPage() - 1)*$users->perPage() }}</td>--}}
+                             <td>
+                                    <div class="form-group">
+                                        <div class="aiz-checkbox-inline">
+                                            <label class="aiz-checkbox">
+                                                <input type="checkbox" class="check-one" name="id[]" value="{{$user->id}}">
+                                                <span class="aiz-square-check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td>@if($user->banned == 1) <i class="fa fa-ban text-danger" aria-hidden="true"></i> @endif {{$user->name}}</td>
                                 <td>@if($user->email!=null) {{$user->email}} @else  <span class="text-danger">Chưa có email</span> @endif</td>
                                 <td>{{$user->phone}}</td>
@@ -99,9 +99,9 @@
 {{--                                    {{ single_price($user->balance) }}--}}
 {{--                                </td>--}}
                                 <td class="text-left">
-                                       {{$user->address_one!=null?$user->address_one->province->name:''}}
-                                        - {{$user->address_one!=null?$user->address_one->district->name:''}}
-                                        - {{$user->address_one!=null ?$user->address_one->ward->name:''}}
+                                          {{   !$user->address_one?'' :$user->address_one->province->name}}
+                                        - {{!$user->address_one?'': $user->address_one->district->name}}
+                                        - {{ !$user->address_one?'':  $user->address_one->ward->name}}
                                 </td>
 
                                 <td class="text-center">
@@ -124,19 +124,19 @@
                                             <i class="las la-level-up-alt"></i>
                                         </a>
                                     @else
-{{--                                    @if($user->banned != 1)--}}
-{{--                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_ban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Khóa tài khoản') }}">--}}
-{{--                                            <i class="las la-user-slash"></i>--}}
-{{--                                        </a>--}}
-{{--                                    @else--}}
-{{--                                        <a href="#" class="btn btn-soft-success btn-icon btn-circle btn-sm" onclick="confirm_unban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Kích hoạt tài khoản') }}">--}}
-{{--                                            <i class="las la-user-check"></i>--}}
-{{--                                        </a>--}}
-{{--                                    @endif--}}
+                                    @if($user->banned != 1)
+                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="confirm_ban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Khóa tài khoản') }}">
+                                            <i class="las la-user-slash"></i>
+                                        </a>
+                                    @else
+                                        <a href="#" class="btn btn-soft-success btn-icon btn-circle btn-sm" onclick="confirm_unban('{{route('customers.ban', encrypt($user->id))}}');" title="{{ translate('Kích hoạt tài khoản') }}">
+                                            <i class="las la-user-check"></i>
+                                        </a>
+                                    @endif
                                 @endif
-<!--                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('affiliate.employee.destroy', $user->id)}}" title="{{ translate('Xóa tài khoản') }}">
+                                   <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('affiliate.depot.destroy', $user->id)}}" title="{{ translate('Xóa tài khoản') }}">
                                         <i class="las la-trash"></i>
-                                    </a>-->
+                                    </a>
                                 </td>
                             </tr>
                         @endif
@@ -152,12 +152,11 @@
 @endsection
 
 @section('modal')
+    @include('modals.delete_modal')
     @include('modals.confirm_banned_modal')
 @endsection
 
-@section('modal')
-    @include('modals.delete_modal')
-@endsection
+
 
 @section('script')
     <script type="text/javascript">
@@ -243,7 +242,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "{{route('bulk-customer-delete')}}",
+                url: "{{route('affiliate.depot.buck_delete')}}",
                 type: 'POST',
                 data: data,
                 cache: false,

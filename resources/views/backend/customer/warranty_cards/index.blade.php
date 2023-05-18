@@ -5,19 +5,25 @@
         <div class=" col-md-6 align-items-center">
             <h1 class="h3">{{translate('List of Warranty')}}</h1>
         </div>
-        {{--        <div class="col-md-6 text-md-right">--}}
-        {{--            <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">--}}
-        {{--                <span>{{translate('Add new card')}}</span>--}}
-        {{--            </a>--}}
-        {{--        </div>--}}
+                <div class="col-md-6 text-md-right">
+                    <a href="{{route('warranty_card.create')}}" class="btn btn-circle btn-info">
+                        <span>{{translate('Add new card')}}</span>
+                    </a>
+                </div>
     </div>
 
     <div class="card">
         <form class="" id="sort_Card" action="" method="GET">
             <div class="card-header row gutters-5">
-                <div class="col">
-                    <h5 class="mb-0 h6">{{translate('List of Warranty')}}</h5>
+                <div class="dropdown mb-2 mb-md-0">
+                    <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
+                        {{translate('Bulk Action')}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="bulk_delete()"> {{translate('Delete selection')}}</a>
+                    </div>
                 </div>
+
                 <div class="col-md-3">
                     <div class="form-group mb-0">
                         <select name="sort_customer" id="sort_selectCart" class="form-control aiz-selectpicker"
@@ -69,6 +75,14 @@
                     <table class="table aiz-table mb-0">
                         <thead>
                         <tr>
+                            <th data-breakpoints="lg"><div class="form-group">
+                                    <div class="aiz-checkbox-inline">
+                                        <label class="aiz-checkbox">
+                                            <input type="checkbox" class="check-all">
+                                            <span class="aiz-square-check"></span>
+                                        </label>
+                                    </div>
+                                </div></th>
                             <th data-breakpoints="md">Người bảo hành</th>
                             <th data-breakpoints="md">{{translate('Customer info')}}</th>
                             <th data-breakpoints="md">Cửa bảo hành</th>
@@ -86,6 +100,16 @@
                             @if ($warranty_card != null)
                                 <tr>
                                     <td>
+                                        <div class="form-group d-inline-block">
+                                            <label class="aiz-checkbox">
+                                                <input type="checkbox" class="check-one" name="id[]"
+                                                       value="{{$warranty_card->id}}">
+                                                <span class="aiz-square-check"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+
+                                    <td>
                                         @if($warranty_card->user)
                                             {{$warranty_card->user->name}}
                                         @else
@@ -94,7 +118,7 @@
                                         </td>
                                     <td>
                                         {{translate('Customer')}} : {{ ucfirst($warranty_card->user_name)}} <br>
-                                        {{translate('Address')}} : {{ ucfirst($warranty_card->address)}}, {{ ucfirst($warranty_card->ward->name)}}, {{ ucfirst($warranty_card->district->name)}}, {{ ucfirst($warranty_card->province->name)}} <br>
+                                        {{translate('Address')}} : {{$warranty_card->address?ucfirst($warranty_card->address):null}}, {{$warranty_card->ward? ucfirst($warranty_card->ward->name):null}}, {{$warranty_card->district? ucfirst($warranty_card->district->name):null}}, {{ $warranty_card->province?ucfirst($warranty_card->province->name):null}} <br>
                                         {{translate('phone')}} : {{ ucfirst($warranty_card->phone)}}
 
                                     </td>
@@ -162,14 +186,16 @@
                                                 <i class="las la-eye"></i>
                                             </a>
 
-                                        {{--                                        @if($warranty_card->status==\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_CANCEL])--}}
-                                        {{--                                            <a href="#"--}}
-                                        {{--                                               class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"--}}
-                                        {{--                                               data-href="{{route('warranty_card.destroy', encrypt($warranty_card->id))}}"--}}
-                                        {{--                                               title="{{ translate('Xóa') }}">--}}
-                                        {{--                                                <i class="las la-trash"></i>--}}
-                                        {{--                                            </a>--}}
-                                            {{--                                            @endif--}}
+{{--                                    @if($warranty_card->status==\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_CANCEL]--}}
+{{--|| $warranty_card->status==\App\Utility\WarrantyCardUtility::$aryStatus[\App\Utility\WarrantyCardUtility::STATUS_SUCCESS]--}}
+{{-- )--}}
+                                        <a href="#"
+                                           class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
+                                           data-href="{{route('warranty_card.destroy', encrypt($warranty_card->id))}}"
+                                           title="{{ translate('Xóa') }}">
+                                            <i class="las la-trash"></i>
+                                        </a>
+{{--                                            @endif--}}
                                     </td>
 
                                 </tr>
@@ -190,15 +216,13 @@
 
 @endsection
 @section('modal')
+    @include('modals.delete_modal')
     @include('modals.confirm_modal')
 @endsection
 
 
-@section('modal')
-    @include('modals.delete_modal')
-@endsection
-
 @section('script')
+    <script src="{{ asset('public/assets/js/sweetalert2@11.js') }}"></script>
     <script type="text/javascript">
 
         window.onload = function () {
@@ -213,6 +237,19 @@
                 })
             })
         }
+        $(document).on("change", ".check-all", function() {
+            if(this.checked) {
+                // Iterate each checkbox
+                $('.check-one:checkbox').each(function() {
+                    this.checked = true;
+                });
+            } else {
+                $('.check-one:checkbox').each(function() {
+                    this.checked = false;
+                });
+            }
+
+        });
 
         $('#search').change(function () {
             $('#sort_Card').submit();
@@ -239,7 +276,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "{{route('bulk-customer-delete')}}",
+                url: "{{route('warranty_card.buck-delete')}}",
                 type: 'POST',
                 data: data,
                 cache: false,
@@ -247,6 +284,7 @@
                 processData: false,
                 success: function (response) {
                     if (response == 1) {
+                        Swal.fire('Xóa thành công')
                         location.reload();
                     }
                 }

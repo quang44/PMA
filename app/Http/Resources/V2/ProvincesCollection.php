@@ -19,7 +19,8 @@ class ProvincesCollection extends ResourceCollection
                 return [
                     'id'      =>(int) $data->id,
                     'name' => $data->name,
-                    'type' => $data->type
+                    'type' => $data->type,
+                    'latlng'=>$data->latlng
                 ];
             })
         ];

@@ -8,6 +8,7 @@ use App\Models\Color;
 use App\Models\CommonConfig;
 use App\Models\Product;
 use App\Models\ProductStock;
+use App\Models\Province;
 use App\Models\Upload;
 use App\Models\User;
 use App\Models\Wallet;
@@ -20,7 +21,7 @@ use Illuminate\Http\Request;
 class WarrantyCardController extends Controller
 {
     //
-    function  index(Request $request){
+      function  index(Request $request){
         $search=null;
         $status=null;
         $sort_customer=null;
@@ -43,6 +44,7 @@ class WarrantyCardController extends Controller
 //                ->orWhere('address','like','%'.$search.'%');
         }
 
+
         $customers = User::whereIn('id', function($query) {
             $query->select('user_id')->from(with(new WarrantyCard)->getTable());
         })->get();
@@ -55,9 +57,34 @@ class WarrantyCardController extends Controller
     public function ban($id,Request $request)
     {
 
-            $WarrantyCard = WarrantyCard::with('brand')->findOrFail(decrypt($id));
+
+
+        $WarrantyCard = WarrantyCard::with('brand','cardDetail')->findOrFail(decrypt($id));
+            if(!$WarrantyCard->cardDetail){
+                flash(translate('Lỗi không tìm thấy cửa được bảo hành'))->warning();
+                return back();
+            }
+//            dd($product);
+        $cardetail=$WarrantyCard->cardDetail->toArray();
+        $cardetail=collect($cardetail)->transform(function ($item){
+              $item['product']['qty']=$item['qty'];
+              $item['product']['status']=$item['status'];
+             return $item;
+        });
+        $product=array_column($cardetail->toArray(),'product');
+            $point=collect($product)->reduce(function ($init,$item)  {
+                if($item['status']===0){
+                $init+=(int)$item['unit']*(int)$item['qty'];
+              }
+                return  $init;
+            },0);
+
             $commonConfig=CommonConfig::first();
             $user=User::find($WarrantyCard->user_id);
+            if(!$user){
+                flash(translate('Lỗi không tìm thấy người tạo'))->warning();
+                return back();
+            }
             $content="";
             $wallet= Wallet::where('user_id',$WarrantyCard->user_id)->first();
             if(!$wallet){
@@ -65,23 +92,24 @@ class WarrantyCardController extends Controller
                     'user_id'=>$user->id,
                 ]);
             }
-            $amount=config_base64_decode($wallet->amount);
+          $amount=config_base64_decode($wallet->amount);
          $WarrantyCard->accept_by=auth()->id();
          $WarrantyCard->active_time=strtotime(now());
         if ($request->status==1) {
             $WarrantyCard->status = 1;
-//            $amount=config_base64_decode($wallet->amount);
-            $wallet->amount=config_base64_encode($amount+$commonConfig->for_activator);
+            $amount=config_base64_decode($wallet->amount);
+            $wallet->amount=config_base64_encode($amount+$point);
             $wallet->updated_at=date('Y-m-d H:i:s');
             $wallet->save();
 
-            $user->balance=$user->balance+(int)$commonConfig->for_activator;
-            $user->save();
-            $content="Bạn đã được +$commonConfig->for_activator điểm do kích hoạt thẻ bảo hành thành công của khách hàng $WarrantyCard->user_name  ";
+//            $user->balance=$user->balance+(int)$commonConfig->for_activator;
+//            $user->save();
+
+            $content="Bạn đã được +$point điểm do kích hoạt thẻ bảo hành thành công của khách hàng $WarrantyCard->user_name  ";
 
             log_history(['type'=>CustomerBillUtility::TYPE_LOG_ADDITION,
-                'point'=>(int)$commonConfig->for_activator,
-                'amount'=>(int)$commonConfig->for_activator*$commonConfig->exchange,
+                'point'=>(int)$point,
+                'amount'=>(int)$point*$commonConfig->exchange,
                 'object'=>0,
                 'amount_first'=>(int)$amount,
                 'amount_later'=>(int)config_base64_decode($wallet->amount),
@@ -89,11 +117,18 @@ class WarrantyCardController extends Controller
                 'accept_by'=>auth()->id(),
                 'content'=>$content
             ]);
+          WarrantyCardDetail::query()->where('warranty_card_id',decrypt($id))
+               ->where('status',0)->update(['status'=>1]);
+
             flash(translate('Thẻ đã được kích hoạt thành công'))->success();
         } else {
             $WarrantyCard->status = 2;
             $content="Yêu cầu bảo hành thiết bị của bạn đã bị hủy ";
             $WarrantyCard->reason=$request->reason;
+
+            WarrantyCardDetail::query()->where('warranty_card_id',decrypt($id))
+                ->where('status',0)->update(['status'=>2]);
+
             flash(translate('Thẻ đã được hủy thành công'))->warning();
         }
         $WarrantyCard->save();
@@ -102,28 +137,72 @@ class WarrantyCardController extends Controller
         return back();
     }
 
+
+    public function ban_detail($id,Request $request)
+    {
+        $WarrantyCardDetail = WarrantyCardDetail::query()->findOrFail(decrypt($id));
+        $WarrantyCardDetail->load('product');
+        $WarrantyCardDetail->status=2;
+        $WarrantyCardDetail->reason=$request->reason;
+        $WarrantyCard=WarrantyCard::query()->find($WarrantyCardDetail->warranty_card_id);
+        $WarrantyCardDetail->save();
+        $user=User::query()->find($WarrantyCard->user_id);
+        if(!$user){
+            flash(translate('Lỗi không tìm thấy người tạo'))->warning();
+            return back();
+        }
+            $product_name=$WarrantyCardDetail->product->name??'';
+            $content="Sản phẩm $product_name trong thẻ bảo hành của Khách hàng $WarrantyCard->user_name đã bị hủy ";
+            flash(translate('Thẻ đã được hủy thành công'))->warning();
+            $wallet= Wallet::where('user_id',$WarrantyCard->user_id)->first();
+        if(!$wallet){
+            $wallet=Wallet::create([
+                'user_id'=>$user->id,
+            ]);
+        }
+           $amount=config_base64_decode($wallet->amount);
+//        update_customer_package($user->id);
+        sendFireBase($user, "Kích hoạt thẻ bảo hành !", $content, 'warranty', $amount, config_base64_decode($wallet->amount), auth()->id(), $WarrantyCardDetail);
+        return back();
+    }
+
     function create(){
         $customers= User::where('banned',0)->orderBy('created_at','desc')->get();
-        $products=Product::select('*')->orderBy('created_at','DESC')->get();
-        return view('backend.customer.warranty_cards.create',compact('products','customers'));
+        $products=Product::select('*')
+            ->where('wholesale_product',1)
+            ->orderBy('created_at','DESC')->get();
+        $colors=Color::all()->pluck('name','id');
+        $provinces=Province::all();
+        return view('backend.customer.warranty_cards.create',compact('provinces','products','customers','colors'));
     }
 
     function  store(WarrantyCardRequest $request ){
         $warranty_code=WarrantyCode::where('code',$request->warranty_code)->first();
         // user_id, user_name,phone,address,video_url,warranty_code
-
         $Warranty= new WarrantyCard;
         $Warranty->fill($request->all());
-        $Warranty->create_time=now();
+        $Warranty->warranty_code=$request->warranty_code;
+        $Warranty->create_time = strtotime(now());
+        $Warranty->latlng=  $request->lat.','.$request->long;
         $Warranty->save();
         $WarrantyDetail= new WarrantyCardDetail;
         foreach ($request->product as $key=>$data){
+//            dd($request->all());
+            $image=[];
+            if($request->image[$key]){
+                $upload=Upload::query()->whereIn('id',explode(',',$request->image[$key]))->get();
+                foreach ($upload as $img){
+                    $image[]=$img['file_name'];
+                }
+            }
+            $color=Color::query()->findOrFail($request->color[$key]);
             $WarrantyDetail->create([
                 'warranty_card_id'=>$Warranty->id,
                 'product_id'=>$data,
                 'qty'=>$request->qty[$key],
-                'image'=>$request->image[$key],
-                'color'=>Color::findOrFail($request->color[$key])->code,
+                'image'=>implode(',',$image),
+                'color_id'=>$request->color[$key],
+                'warranty_duration'=>$color->warranty_duration
             ]);
         }
         $warranty_code->status=1;
@@ -191,9 +270,22 @@ class WarrantyCardController extends Controller
         $warrantyCard = WarrantyCard::findOrFail(decrypt($id));
         WarrantyCardDetail::where('warranty_card_id',$warrantyCard->id)->delete();
         $warrantyCard->delete();
-        flash(translate('Card has been deleted successfully'))->success();
+        flash('Thẻ đã được xóa thành công')->success();
         return back();
     }
+
+    function buck_delete(Request $request){
+        if ($request->id) {
+            foreach ($request->id as $warranty_id) {
+                $warrantyCard = WarrantyCard::find($warranty_id);
+                WarrantyCardDetail::where('warranty_card_id',$warrantyCard->id)->delete();
+                $warrantyCard->delete();
+            }
+        }
+        return 1;
+    }
+
+
     public function cancel($id)
     {
         $warrantyCard = WarrantyCard::findOrFail(decrypt($id));
@@ -204,8 +296,11 @@ class WarrantyCardController extends Controller
 
 
        public function card_combination(){
-         $products=Product::select('*')->orderBy('created_at','DESC')->get();
-        return view('backend.customer.warranty_cards.combinations',compact('products'));
+         $products=Product::select('*')
+             ->where('wholesale_product',1)
+             ->orderBy('created_at','DESC')->get();
+         $colors=Color::all()->pluck('name','id');
+        return view('backend.customer.warranty_cards.combinations',compact('products','colors'));
     }
 
     public function card_combination_edit(Request $request){

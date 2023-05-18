@@ -25,14 +25,14 @@
                 <h5 class="mb-0 h6">{{translate('Tài khoản')}}</h5>
             </div>
 
-<!--            <div class="dropdown mb-2 mb-md-0">
+           <div class="dropdown mb-2 mb-md-0">
                 <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
                     {{translate('Bulk Action')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#" onclick="bulk_delete()">{{translate('Delete selection')}}</a>
                 </div>
-            </div>-->
+            </div>
 {{--            <div class="col-md-2">--}}
 {{--                <div class="form-group mb-0">--}}
 {{--                    <select name="referred_by" id="referred_by" class="form-control">--}}
@@ -91,8 +91,8 @@
                 <table class="table aiz-table mb-0">
                     <thead>
                     <tr>
-                        <!--<th data-breakpoints="lg">#</th>-->
-                        <!--                        <th>
+{{--                      <th data-breakpoints="lg">#</th>--}}
+                                       <th>
                                                     <div class="form-group">
                                                         <div class="aiz-checkbox-inline">
                                                             <label class="aiz-checkbox">
@@ -101,7 +101,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                </th>-->
+                                                </th>
                         <th>{{translate('Name')}}</th>
                         <th data-breakpoints="md">  {{translate('Phone')}}</th>
                         <th data-breakpoints="md">  {{translate('Email')}}</th>
@@ -120,7 +120,7 @@
                     @foreach($users as $key => $user)
                         @if ($user != null)
                             <tr>
-                            <!--                                <td>
+                                                        <td>
                                     <div class="form-group">
                                         <div class="aiz-checkbox-inline">
                                             <label class="aiz-checkbox">
@@ -129,7 +129,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                </td>-->
+                                </td>
                                 <td><a title="lịch sử thanh toán"
                                        href="{{route('customers.show',encrypt($user->id))}}">{{$user->name}}</a>
                                 </td>
@@ -140,13 +140,15 @@
                                    {{$user->email}}
                                 </td>
                                 <td>
-                                    @if($user->addresses!=null)
-                                        @foreach($user->addresses as $address)
-                                         {{$user->address}} - {{$address->province!=null?$address->province->name:''}}-
-                                            {{$address->district!=null?$address->district->name:''}}-
-                                            {{$address->ward!=null?$address->ward->name:''}}
-                                        @endforeach
-                                    @endif
+{{--                                    @if($user->addresses!=null)--}}
+{{--                                        @foreach($user->addresses as $address)--}}
+                                         {{$user->address}}
+
+{{--                                            - {{$address->province!=null?$address->province->name:''}}---}}
+{{--                                            {{$address->district!=null?$address->district->name:''}}---}}
+{{--                                            {{$address->ward!=null?$address->ward->name:''}}--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
                                 </td>
 
                                 <td>
@@ -231,9 +233,9 @@
                                         </a>
                                 @endif
 
-                                <!--                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('customers.destroy', $user->id)}}" title="{{ translate('Delete') }}">
+                                  <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('customers.destroy', $user->id)}}" title="{{ translate('Delete') }}">
                                         <i class="las la-trash"></i>
-                                    </a>-->
+                                    </a>
                                 </td>
                             </tr>
                         @endif

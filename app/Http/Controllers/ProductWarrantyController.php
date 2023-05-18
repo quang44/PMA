@@ -17,7 +17,6 @@ class ProductWarrantyController extends Controller
             $sort_search  =$request->search;
             $products=$products->where('name',$sort_search);
         }
-
         $products=  $products->latest()->paginate(15);
         return view('backend.product.product_warranty.index',compact('products','type','sort_search'));
     }
@@ -31,6 +30,7 @@ class ProductWarrantyController extends Controller
     function store(Request $request){
         $product=new Product;
         $product->name=$request->name;
+        $product->unit=$request->unit;
         $product->thumbnail_img=$request->thumbnail_img;
         $product->wholesale_product=1;
         $product->save();
@@ -59,6 +59,7 @@ class ProductWarrantyController extends Controller
     function update(Request $request, $id){
         $product=Product::findOrFail($id);
         $product->name=$request->name;
+        $product->unit=$request->unit;
         $product->thumbnail_img=$request->thumbnail_img;
         $product->wholesale_product=1;
         $product->save();

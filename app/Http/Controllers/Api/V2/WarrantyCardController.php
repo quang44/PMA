@@ -22,6 +22,7 @@ class WarrantyCardController extends Controller
 
     function index(Request $request)
     {
+
         $warrantyCard = WarrantyCard::query()->where('user_id', auth()->user()->id);
         if (!empty($request->search)) {
             $warrantyCard = $warrantyCard->where('phone', 'like', "%$request->search%")
@@ -45,15 +46,20 @@ class WarrantyCardController extends Controller
     function show($id)
     {
         $warranty = WarrantyCard::query()->with(['code', 'user', 'district', 'ward', 'province', 'cardDetail.product', 'cardDetail.color'])->findOrFail($id);
-        $warranty->makeHidden(['created_at', 'updated_at']);
+        $warranty->makeHidden(['created_at', 'updated_at','card_detail']);
 
         if ($warranty) {
             $warranty->create_time = convertTime($warranty->create_time);
-            $warranty->active_time = convertTime($warranty->active_time);
+            $warranty->active_time =$warranty->active_time?convertTime($warranty->active_time):null;
             $warranty->cardDetail=collect($warranty->cardDetail)->transform(function ($query) {
                 $query->makeHidden(['created_at', 'updated_at']);
-                $query->image = static_asset($query->image);
-                $query->video = static_asset($query->video);
+                $image=explode(',',$query->image);
+                $image=collect($image)->transform(function ($query){
+                   return static_asset($query);
+                });
+
+                $query->image = $image->toArray();
+//                $query->video = static_asset($query->video);
 //                $query->color->warranty_duration = $query->color?$query->color->warranty_duration:null;
                 $query->warranty_duration = timeWarranty($query->warranty_duration);
                 return $query;
@@ -99,32 +105,52 @@ class WarrantyCardController extends Controller
             return $this->sendError($validate->errors()->first());
         }
 
-
         return  $this->sendSuccess(null);
    }
 
     function store(Request $request)
     {
-//        dd($request->product);
-//        create database warranty
+        $warrantyCode=WarrantyCode::query()->where('code',$request->warranty_code)->first();
+        if($warrantyCode && $warrantyCode->status===1){
+            return $this->sendError('Mã bảo hành đã được sử dụng');
+        }
+        $validate=Validator::make($request->all(),[
+            'warranty_code'=>'required|exists:warranty_codes,code'
+        ],[
+            'warranty_code.required'=>'không được để trống',
+            'warranty_code.exists'=>'Mã bảo hành không tồn tại',
+        ]);
+        if($validate->fails()){
+            return $this->sendError($validate->errors()->first());
+        }
+
+//     return $this->sendSuccess($request->product[0]['img']);
         $Warranty = new WarrantyCard;
         $Warranty->fill($request->except('product'));
         $Warranty->create_time = strtotime(now());
         $Warranty->user_id = auth()->id();
+        $Warranty->warranty_code=$request->warranty_code;
+        $Warranty->latlng=  $request->lat.','.$request->lng;
         $Warranty->save();
-
         foreach ($request->product as $data) {
 //upload file
-            $image = uploadFile($data['img'], 'uploads/warranty');
-            $video = uploadFile($data['video'], 'uploads/warranty');
+//            return $this->sendSuccess($data);
+            $image=[];
+            if(isset($data['img']) && !empty($data['img'])){
+                foreach ($data['img'] as $img){
+                    $image[]= uploadFile($img,'uploads/warranty');
+                }
+            }
+            $implode=implode(',',$image);
+//            $video = uploadFile($data['video'], 'uploads/warranty');
             $color=Color::query()->findOrFail($data['color']);
 // create warranty card detail
             WarrantyCardDetail::query()->create([
                 'warranty_card_id' => $Warranty->id,
                 'product_id' => $data['id'],
                 'qty' => $data['qty'],
-                'image' => $image,
-                'video' => $video,
+                'image' => $implode,
+//                'video' => $video,
                 'color_id' => $data['color'],
                 'warranty_duration'=>$color->warranty_duration
             ]);
@@ -149,41 +175,56 @@ class WarrantyCardController extends Controller
         $Warranty = WarrantyCard::query()->findOrFail($id);
         $Warranty->fill($request->all());
         $Warranty->create_time = strtotime(now());
+        $Warranty->latlng=  $request->lat.','.$request->lng;
         $Warranty->save();
 
-
         foreach ($request->product as $data) {
-
-//            check id warranty_card
             if(!isset($data['card_id'])){
                 $warrantyDetail=new WarrantyCardDetail;
-                $image =  uploadFile($data['img'], 'uploads/warranty');
-                $video = uploadFile($data['video'], 'uploads/warranty');
+                $dataImg=[];
+                if(isset($data['img']) && !empty($data['img'])){
+                    foreach ($data['img'] as $img){
+                        $dataImg[]=  uploadFile($img, 'uploads/warranty');
+                    }
+                }
             }else{
-
                 $warrantyDetail = WarrantyCardDetail::query()
                     ->where('warranty_card_id', $id)
                     ->where('id',$data['card_id'])->first();
+                if (isset($data['img']) && !empty($data['img']) ) {
+                    if($warrantyDetail->image){
+                        $dataImg=explode(',',$warrantyDetail->image);
+                        foreach ($dataImg as $img){
+                            removeImg($img);
+                        }
+                    }
+                    $dataImg=[];
+                    foreach ($data['img'] as $img){
+                        $dataImg[]= uploadFile($img, 'uploads/warranty');
+                    }
+                } else {
+                    $dataImg = $warrantyDetail->image;
+                }
 
-                if (isset($data['img'])) {
-                    removeImg($warrantyDetail->image);
-                    $image = uploadFile($data['img'], 'uploads/warranty');
-                } else {
-                    $image = $warrantyDetail->image;
-                }
-                if (isset($data['video'])) {
-                    removeImg($warrantyDetail->video);
-                    $video = uploadFile($data['video'], 'uploads/warranty');
-                } else {
-                    $video = $warrantyDetail->video;
-                }
+//                if (isset($data['video'])) {
+//                    removeImg($warrantyDetail->video);
+//                    $video = uploadFile($data['video'], 'uploads/warranty');
+//                } else {
+//                    $video = $warrantyDetail->video;
+//                }
             }
-
+//dd(is_array($dataImg));
+            if(is_array($dataImg)==true){
+                $implode=implode(',',$dataImg);
+            }else{
+                $implode=$dataImg;
+            }
+//            $implode=implode(',',$dataImg);
             $warrantyDetail->warranty_card_id=$Warranty->id;
             $warrantyDetail->product_id=$data['id'];
             $warrantyDetail->qty=$data['qty'];
-            $warrantyDetail->image=$image;
-            $warrantyDetail->video=$video;
+            $warrantyDetail->image=$implode;
+//            $warrantyDetail->video=$video;
             $warrantyDetail->color_id=$data['color'];
             $warrantyDetail->save();
 
@@ -199,11 +240,11 @@ class WarrantyCardController extends Controller
         return $this->deleteSuccess();
     }
 
-    function warranty_lookup(Request $request)
+    function warranty_lookup($phone)
     {
         $warrantyCard = WarrantyCard::query()
             ->with(['code', 'user', 'district', 'ward', 'province', 'cardDetail.product', 'cardDetail.color'])
-            ->where('phone', $request->phone);
+            ->where('phone',$phone);
         $warrantyCard = $warrantyCard->orderByDesc('updated_at')->get();
 
         $warrantyCard=collect($warrantyCard)->transform(function ($query){
@@ -225,5 +266,9 @@ class WarrantyCardController extends Controller
         ]);
 
     }
+
+
+
+
 
 }

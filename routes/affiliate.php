@@ -24,6 +24,7 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
         Route::get('/affiliate/employee/edit/{id}', 'employee_edit')->name('affiliate.employee.edit');
         Route::post('/affiliate/employee/edit/{id}', 'employee_update')->name('affiliate.employee.update');
         Route::get('/affiliate/employee/destroy/{id}', 'employee_destroy')->name('affiliate.employee.destroy');
+        Route::post('/affiliate/employee/buck_delete', 'bulk_employee_delete')->name('affiliate.employee.buck_delete');
         Route::get('/affiliate/employee/update/{id}', 'updateToAgent')->name('affiliate.employee.updateToAgent');
 
         Route::get('/affiliate/kol', 'kol')->name('affiliate.kol.index');
@@ -40,6 +41,8 @@ Route::group(['prefix' =>'admin', 'middleware' => ['auth', 'admin']], function()
         Route::get('/affiliate/depot/edit/{id}', 'depot_edit')->name('affiliate.depot.edit');
         Route::post('/affiliate/depot/edit/{id}', 'depot_update')->name('affiliate.depot.update');
         Route::get('/affiliate/depot/destroy/{id}', 'depot_destroy')->name('affiliate.depot.destroy');
+        Route::post('/affiliate/depot/buck_delete', 'bulk_depot_delete')->name('affiliate.depot.buck_delete');
+
         Route::get('/affiliate/depot/update/{id}', 'updateToDepot')->name('affiliate.employee.updateToDepot');
 
 

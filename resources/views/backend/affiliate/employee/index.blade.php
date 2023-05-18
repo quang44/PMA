@@ -23,14 +23,14 @@
                 <h5 class="mb-0 h6">{{translate('Tài khoản đại lý')}}</h5>
             </div>
 
-<!--            <div class="dropdown mb-2 mb-md-0">
+           <div class="dropdown mb-2 mb-md-0">
                 <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
                     {{translate('Bulk Action')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#" onclick="bulk_delete()">{{translate('Delete selection')}}</a>
                 </div>
-            </div>-->
+            </div>
             <div class="col-md-3">
                 <div class="form-group mb-0">
                     <select name="banned" id="banned" class="form-control aiz-selectpicker "
@@ -55,7 +55,7 @@
                 <thead>
                     <tr>
                         <!--<th data-breakpoints="lg">#</th>-->
-<!--                        <th>
+                      <th>
                             <div class="form-group">
                                 <div class="aiz-checkbox-inline">
                                     <label class="aiz-checkbox">
@@ -64,8 +64,8 @@
                                     </label>
                                 </div>
                             </div>
-                        </th>-->
-                        <th>#</th>
+                        </th>
+{{--                        <th>#</th>--}}
                         <th>{{translate('Tên đại lý')}}</th>
                         <th data-breakpoints="lg">{{translate('Email')}}</th>
                         <th data-breakpoints="lg">{{translate('Phone')}}</th>
@@ -80,8 +80,8 @@
                 @foreach($users as $key => $user)
                     @if ($user != null)
                         <tr>
-                            <td>{{ ($key+1) + ($users->currentPage() - 1)*$users->perPage() }}</td>
-                        <!--                                <td>
+{{--                            <td>{{ ($key+1) + ($users->currentPage() - 1)*$users->perPage() }}</td>--}}
+                                                  <td>
                                     <div class="form-group">
                                         <div class="aiz-checkbox-inline">
                                             <label class="aiz-checkbox">
@@ -90,7 +90,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                </td>-->
+                                </td>
                             <td>@if($user->banned == 1) <i class="fa fa-ban text-danger"
                                                            aria-hidden="true"></i> @endif {{$user->name}}</td>
                             <td>@if($user->email!=null) {{$user->email}} @else  <span
@@ -147,9 +147,9 @@
                                         </a>
                                     @endif
                                 @endif
-<!--                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('affiliate.employee.destroy', $user->id)}}" title="{{ translate('Xóa tài khoản') }}">
+                                    <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('affiliate.employee.destroy', $user->id)}}" title="{{ translate('Xóa tài khoản') }}">
                                         <i class="las la-trash"></i>
-                                    </a>-->
+                                    </a>
                                 </td>
                             </tr>
                         @endif
@@ -163,14 +163,11 @@
     </form>
 </div>
 
-@section('modal')
-    @include('modals.confirm_banned_modal')
-@endsection
-
 @endsection
 
 @section('modal')
     @include('modals.delete_modal')
+    @include('modals.confirm_banned_modal')
 @endsection
 
 @section('script')
@@ -256,7 +253,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "{{route('bulk-customer-delete')}}",
+                url: "{{route('affiliate.employee.buck_delete')}}",
                 type: 'POST',
                 data: data,
                 cache: false,

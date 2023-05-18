@@ -87,6 +87,21 @@
            return $Notification->newQuery()->create($data);
     }
 
+
+
+    //return file uploaded via uploader
+    if (!function_exists('image_asset_by_object')) {
+        function image_asset_by_object($id)
+        {
+            $dataImage = [];
+            $asset = \App\Models\Upload::where('object_id', $id)->get();
+            foreach ($asset as $img) {
+                $dataImage[] = $img->file_name ? my_asset($img->file_name) : null;
+            }
+            return $dataImage;
+        }
+    }
+
     function checkType($type){
         $result=null;
         if ($type == 'warranty') {
@@ -1027,7 +1042,7 @@
                 $extension = $image->getClientOriginalExtension();
                 $size = $image->getSize();
                 $newPath = $path . "/$realImage";
-                $image->store($path, 'local');
+                 $image->store($path, 'local');
                 $upload = new Upload;
                 $upload->file_original_name = $name;
                 $upload->extension = $extension;
@@ -1040,13 +1055,57 @@
         }
     }
 
+
+//    if (!function_exists('uploadImageURL')) {
+//        function uploadMultipleImage($imageName, $id = null, $path)
+//        {
+//            foreach ($imageName as $key => $image) {
+//                $upload = new Upload;
+//                $img = $image->getClientOriginalName();
+//                $name = substr($img, 0, strpos($img, '.'));
+//                $realImage = $image->hashName();
+//                $extension = $image->getClientOriginalExtension();
+//                $size = $image->getSize();
+//                $newPath = $path . "/$realImage";
+//                $image->store($path, 'local');
+//                $upload->file_original_name = $name;
+//                $upload->extension = $extension;
+//                $upload->file_name = $newPath;
+//                $upload->type = 'image';
+//                $upload->file_size = $size;
+//                $upload->object_id = $id;
+//                $upload->save();
+//            }
+//        }
+//    }
+
+
     if (!function_exists('uploadFile')) {
         function uploadFile($imageName, $path)
         {
             $image = $imageName;
-            $realImage = $image->hashName();
-            $newPath = $path . "/$realImage";
-            $image->store($path, 'local');
+//            $realImage = $image->hashName();
+//            $newPath = $path . "/$realImage";
+//            $image->store($path, 'local');
+//            $resizedImagePath = $path . "/" . $realImage;
+
+            // Resize ảnh với kích thước mới (ở đây là 800x600)
+
+//            Image::make($image)
+//                ->resize(720, 960, function ($constraint) {
+//                    $constraint->aspectRatio();
+//                    $constraint->upsize();
+//                })->save(public_path($resizedImagePath));
+
+            // Đường dẫn lưu trữ ảnh
+            $destinationPath = public_path($path);
+            // Tạo đối tượng Intervention Image
+            $img = Image::make($image->getRealPath())
+                ->sharpen(10);
+            // Lưu ảnh vào thư mục đích
+            $img->save($destinationPath.'/'.$image->hashName());
+            $newPath = $path."/".$image->hashName();
+//            dd($newPath);
             return $newPath;
         }
     }

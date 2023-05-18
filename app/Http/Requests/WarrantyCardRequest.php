@@ -25,10 +25,9 @@ class WarrantyCardRequest extends FormRequest
     {
         return [
             'user_name'=>'required',
-            'address'=>'required',
-            'seri'=>'required|numeric|unique:warranty_cards',
-            'brand_id'=>'required',
-            'image'=>'required|image'
+            'color'=>'required',
+            'product'=>'required',
+            'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards,warranty_code'
         ];
     }
 
@@ -36,13 +35,13 @@ class WarrantyCardRequest extends FormRequest
     {
         return [
             'user_name.required'=>'vui lòng nhập tên khách hàng',
-            'address.required'=>'vui lòng nhập địa chỉ',
-            'seri.required'=>'vui lòng nhập số seri',
-            'seri.numeric'=>'Trường seri phải là số',
-            'seri.unique'=>' Trường số seri đã tồn tại ',
-             'brand_id.required'=>'vui lòng chọn hãng sản xuất  ',
-            'image.required'=>'vui lòng chọn ảnh',
-            'image.image'=>'Trường ảnh không phải 1 ảnh',
+            'color.required'=>'vui lòng chọn màu sắc',
+            'warranty_code.required'=>'vui lòng nhập code',
+            'warranty_code.unique'=>' Trường số seri đã tồn ',
+            'warranty_code.exist'=>'Mã bảo hành không tồn tại',
+            'product.required'=>'vui lòng chọn hãng sản phẩm  ',
+//            'image.required'=>'vui lòng chọn ảnh',
+//            'image.image'=>'Trường ảnh không phải 1 ảnh',
         ];
     }
 }

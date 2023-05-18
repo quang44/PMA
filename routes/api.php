@@ -46,6 +46,9 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
     Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
 //    Route::get('wards-by-district/{district_id}', 'App\Http\Controllers\Api\V2\AddressController@getWardsByDistrict');
 
+        Route::get('dinh-vi', 'App\Http\Controllers\Api\V2\AddressController@getProvince');
+
+
     Route::group(['prefix' => 'news', 'middleware' => []], (function () {
         Route::get('', 'App\Http\Controllers\Api\V2\NewsController@index');
         Route::get('/{id}', 'App\Http\Controllers\Api\V2\NewsController@show')->where('id', '[0-9]+');
@@ -411,7 +414,7 @@ Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function
         Route::get('{id}', 'App\Http\Controllers\Api\V2\PageController@show')->where('id', '[0-9]+');
     }));
 
-    Route::post('warranty-lookup','App\Http\Controllers\Api\V2\WarrantyCardController@warranty_lookup');
+    Route::get('warranty-lookup/{phone}','App\Http\Controllers\Api\V2\WarrantyCardController@warranty_lookup');
 });
 
 Route::get('notice-new-order', 'App\Http\Controllers\Api\V2\CronJobsController@noticeNewOrder');

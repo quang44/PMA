@@ -25,6 +25,8 @@
             return view('backend.affiliate.config');
         }
 
+
+        //        đại lỹ => agent
         public function employee(Request $request)
         {
             $sort_search = null;
@@ -194,6 +196,18 @@
             return redirect()->route('affiliate.employee.index');
         }
 
+        public function bulk_employee_delete(Request $request)
+        {
+            if ($request->id) {
+                foreach ($request->id as $user_id) {
+                    User::find($user_id)->delete();
+                }
+            }
+
+            return 1;
+        }
+
+
 
         public function depot_create()
         {
@@ -202,6 +216,9 @@
             return view('backend.affiliate.depot.create',compact('provinces'));
         }
 
+
+
+//        tổng kho => depot
         public function depot(Request $request)
         {
             $sort_search = null;
@@ -269,12 +286,10 @@
 
         public function depot_update(Request $request, $id)
         {
-
-
             $user = User::findOrFail($id);
             $user->fill($request->all());
-            Address::query()->update([
-                'user_id'=>$user->id,
+            $Address=Address::query()->where('user_id', $user->id)->first();
+            $Address->update([
                 'province_id'=>$request->city,
                 'district_id'=>$request->district,
                 'ward_id'=>$request->ward,
@@ -307,8 +322,19 @@
             return redirect()->route('affiliate.depot.index');
         }
 
+        public function bulk_depot_delete(Request $request)
+        {
+            if ($request->id) {
+                if ($request->id) {
+                    foreach ($request->id as $user_id) {
+                        User::find($user_id)->delete();
+                    }
+                }
+            }
+            return 1;
+        }
 
-
+//
         public function kol(Request $request)
         {
             $sort_search = null;

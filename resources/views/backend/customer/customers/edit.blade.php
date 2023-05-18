@@ -36,56 +36,56 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-3 d-flex align-items-center">
-                                <label class=" col-from-label" for="email">Địa chỉ </label>
-                            </div>
+{{--                        <div class="row">--}}
+{{--                            <div class="col-3 d-flex align-items-center">--}}
+{{--                                <label class=" col-from-label" for="email">Địa chỉ </label>--}}
+{{--                            </div>--}}
 
-                            <div class="col-9 row">
-                            <div class="form-group col-4">
-                                <label for="city-dd">{{translate('Province')}}/{{translate('City')}}</label>
-                                <select id="city" name="province" class="form-control aiz-selectpicker"
-                                        data-selected-text-format="count" data-live-search="true">
-                                    <option>Chọn tỉnh thành phố</option>
-                                    @foreach($province as $city)
-                                        <option
-                                            {{$user->address_one!=null&&$user->address_one->province->id==$city->id?'selected':''}} value="{{$city->id}}">{{$city->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="col-9 row">--}}
+{{--                            <div class="form-group col-4">--}}
+{{--                                <label for="city-dd">{{translate('Province')}}/{{translate('City')}}</label>--}}
+{{--                                <select id="city" name="province" class="form-control aiz-selectpicker"--}}
+{{--                                        data-selected-text-format="count" data-live-search="true">--}}
+{{--                                    <option>Chọn tỉnh thành phố</option>--}}
+{{--                                    @foreach($province as $city)--}}
+{{--                                        <option--}}
+{{--                                            {{$user->address_one!=null&&$user->address_one->province->id==$city->id?'selected':''}} value="{{$city->id}}">{{$city->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
 
-                            <div class="form-group col-4">
-                                <label for="city-dd">{{translate('District')}}</label>
-                                <select id="district" name="district" class="form-control aiz-selectpicker"
-                                        data-selected-text-format="count" data-live-search="true">
-                                    @foreach($districts as $district)
-                                        @if($user->address_one!=null&&$user->address_one->province->id==$district->province_id)
-                                            <option
-                                                {{$user->address_one!=null&&$user->address_one->district->id==$district->id?'selected':''}} value="{{$district->id}}">{{$district->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="form-group col-4">--}}
+{{--                                <label for="city-dd">{{translate('District')}}</label>--}}
+{{--                                <select id="district" name="district" class="form-control aiz-selectpicker"--}}
+{{--                                        data-selected-text-format="count" data-live-search="true">--}}
+{{--                                    @foreach($districts as $district)--}}
+{{--                                        @if($user->address_one!=null&&$user->address_one->province->id==$district->province_id)--}}
+{{--                                            <option--}}
+{{--                                                {{$user->address_one!=null&&$user->address_one->district->id==$district->id?'selected':''}} value="{{$district->id}}">{{$district->name}}</option>--}}
+{{--                                        @endif--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
 
-                            <div class="form-group col-4">
-                                <label for="city-dd">{{translate('Ward')}}</label>
-                                <select id="ward" name="ward" class="form-control aiz-selectpicker" data-selected-text-format="count"
-                                        data-live-search="true">
-                                    @foreach($wards as $ward)
-                                        @if($user->address_one!=null&&$user->address_one->district->id==$ward->district_id)
-                                            <option
-                                                {{$user->address_one!=null&&$user->address_one->ward->id==$ward->id?'selected':''}} value="{{$ward->id}}">{{$ward->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
+{{--                            <div class="form-group col-4">--}}
+{{--                                <label for="city-dd">{{translate('Ward')}}</label>--}}
+{{--                                <select id="ward" name="ward" class="form-control aiz-selectpicker" data-selected-text-format="count"--}}
+{{--                                        data-live-search="true">--}}
+{{--                                    @foreach($wards as $ward)--}}
+{{--                                        @if($user->address_one!=null&&$user->address_one->district->id==$ward->district_id)--}}
+{{--                                            <option--}}
+{{--                                                {{$user->address_one!=null&&$user->address_one->ward->id==$ward->id?'selected':''}} value="{{$ward->id}}">{{$ward->name}}</option>--}}
+{{--                                        @endif--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
 
 
-                            </div>
-                        </div>
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="address">{{translate('Address')}} củ thể</label>
+                            <label class="col-sm-3 col-from-label" for="address">{{translate('Address')}} </label>
                             <div class="col-sm-9">
                                 <input type="text" placeholder="{{translate('Address')}}" id="name" name="address" value="{{ old('address',$user->address) }}" class="form-control" required>
                                 @error('address')
@@ -118,17 +118,19 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-3 col-from-label" for="depot">{{translate('depot')}}</label>
+                            <label class="col-sm-3 col-from-label" for="depot">Tổng kho & Đại lý </label>
                             <div class="col-sm-9">
-                                <select name="depot" id="depot" class="form-control aiz-selectpicker"
-                                        data-selected-text-format="count" data-live-search="true">
-                                    <option>Chọn Tổng kho </option>
-
-                                    @foreach($depots as $depot)
-                                        @if($user->user_agent!=null&&$user->user_agent->provider_id==$depot->id)
-                                            @php $depot_id= $depot->id @endphp
+                                <select name="depot" id="depot" class="form-control aiz-selectpicker" data-selected-text-format="count" data-live-search="true" >
+                                    @foreach($depots as $employee)
+                                        @php $id=$employee->id @endphp
+                                        @if($employee->belong==0)
+                                            <option  {{$user->user_agent->id===$employee->id?'selected':''}} value="{{$employee->id}}">{{$employee->name}} ({{$employee->belong===0?'Tổng kho':'Đại lý'}})</option>
+                                        @endif
+                                        @foreach($depots as $agent)
+                                            @if($agent->belong==$id)
+                                                <option {{$user->user_agent->id===$agent->id?'selected':''}} class="ml-2" value="{{$agent->id}}"> - {{$agent->name}}  ({{$agent->belong===0?'Tổng kho':'Đại lý'}}) </option>
                                             @endif
-                                        <option @if($user->user_agent) {{$user->user_agent->id==$depot->id?'selected':''}} @endif value="{{$depot->id}}">{{$depot->name}}</option>
+                                        @endforeach
                                     @endforeach
                                 </select>
                             </div>

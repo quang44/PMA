@@ -3,19 +3,26 @@
         <div class=" col-md-6 align-items-center">
             <h1 class="h3"><?php echo e(translate('List of Warranty')); ?></h1>
         </div>
-        
-        
-        
-        
-        
+                <div class="col-md-6 text-md-right">
+                    <a href="<?php echo e(route('warranty_card.create')); ?>" class="btn btn-circle btn-info">
+                        <span><?php echo e(translate('Add new card')); ?></span>
+                    </a>
+                </div>
     </div>
 
     <div class="card">
         <form class="" id="sort_Card" action="" method="GET">
             <div class="card-header row gutters-5">
-                <div class="col">
-                    <h5 class="mb-0 h6"><?php echo e(translate('List of Warranty')); ?></h5>
+                <div class="dropdown mb-2 mb-md-0">
+                    <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
+                        <?php echo e(translate('Bulk Action')); ?>
+
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="bulk_delete()"> <?php echo e(translate('Delete selection')); ?></a>
+                    </div>
                 </div>
+
                 <div class="col-md-3">
                     <div class="form-group mb-0">
                         <select name="sort_customer" id="sort_selectCart" class="form-control aiz-selectpicker"
@@ -70,6 +77,14 @@
                     <table class="table aiz-table mb-0">
                         <thead>
                         <tr>
+                            <th data-breakpoints="lg"><div class="form-group">
+                                    <div class="aiz-checkbox-inline">
+                                        <label class="aiz-checkbox">
+                                            <input type="checkbox" class="check-all">
+                                            <span class="aiz-square-check"></span>
+                                        </label>
+                                    </div>
+                                </div></th>
                             <th data-breakpoints="md">Người bảo hành</th>
                             <th data-breakpoints="md"><?php echo e(translate('Customer info')); ?></th>
                             <th data-breakpoints="md">Cửa bảo hành</th>
@@ -87,6 +102,16 @@
                             <?php if($warranty_card != null): ?>
                                 <tr>
                                     <td>
+                                        <div class="form-group d-inline-block">
+                                            <label class="aiz-checkbox">
+                                                <input type="checkbox" class="check-one" name="id[]"
+                                                       value="<?php echo e($warranty_card->id); ?>">
+                                                <span class="aiz-square-check"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+
+                                    <td>
                                         <?php if($warranty_card->user): ?>
                                             <?php echo e($warranty_card->user->name); ?>
 
@@ -96,7 +121,7 @@
                                         </td>
                                     <td>
                                         <?php echo e(translate('Customer')); ?> : <?php echo e(ucfirst($warranty_card->user_name)); ?> <br>
-                                        <?php echo e(translate('Address')); ?> : <?php echo e(ucfirst($warranty_card->address)); ?>, <?php echo e(ucfirst($warranty_card->ward->name)); ?>, <?php echo e(ucfirst($warranty_card->district->name)); ?>, <?php echo e(ucfirst($warranty_card->province->name)); ?> <br>
+                                        <?php echo e(translate('Address')); ?> : <?php echo e($warranty_card->address?ucfirst($warranty_card->address):null); ?>, <?php echo e($warranty_card->ward? ucfirst($warranty_card->ward->name):null); ?>, <?php echo e($warranty_card->district? ucfirst($warranty_card->district->name):null); ?>, <?php echo e($warranty_card->province?ucfirst($warranty_card->province->name):null); ?> <br>
                                         <?php echo e(translate('phone')); ?> : <?php echo e(ucfirst($warranty_card->phone)); ?>
 
 
@@ -168,14 +193,16 @@
                                                 <i class="las la-eye"></i>
                                             </a>
 
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                            
+
+
+
+                                        <a href="#"
+                                           class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
+                                           data-href="<?php echo e(route('warranty_card.destroy', encrypt($warranty_card->id))); ?>"
+                                           title="<?php echo e(translate('Xóa')); ?>">
+                                            <i class="las la-trash"></i>
+                                        </a>
+
                                     </td>
 
                                 </tr>
@@ -197,15 +224,13 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('modal'); ?>
+    <?php echo $__env->make('modals.delete_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->make('modals.confirm_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 
-<?php $__env->startSection('modal'); ?>
-    <?php echo $__env->make('modals.delete_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php $__env->stopSection(); ?>
-
 <?php $__env->startSection('script'); ?>
+    <script src="<?php echo e(asset('public/assets/js/sweetalert2@11.js')); ?>"></script>
     <script type="text/javascript">
 
         window.onload = function () {
@@ -220,6 +245,19 @@
                 })
             })
         }
+        $(document).on("change", ".check-all", function() {
+            if(this.checked) {
+                // Iterate each checkbox
+                $('.check-one:checkbox').each(function() {
+                    this.checked = true;
+                });
+            } else {
+                $('.check-one:checkbox').each(function() {
+                    this.checked = false;
+                });
+            }
+
+        });
 
         $('#search').change(function () {
             $('#sort_Card').submit();
@@ -246,7 +284,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "<?php echo e(route('bulk-customer-delete')); ?>",
+                url: "<?php echo e(route('warranty_card.buck-delete')); ?>",
                 type: 'POST',
                 data: data,
                 cache: false,
@@ -254,6 +292,7 @@
                 processData: false,
                 success: function (response) {
                     if (response == 1) {
+                        Swal.fire('Xóa thành công')
                         location.reload();
                     }
                 }

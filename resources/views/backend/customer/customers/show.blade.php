@@ -29,6 +29,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-6 col-from-label" for="name">Địa chỉ :</label>
+                        <div class="col-sm-6">
+                            <span>{{$user->address}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-6 col-from-label" for="name">E-mail:</label>
                         <div class="col-sm-6">
                             <span>{{$user->email??'Chưa có email'}}</span>
@@ -50,20 +56,25 @@
 
 
                     <div class="form-group mb-3 row">
-                        <label for="name" class=" col-sm-6">Avatar :</label>
+                        <label for="name" class=" col-sm-6">Ảnh đại diện :</label>
                         <div class="col-sm-6" id="gallery">
-                                    <a class="a-key" href="{{ static_asset($user->avatar) }}" >
-                                        <img class="image" style="width:100px; height: 100px;object-fit: contain"
-                                             src="{{ static_asset($user->avatar) }}" alt="">
+                            @if(is_null($user->avatar))
+                                <span>Chưa cập nhật</span>
+                            @else
+                                <a class="a-key" href="{{ static_asset($user->avatar) }}" >
+                                    <img class="image" style="width:100px; height: 100px;object-fit: contain"
+                                         src="{{ static_asset($user->avatar) }}" alt="">
 
-                                    </a>
+                                </a>
+                                @endif
+
                         </div>
                     </div>
 
                     <div class="form-group mb-3 row">
-                        <label for="name" class=" col-sm-6">Thuộc Đại lý - Tổng kho :</label>
+                        <label for="name" class=" col-sm-6">Tên Tổng kho  &  Đại lý  :</label>
                         <div  class="col-sm-6" id="gallery">
-{{--                            {{$user->customer_package->name}}--}}
+                            {{$user->user_agent->name}} ({{$user->user_agent->belong===0?'Tổng kho':'Đại lý'}})
                         </div>
                     </div>
                 </div>

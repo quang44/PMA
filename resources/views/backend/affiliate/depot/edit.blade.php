@@ -31,7 +31,10 @@
                             <input type="text" autocomplete="off" placeholder="{{translate('Phone')}}" id="phone" name="phone" value="{{ $user->phone }}" class="form-control" required>
                         </div>
                     </div>
-
+                 <?php
+                    $province_id=null;
+                    $district_id=null;
+                    ?>
 
                     <div class="address  ">
                         <input type="hidden" name="addresses" id="address_id">
@@ -43,7 +46,7 @@
                                 <div class="col-4 form-group">
                                     <label class="col-from-label " for="email">{{translate('Province')}} <span
                                             class="text-danger">*</span> </label>
-                                    <select name="city" id="city0" data-city=0" required
+                                    <select name="city" id="city0" data-city="0" required
                                             class="form-control aiz-selectpicker city"
                                             data-live-search="true">
                                         <option>Lựa chọn thành phố</option>
@@ -61,7 +64,7 @@
                                     <label class="col-from-label " for="email">{{translate('District')}} <span
                                             class="text-danger">*</span> </label>
                                     @php $districts=\App\Models\District::query()->where('province_id',$province_id)->get()  @endphp
-                                    <select name="district" id="district" data-district="0"  data-selected-text-format="count" data-live-search="true" required
+                                    <select name="district" id="district0" data-district="0"  data-selected-text-format="count" data-live-search="true" required
                                             class="form-control aiz-selectpicker district">
                                         <option>Lựa chọn {{translate('District')}}</option>
                                         @foreach($districts as $district)
@@ -79,7 +82,7 @@
                                     <label class="col-from-label " for="email">{{translate('Ward')}} <span
                                             class="text-danger">*</span> </label>
                                     @php $wards=\App\Models\Ward::query()->where('district_id',$district_id)->get()  @endphp
-                                    <select name="ward" id="ward" data-ward="0"
+                                    <select name="ward" id="ward0" data-ward="0"
                                             class="form-control  aiz-selectpicker ward"  data-selected-text-format="count" data-live-search="true" required>
                                         <option>Lựa chọn {{translate('Ward')}}</option>
                                         @foreach($wards as $ward)
@@ -116,12 +119,13 @@
         </div>
     </div>
 </div>
+@section('script')
 
-<script !src="" type="text/javascript">
+<script type="text/javascript">
 
     $(document).on('change','select.city', function () {
         let key= $(this).attr('data-city')
-        let value = $('#city'+key).val()
+        let value = $(this).val()
         CallAPI(`{{url('')}}/api/v2/districts-by-province/` + value,'district',key)
     })
 
@@ -136,6 +140,7 @@
             method: "GET",
             url: url,
             success: function (res) {
+                // console.log(res)
                 let html= ` <option>Lựa chọn....</option>`
                 html += res.data.map(function (v, k) {
                     return `
@@ -152,4 +157,5 @@
 
 
 </script>
+@endsection
 @endsection
