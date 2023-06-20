@@ -56,14 +56,27 @@
                         <label class="col-sm-3 col-from-label" for="email">Vị trí :</label>
                         <div class="col-sm-9">
                             <input type="hidden" id="map-lat" class="form-control" name="User[lat]" value="">
-                            <input type="hidden" id="map-long" class="form-control" name="User[long]" placeholder="<?php // echo $model->getOldAttribute('long') ?>">
+                            <input type="hidden" id="map-long" class="form-control" name="User[long]"
+                                   placeholder="<?php // echo $model->getOldAttribute('long') ?>">
                             <div style="width:800px; height:400px;" id="map-canvas"></div>
                             <div class="help-block"></div>
                         </div>
                     </div>
-
-
-
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="email">Ảnh toàn công trình :</label>
+                        <div class="col-sm-9 row">
+                            @foreach(explode(',',$warranty_card->project_photo) as $index=> $image)
+                                <div class="ml-3">
+                                    <a class="a-key" data-lightbox="image-gallery" href="{{ static_asset($image) }}">
+                                        <img src="{{static_asset($image)}}" alt="" class="h-100px image">
+                                    </a>
+                                </div>
+                            @endforeach
+                            {{--                            <a  class="project_photo" href="{{static_asset($warranty_card->project_photo)}}"   data-lightbox="image-gallery">--}}
+                            {{--                            <img src="{{static_asset($warranty_card->project_photo)}}" alt="" width="93%">--}}
+                            {{--                            </a>--}}
+                        </div>
+                    </div>
 
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="Seri">{{translate('Created_at')}} :</label>
@@ -150,49 +163,59 @@
                             </tr>
                             </thead>
                             <tbody>
-                           @foreach($warranty_card->cardDetail as $key=> $detail)
-                            <tr>
-                                <td>{{$detail->product!=null?$detail->product->name:"sản phẩm không tồn tại"}}</td>
-                                <td>
-                                    <div class="row" id="gallery{{$key}}">
-                                    @foreach(explode(',',$detail->image) as $index=> $image)
-                                    <div class="col-3" >
-                                    <a class="a-key" data-key="{{$key}}" href="{{ static_asset($image) }}" >
-                                    <img src="{{static_asset($image)}}" alt="" class="h-60px image" >
-                                    </a>
-                                    </div>
-                                    @endforeach
-                                    </div>
-                                </td>
-{{--                                <td>--}}
-{{--                                    <div class="row" id="video{{$key}}">--}}
-{{--                                        <a  >--}}
-{{--                                            <video width="200" height="300px" controls>--}}
-{{--                                                <source src="{{ static_asset($detail->video) }}" type="video/mp4">--}}
+                            @foreach($warranty_card->cardDetail as $key=> $detail)
+                                <tr>
+                                    <td>{{$detail->product!=null?$detail->product->name:"sản phẩm không tồn tại"}}</td>
+                                    <td>
+                                        <div class="row" id="gallery{{$key}}">
+                                            @foreach(explode(',',$detail->image) as $index=> $image)
+                                                <div class="col-3">
+                                                    <a class="a-key" data-key="{{$key}}"
+                                                       href="{{ static_asset($image) }}">
+                                                        <img src="{{static_asset($image)}}" alt=""
+                                                             class="h-100px image">
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                    {{--                                <td>--}}
+                                    {{--                                    <div class="row" id="video{{$key}}">--}}
+                                    {{--                                        <a  >--}}
+                                    {{--                                            <video width="200" height="300px" controls>--}}
+                                    {{--                                                <source src="{{ static_asset($detail->video) }}" type="video/mp4">--}}
 {{--                                            </video>--}}
 {{--                                        </a>--}}
 {{--                                    </div>--}}
-{{--                                </td>--}}
-                                <td>
-                                    @if(!$detail->color)
-                                        <span class='size-25px d-inline-block mr-2 bg-danger '>not found</span>
+                                    {{--                                </td>--}}
+                                    <td>
+                                        @if(!$detail->color)
+                                            <span class='size-25px d-inline-block mr-2 bg-danger '>not found</span>
                                         @else
-                                        <span class='size-25px d-inline-block mr-2 rounded border'
-                                              style='background:{{$detail->color?$detail->color->code:''}}'></span>
-                                        <p>Thời gian bảo hành ({{  timeWarranty($detail->color->warranty_duration)}})</p>
+                                            <span class='size-25px d-inline-block mr-2 rounded border'
+                                                  style='background:{{$detail->color?$detail->color->code:''}}'></span>
+                                            <p>Thời gian bảo hành ({{  timeWarranty($detail->color->warranty_duration)}}
+                                                )</p>
                                         @endif
-                                </td>
-                                <td>{{$detail->qty}}</td>
-                                <td>    @if($detail->status==2)
-                                        <span class="text-danger"> Hủy / {{$detail->reason}} </span>
-                                      @endif
-                                    @if($detail->status==0)
-                                        <span class="text-secondary"> Chờ duyệt </span>
-                                     @endif
+                                    </td>
+                                    <td style="position: relative">
+                                        @if($detail->status==0)
+                                            <i class="las la-edit text-warning c-pointer"
+                                               onclick="confirm_edit_qty('{{route('warranty_card.edit_qty',$detail->id)}}',{{$detail->qty}})"
+                                               style=" position: absolute;  font-size: 30px;  top: -20px;"></i>
+                                        @endif
+                                        {{$detail->qty}}
+                                    </td>
+                                    <td>    @if($detail->status==2)
+                                            <span class="text-danger"> Hủy / {{$detail->reason}} </span>
+                                        @endif
+                                        @if($detail->status==0)
+                                            <span class="text-secondary"> Chờ duyệt </span>
+                                        @endif
 
-                                    @if($detail->status==1)
-                                    <span class="text-secondary"> Đã duyệt </span>
-                                    @endif
+                                        @if($detail->status==1)
+                                            <span class="text-secondary"> Đã duyệt </span>
+                                        @endif
                                     </td>
                                 <td>
                                     @if($warranty_card->status==0 && $detail->status==0)
@@ -239,18 +262,98 @@
     @include('modals.confirm_modal')
 @endsection
 
+
+<div class="modal fade" id="confirm-edit">
+    <form action="" id="confirmation_edit_qty" method="GET">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title h6">Nhập Số lượng</h5>
+                    <button type="button" class="close" data-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="number" class="form-control" name="qty" placeholder="Nhập số lượng">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light"
+                            data-dismiss="modal">{{translate('cancel')}}</button>
+                    <button type="submit" class="btn btn-primary">{{translate('Continue')}}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 @endsection
 
 <!-- CSS only -->
 @section('script')
-    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <style>
+        .mfp-img {
+            /*width: 1920px!important;*/
+            height: 1080px !important;
+            max-height: inherit !important;
+        }
+
+        .lb-image {
+            height: auto !important; /* Set chiều cao tối đa */
+            width: 800px !important; /* Set chiều rộng tối đa */
+        }
+
+        .lb-close {
+            position: absolute;
+            top: 0;
+            right: 240px;
+            font-size: 24px;
+            color: #fff;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+
+
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css"/>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
     <script>
+
+        // $(document).on('focus','.project_photo',function () {
+        $(document).ready(function () {
+            lightbox.option({
+                'resizeDuration': 200,
+                'wrapAround': true,
+                'fitImagesInViewport': false // Không fit ảnh trong khung
+            });
+        });
+
+        // $('.project_photo').zoomify();
+        //     $(`.project_photo`).magnificPopup({
+        //         type: 'image',
+        //         gallery: {
+        //             enabled: true
+        //         },
+        //         image: {
+        //             verticalFit: true
+        //         },
+        //         zoom:
+        //             {
+        //                 enabled: true,
+        //                 duration: 300 // don't foget to change the duration also in CSS
+        //             },
+        //     })
+        // })
+
         $(document).on('focus', '.a-key', function (e) {
             let key = $(this).attr('data-key')
+            $('img.mfp-img').removeAttr('style')
+
             $(`div#gallery` + key).magnificPopup({
                 delegate: 'a',
                 type: 'image',
@@ -258,18 +361,18 @@
                     enabled: true
                 },
                 image: {
-                    verticalFit: true
+                    verticalFit: true,
                 },
                 zoom:
                     {
                         enabled: true,
                         duration: 300 // don't foget to change the duration also in CSS
                     },
-                callbacks: {
-                    resize: changeImgSize,
-                    imageLoadComplete:changeImgSize,
-                    change:changeImgSize
-                }
+                // callbacks: {
+                //     resize: changeImgSize,
+                //     imageLoadComplete:changeImgSize,
+                //     change:changeImgSize
+                // }
                 // callbacks: {
                 //     open: function () {
                 //         $(".mfp-figure figure").css("cursor", "zoom-in");
@@ -334,6 +437,12 @@
             let img = $(this).attr('src');
             $('#image').attr('src', img)
         })
+
+        function confirm_edit_qty(url, qty) {
+            $('#confirm-edit').modal('show', {backdrop: 'static'});
+            $('input[name="qty"]').val(qty);
+            document.getElementById('confirmation_edit_qty').setAttribute('action', url);
+        }
 
         function confirm_ban(url, status) {
             $('#confirm-ban').modal('show', {backdrop: 'static'});

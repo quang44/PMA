@@ -244,6 +244,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
             Route::get('/destroy/{id}', 'destroy')->name('warranty_card.destroy');
             Route::post('/buck-delete', 'buck_delete')->name('warranty_card.buck-delete');
             Route::get('ban-detail/{id}', 'ban_detail')->name('warranty_card.ban_detail');
+            Route::get('edit-qty/{id}', 'edit_qty')->name('warranty_card.edit_qty');
+
 
         });
     });

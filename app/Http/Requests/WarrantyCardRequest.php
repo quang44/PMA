@@ -27,6 +27,7 @@ class WarrantyCardRequest extends FormRequest
             'user_name'=>'required',
             'color'=>'required',
             'product'=>'required',
+//            'project_photo'=>'required',
             'warranty_code'=>'required|exists:warranty_codes,code|unique:warranty_cards,warranty_code'
         ];
     }
@@ -40,8 +41,8 @@ class WarrantyCardRequest extends FormRequest
             'warranty_code.unique'=>' Trường số seri đã tồn ',
             'warranty_code.exist'=>'Mã bảo hành không tồn tại',
             'product.required'=>'vui lòng chọn hãng sản phẩm  ',
+//            'project_photo.required'=>'Vui lòng chọn ảnh công trình',
 //            'image.required'=>'vui lòng chọn ảnh',
-//            'image.image'=>'Trường ảnh không phải 1 ảnh',
         ];
     }
 }

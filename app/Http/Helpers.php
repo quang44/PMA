@@ -59,7 +59,7 @@
            }
 
 
-            if (!empty($user->device_token)) {
+//            if (!empty($user->device_token)) {
 
                 $req = new \stdClass();
                 $req->device_token = $user->device_token;
@@ -76,9 +76,9 @@
 
                 $result = NotificationUtility::sendFirebaseNotification($req);
                 return response(['result' => true, 'data' => $result]);
-            } else {
-                return response(['result' => false]);
-            }
+//            } else {
+//                return response(['result' => false]);
+//            }
         }
     }
 
@@ -1081,34 +1081,52 @@
 
 
     if (!function_exists('uploadFile')) {
-        function uploadFile($imageName, $path)
-        {
-            $image = $imageName;
-//            $realImage = $image->hashName();
-//            $newPath = $path . "/$realImage";
-//            $image->store($path, 'local');
-//            $resizedImagePath = $path . "/" . $realImage;
+        function uploadFile($imageName, $path){
+            $image = $imageName;  // ảnh chuyền vào
+            $name=$image->hashName();  // hash name ảnh unique
 
-            // Resize ảnh với kích thước mới (ở đây là 800x600)
+            $processedImagePath = public_path($path).'/'.$name;  // đường dẫn lưu vào thư mục
+//            dường dẫn lưu vào database
+            $newPath = $path . "/".$name;
 
-//            Image::make($image)
-//                ->resize(720, 960, function ($constraint) {
-//                    $constraint->aspectRatio();
-//                    $constraint->upsize();
-//                })->save(public_path($resizedImagePath));
+//            tiến hành lưu
+            $image->store($path, 'local');
 
-            // Đường dẫn lưu trữ ảnh
-            $destinationPath = public_path($path);
-            // Tạo đối tượng Intervention Image
-            $img = Image::make($image->getRealPath())
-                ->sharpen(10);
-            // Lưu ảnh vào thư mục đích
-            $img->save($destinationPath.'/'.$image->hashName());
-            $newPath = $path."/".$image->hashName();
-//            dd($newPath);
+//            $saveImage = Image::make($processedImagePath);
+//            $saveImage->sharpen(5);
+//            $saveImage->rotate(-90);
+//            $saveImage->save($processedImagePath);
+
+//dd($processedImagePath);
             return $newPath;
         }
     }
+
+    if (!function_exists('sharpenImage')) {
+        function sharpenImage($imagePath)
+        {
+            dd($imagePath);
+
+            // Tạo đối tượng ảnh từ đường dẫn
+            $image = imagecreatefromjpeg($imagePath);
+            // Tạo bộ lọc làm nét
+            $sharpenMatrix = [
+                [-1, -1, -1],
+                [-1, 16, -1],
+                [-1, -1, -1]
+            ];
+            // Lọc ảnh bằng bộ lọc làm nét
+            imageconvolution($image, $sharpenMatrix, 8, 0);
+            // Lưu ảnh đã làm nét
+            imagejpeg($image, $imagePath);
+            // Giải phóng bộ nhớ
+            imagedestroy($image);
+        }
+    }
+
+
+
+
 
 
     if (!function_exists('isUnique')) {
@@ -1498,9 +1516,6 @@
            return $strtotime;
         }
     }
-
-
-
 
 
     if (!function_exists('removeImg')) {

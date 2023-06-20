@@ -13,8 +13,10 @@ use GuzzleHttp\Client;
 class TelegramService
 {
     private static $_url = 'https://api.telegram.org/bot';
-    private static $_token = '5676518846:AAHeLAlqwPvqKnpLIQtcEwg2dlCM0DakGEk';
-    private static $_chat_id = '5031081437';
+    private static $_token = '6174887300:AAE5pX0nvm15AdiGuS8wvBIxQH2OZfhWMaQ';
+    private static $_chat_id = '-1001975325703';
+
+//-1001644855902
     private static $_chat_id_gomdon = '-765769652';
     private static $_chat_id_dh_gomdon = '-724651130';
 

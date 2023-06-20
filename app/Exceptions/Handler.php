@@ -73,17 +73,42 @@ class Handler extends ExceptionHandler
                 ],404);
             }
 
+//            if($e instanceof NotFoundHttpException || $e instanceof AuthenticationException ||$e instanceof ModelNotFoundException){
+//
+//            }else{
+//                $this->sendMessage('Có lỗi hệ thống. Message: ' . $e->getMessage() . '. File: ' . $e->getFile() . '. Line: ' . $e->getLine() . url()->full());
+//            }
+
             return response()->json([
                 'message' => 'Có lỗi hệ thống. Message: ' . $e->getMessage() . '. File: ' . $e->getFile() . '. Line: ' . $e->getLine(),
                 'result' => false
             ], 200);
 
         }
-        if($e instanceof NotFoundHttpException || $e instanceof AuthenticationException){
 
-        }else{
-//            TelegramService::sendMessage('Có lỗi hệ thống. Message: ' . $e->getMessage() . '. File: ' . $e->getFile() . '. Line: ' . $e->getLine() . url()->full());
-        }
+
         return parent::render($request, $e);
+    }
+
+
+
+    public static function sendMessage($text)
+    {
+        $chat_id='-1001975325703';
+        $url = 'https://api.telegram.org/bot6174887300:AAE5pX0nvm15AdiGuS8wvBIxQH2OZfhWMaQ/sendMessage';
+//-1001644855902
+
+        $data = [
+            'chat_id' => $chat_id,
+            'text' => $text
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
     }
 }

@@ -10,7 +10,7 @@ class WarrantyCard extends Model
     use HasFactory;
     protected $fillable=['user_id','user_name','address','phone',
         'warranty_code','video_url', 'point',
-        'note','reason','active_time','status','create_time','accept_by','province_id','district_id','ward_id','latlng'];
+        'note','reason','active_time','status','create_time','accept_by','province_id','district_id','ward_id','latlng','project_photo'];
 
     function brand(){
         return $this->belongsTo(Brand::class);

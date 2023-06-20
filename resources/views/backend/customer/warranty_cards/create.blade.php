@@ -9,7 +9,7 @@
                     <h5 class="mb-0 h6">{{translate('Add warranty card')}}</h5>
                 </div>
 
-                <form action="{{ route('warranty_card.store')}}" method="POST">
+                <form action="{{ route('warranty_card.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="form-group row">
@@ -124,6 +124,26 @@
                                     <div style="width: 850px; height: 400px;" id="map-canvas"></div>
                                     <div class="help-block"></div>
                                 </div>
+                        </div>
+
+
+                        <div class="form-group row ">
+                            <label class="col-sm-3 " for="image">Ảnh Công trình :</label>
+                            <div class="col-sm-9">
+{{--                            <div class="input-group" data-toggle="aizuploader"    data-multiple="true"  data-type="image">--}}
+{{--                                <div class="input-group-prepend">--}}
+{{--                                    <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>--}}
+{{--                                </div>--}}
+{{--                                <div class="form-control file-amount">{{ translate('Choose File') }}</div>--}}
+                                <input type="file"  name="project_photo[]" multiple class=" form-control" >
+{{--                            </div>--}}
+{{--                            </div>--}}
+                            @error('project_photo')
+                            <div class="" style="color: red">{{ $message }}</div>
+                            @enderror
+{{--                            <div class="file-preview box sm">--}}
+{{--                            </div>--}}
+                        </div>
                         </div>
 
 

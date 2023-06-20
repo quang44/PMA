@@ -60,9 +60,21 @@
                             <div class="help-block"></div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="email">Ảnh toàn công trình :</label>
+                        <div class="col-sm-9 row">
+                            <?php $__currentLoopData = explode(',',$warranty_card->project_photo); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index=> $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="ml-3" >
+                                    <a class="a-key" data-lightbox="image-gallery" href="<?php echo e(static_asset($image)); ?>" >
+                                        <img src="<?php echo e(static_asset($image)); ?>" alt="" class="h-100px image" >
+                                    </a>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
 
+                        </div>
+                    </div>
 
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="Seri"><?php echo e(translate('Created_at')); ?> :</label>
@@ -165,7 +177,7 @@
                                     <?php $__currentLoopData = explode(',',$detail->image); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index=> $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <div class="col-3" >
                                     <a class="a-key" data-key="<?php echo e($key); ?>" href="<?php echo e(static_asset($image)); ?>" >
-                                    <img src="<?php echo e(static_asset($image)); ?>" alt="" class="h-60px image" >
+                                    <img src="<?php echo e(static_asset($image)); ?>" alt="" class="h-100px image" >
                                     </a>
                                     </div>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -191,7 +203,7 @@
                                 </td>
                                 <td><?php echo e($detail->qty); ?></td>
                                 <td>    <?php if($detail->status==2): ?>
-                                        <span class="text-danger"> Hủy </span>
+                                        <span class="text-danger"> Hủy / <?php echo e($detail->reason); ?> </span>
                                       <?php endif; ?>
                                     <?php if($detail->status==0): ?>
                                         <span class="text-secondary"> Chờ duyệt </span>
@@ -250,14 +262,71 @@
 
 <!-- CSS only -->
 <?php $__env->startSection('script'); ?>
+    <style>
+        .mfp-img{
+            width: 1920px!important;
+            height: 1080px!important;
+            max-height:inherit!important;
+        }
+
+        .lb-image {
+            height: auto!important; /* Set chiều cao tối đa */
+            width: 800px!important; /* Set chiều rộng tối đa */
+        }
+
+        .lb-close {
+            position: absolute;
+            top: 0;
+            right: 240px;
+            font-size: 24px;
+            color: #fff;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+
+
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
     <script>
+
+        // $(document).on('focus','.project_photo',function () {
+        $(document).ready(function() {
+            lightbox.option({
+                'resizeDuration': 200,
+                'wrapAround': true,
+                'fitImagesInViewport': false // Không fit ảnh trong khung
+            });
+        });
+
+        // $('.project_photo').zoomify();
+        //     $(`.project_photo`).magnificPopup({
+        //         type: 'image',
+        //         gallery: {
+        //             enabled: true
+        //         },
+        //         image: {
+        //             verticalFit: true
+        //         },
+        //         zoom:
+        //             {
+        //                 enabled: true,
+        //                 duration: 300 // don't foget to change the duration also in CSS
+        //             },
+        //     })
+        // })
+
         $(document).on('focus', '.a-key', function (e) {
             let key = $(this).attr('data-key')
+            $('img.mfp-img').removeAttr('style')
+
             $(`div#gallery` + key).magnificPopup({
                 delegate: 'a',
                 type: 'image',
@@ -272,11 +341,11 @@
                         enabled: true,
                         duration: 300 // don't foget to change the duration also in CSS
                     },
-                callbacks: {
-                    resize: changeImgSize,
-                    imageLoadComplete:changeImgSize,
-                    change:changeImgSize
-                }
+                // callbacks: {
+                //     resize: changeImgSize,
+                //     imageLoadComplete:changeImgSize,
+                //     change:changeImgSize
+                // }
                 // callbacks: {
                 //     open: function () {
                 //         $(".mfp-figure figure").css("cursor", "zoom-in");

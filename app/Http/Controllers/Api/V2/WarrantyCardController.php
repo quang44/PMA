@@ -8,9 +8,11 @@ use App\Models\WarrantyCard;
 use App\Models\WarrantyCardDetail;
 use App\Models\WarrantyCode;
 use App\Services\UploadFileService;
+use App\Utility\WarrantyCardUtility;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class WarrantyCardController extends Controller
 {
@@ -51,6 +53,13 @@ class WarrantyCardController extends Controller
         if ($warranty) {
             $warranty->create_time = convertTime($warranty->create_time);
             $warranty->active_time =$warranty->active_time?convertTime($warranty->active_time):null;
+
+            $project_photo=collect(explode(',',$warranty->project_photo))->transform(function ($query){
+                return static_asset($query);
+            });
+            $warranty->project_photo=$project_photo->toArray();
+
+
             $warranty->cardDetail=collect($warranty->cardDetail)->transform(function ($query) {
                 $query->makeHidden(['created_at', 'updated_at']);
                 $image=explode(',',$query->image);
@@ -110,6 +119,9 @@ class WarrantyCardController extends Controller
 
     function store(Request $request)
     {
+//        a
+
+
         $warrantyCode=WarrantyCode::query()->where('code',$request->warranty_code)->first();
         if($warrantyCode && $warrantyCode->status===1){
             return $this->sendError('Mã bảo hành đã được sử dụng');
@@ -131,7 +143,20 @@ class WarrantyCardController extends Controller
         $Warranty->user_id = auth()->id();
         $Warranty->warranty_code=$request->warranty_code;
         $Warranty->latlng=  $request->lat.','.$request->lng;
-        $Warranty->save();
+         $imgs=$request->file('project_photo');
+        $dataImage=[];
+            foreach ($imgs as $img){
+                $dataImage[]= uploadFile($img,'uploads/warranty');
+            }
+//            dd($dataImage);
+//            $photo= Image::make($request->file('project_photo'))->sharpen(10);
+//            $photo->save( $destinationPath = public_path('uploads/warranty').'/'.$img->hashName());
+//            $newPath = 'uploads/warranty/'.$img->hashName();
+            $implode=implode(',',$dataImage);
+            $Warranty->project_photo=$implode;
+               $Warranty->save();
+
+
         foreach ($request->product as $data) {
 //upload file
 //            return $this->sendSuccess($data);
@@ -173,9 +198,20 @@ class WarrantyCardController extends Controller
     {
 
         $Warranty = WarrantyCard::query()->findOrFail($id);
+
         $Warranty->fill($request->all());
         $Warranty->create_time = strtotime(now());
         $Warranty->latlng=  $request->lat.','.$request->lng;
+        $project_photo=$Warranty->project_photo;
+        if(!empty($request->project_photo)){
+            $imgs=$request->file('project_photo');
+            $dataImage=[];
+            foreach ($imgs as $img){
+                $dataImage[]= uploadFile($img,'uploads/warranty');
+            }
+            $implode=implode(',',$dataImage);
+            $Warranty->project_photo=$implode;
+        }
         $Warranty->save();
 
         foreach ($request->product as $data) {
@@ -202,7 +238,8 @@ class WarrantyCardController extends Controller
                     foreach ($data['img'] as $img){
                         $dataImg[]= uploadFile($img, 'uploads/warranty');
                     }
-                } else {
+                }
+                else {
                     $dataImg = $warrantyDetail->image;
                 }
 
@@ -243,17 +280,30 @@ class WarrantyCardController extends Controller
     function warranty_lookup($phone)
     {
         $warrantyCard = WarrantyCard::query()
-            ->with(['code', 'user', 'district', 'ward', 'province', 'cardDetail.product', 'cardDetail.color'])
+            ->with(['code', 'user', 'district', 'ward', 'province', 'cardDetail.product', 'cardDetail.color','active_user_id'])
             ->where('phone',$phone);
         $warrantyCard = $warrantyCard->orderByDesc('updated_at')->get();
 
         $warrantyCard=collect($warrantyCard)->transform(function ($query){
-            $query->makeHidden(['card_detail','created_at','updated_at','note']);
+            $query->makeHidden(['card_detail','created_at','updated_at','note','active_user_id']);
+
+            $project_photo=collect(explode(',',$query->project_photo))->transform(function ($query){
+                return $query?static_asset($query):null;
+            });
+            $query->project_photo=$project_photo->toArray();
+            $query->accept_by=$query->active_user_id->name??null;
             $query->create_time=date('d-m-y H:i:s',$query->create_time);
             $query->active_time=$query->active_time? date('d-m-y H:i:s',$query->active_time):'--';
             $query->cardDetail=collect(  $query->cardDetail)->transform(function ($q){
                 $q->warranty_duration=timeWarranty( $q->warranty_duration);
-                $q->image=static_asset($q->image);
+//                $q->image=static_asset($q->image);
+                $image=explode(',',$q->image);
+                $image=collect($image)->transform(function ($query){
+                    return static_asset($query);
+                });
+                $q->image = $image->toArray();
+                $q->status=WarrantyCardUtility::$aryStatus[$q->status]==2?"đã hủy /$q->reason":WarrantyCardUtility::$aryStatus[$q->status];
+
                 $q->video=static_asset($q->video);
                 return $q;
             });

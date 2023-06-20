@@ -17,6 +17,7 @@ use App\Models\WarrantyCardDetail;
 use App\Models\WarrantyCode;
 use App\Utility\CustomerBillUtility;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class WarrantyCardController extends Controller
 {
@@ -71,12 +72,14 @@ class WarrantyCardController extends Controller
               $item['product']['status']=$item['status'];
              return $item;
         });
+
         $product=array_column($cardetail->toArray(),'product');
-            $point=collect($product)->reduce(function ($init,$item)  {
-                if($item['status']===0){
-                $init+=(int)$item['unit']*(int)$item['qty'];
-              }
-                return  $init;
+
+        $product=array_filter($product,function ($item){
+           return $item['status']==0;
+        });
+        $point=collect($product)->reduce(function ($init,$item)  {
+            return   $init+=(int)$item['unit']*(int)$item['qty'];
             },0);
 
             $commonConfig=CommonConfig::first();
@@ -177,6 +180,7 @@ class WarrantyCardController extends Controller
     }
 
     function  store(WarrantyCardRequest $request ){
+
         $warranty_code=WarrantyCode::where('code',$request->warranty_code)->first();
         // user_id, user_name,phone,address,video_url,warranty_code
         $Warranty= new WarrantyCard;
@@ -184,7 +188,24 @@ class WarrantyCardController extends Controller
         $Warranty->warranty_code=$request->warranty_code;
         $Warranty->create_time = strtotime(now());
         $Warranty->latlng=  $request->lat.','.$request->long;
+        if($request->hasFile('project_photo')){
+            $imgs=$request->file('project_photo');
+            $dataImage=[];
+            foreach ($imgs as $img){
+                $dataImage[]= uploadFile($img,'uploads/warranty');
+            }
+            $implode=implode(',',$dataImage);
+
+            $Warranty->project_photo=$implode;
+
+//            $img=$request->file('project_photo');
+//            $photo= Image::make($request->file('project_photo'))->sharpen(10);
+//            $photo->save( $destinationPath = public_path('uploads/warranty').'/'.$img->hashName());
+//            $newPath = 'uploads/warranty/'.$img->hashName();
+//            $Warranty->project_photo=$newPath;
+        }
         $Warranty->save();
+
         $WarrantyDetail= new WarrantyCardDetail;
         foreach ($request->product as $key=>$data){
 //            dd($request->all());
@@ -232,7 +253,7 @@ class WarrantyCardController extends Controller
         $Warranty=WarrantyCard::findOrFail(decrypt($id));
         $warranty_code=WarrantyCode::where('code',$request->warranty_code)->first();
         $Warranty->fill($request->only(['user_name','address','phone','warranty_code','video_url','note']));
-        $Warranty->save();
+                $Warranty->save();
         $warranty_code->status=1;
         $warranty_code->save();
         if($request->arr_card!=null){
@@ -309,4 +330,11 @@ class WarrantyCardController extends Controller
         return view('backend.customer.warranty_cards.combinations_edit',compact('key','products'));
     }
 
+    public function edit_qty(Request $request,$id){
+    $warrantyCard=WarrantyCardDetail::find($id);
+    $warrantyCard->qty=$request->qty;
+    $warrantyCard->save();
+    flash()->success('Cập nhật số lượng thành công');
+    return back();
+    }
 }
